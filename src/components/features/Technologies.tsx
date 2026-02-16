@@ -2,9 +2,9 @@ import { useState } from "react";
 import { categories } from "../../data/technologies";
 
 export function Technologies() {
-  const [activeCategory, setActiveCategory] = useState<"frontend" | "backend">(
-    "frontend",
-  );
+  const [activeCategory, setActiveCategory] = useState<
+    "frontend" | "backend" | "tools"
+  >("frontend");
 
   const activeData = categories.find((cat) => cat.id === activeCategory);
 
@@ -28,7 +28,7 @@ export function Technologies() {
                     ? "bg-gradient-to-br from-[var(--sage-green)] to-[var(--forest-green)] text-white shadow-[0_8px_24px_rgba(74,103,65,0.3),inset_0_2px_8px_rgba(255,255,255,0.2),inset_0_-4px_12px_rgba(0,0,0,0.1)] scale-105"
                     : "bg-gradient-to-br from-[var(--soft-beige)] to-[#E5D4BB] text-[var(--warm-brown)] shadow-[0_4px_16px_rgba(139,111,71,0.15),inset_0_2px_6px_rgba(255,255,255,0.4),inset_0_-3px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(139,111,71,0.2),inset_0_2px_6px_rgba(255,255,255,0.4),inset_0_-3px_8px_rgba(0,0,0,0.08)] hover:scale-102"
                 }
-                ${category.id === "frontend" ? "md:mr-12" : "md:ml-12"}
+                ${category.id === "frontend" || category.id === "tools" ? "md:mr-12" : "md:ml-12"}
               `}
             >
               <div className="relative z-10 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
