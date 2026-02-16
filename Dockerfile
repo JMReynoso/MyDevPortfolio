@@ -1,24 +1,20 @@
-# ---------- Build stage ----------
-FROM node:20-alpine AS build
-
+# --- Build stage ---
+FROM node:22-alpine AS build
 WORKDIR /app
 
-# Install deps (cache layer)
 COPY package*.json ./
 RUN npm ci
 
-# Copy source and build
 COPY . .
-RUN npm run build
+RUN npm run build   # Vite production build -> /app/dist
 
-# ---------- Run stage ----------
-FROM nginx:1.27-alpine AS run
+# --- Runtime stage ---
+FROM node:22-alpine
+WORKDIR /app
 
-# Copy build output from Vite
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN npm install -g serve
 
-# Optional: custom nginx config (for SPA routing)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist ./dist
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 4173
+CMD ["serve", "-s", "dist", "-l", "4173"]

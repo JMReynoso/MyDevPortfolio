@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Home, User, Briefcase, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '../ui/use-mobile';
 
 export interface NavigationProps {
   logo?: {
@@ -32,18 +33,8 @@ export function Navigation({
   onNavigationClick
 }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
   const [bottomOffset, setBottomOffset] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
