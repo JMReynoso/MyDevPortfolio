@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  
+  /* Warm and cozy color palette */
+  --warm-cream: #FFF8F0;
+  --warm-yellow: #FFD166;
+  --maple-wood: #C77B58;
+  --sage-green: #7BA05B;
+  --forest-green: #4A6741;
+  --warm-brown: #8B6F47;
+  --soft-beige: #F5E6D3;
+  
+  --background: #FFFFFF;
+  --foreground: #2C2416;
+  --card: #FFFFFF;
+  --card-foreground: #2C2416;
+  --popover: #FFFFFF;
+  --popover-foreground: #2C2416;
+  --primary: var(--sage-green);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--soft-beige);
+  --secondary-foreground: #2C2416;
+  --muted: var(--soft-beige);
+  --muted-foreground: var(--warm-brown);
+  --accent: var(--warm-yellow);
+  --accent-foreground: #2C2416;
+  --destructive: #D4183D;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(139, 111, 71, 0.2);
+  --input: transparent;
+  --input-background: #FFFFFF;
+  --switch-background: #D4C5B0;
+  --font-weight-medium: 600;
+  --font-weight-normal: 500;
+  --ring: var(--sage-green);
+  --radius: 1.25rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  
+  /* Custom warm colors */
+  --color-warm-cream: var(--warm-cream);
+  --color-warm-yellow: var(--warm-yellow);
+  --color-maple-wood: var(--maple-wood);
+  --color-sage-green: var(--sage-green);
+  --color-forest-green: var(--forest-green);
+  --color-warm-brown: var(--warm-brown);
+  --color-soft-beige: var(--soft-beige);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+  scroll-behavior: smooth;
+}
