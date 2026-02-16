@@ -52,7 +52,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen">
       <Navigation
-        logo={{ initials: "YN", name: strings.name }}
+        logo={{ initials: strings.initials, name: strings.name }}
         links={navigationLinks}
         activeSection={activeSection}
         onSectionChange={setActiveSection}
@@ -62,7 +62,7 @@ export default function Layout() {
       <Outlet />
 
       <Footer
-        text={`© ${new Date().getFullYear()} ${strings.name}. Built with care and lots of ☕`}
+        text={`© ${new Date().getFullYear()} ${strings.name}. Built with care and lots of zest🍋`}
       />
       <CursorGlow />
     </div>

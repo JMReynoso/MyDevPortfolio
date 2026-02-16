@@ -3,6 +3,7 @@ export const strings = {
     github: "https://github.com/JMReynoso",
     linkedin: "https://linkedin.com/in/justinmreynoso/",
     email: "mail@justinreynoso.dev",
-    },
-    name: "Justin Reynoso",
+  },
+  name: "Justin Reynoso",
+  initials: "JR",
 };

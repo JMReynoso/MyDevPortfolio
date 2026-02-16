@@ -1,14 +1,20 @@
 import {
   Code2,
-  Server,
-  Globe,
+  Coffee,
+  Container,
   Database,
+  Figma,
+  Globe,
+  Hammer,
   Layers,
-  Box,
-  Zap,
-  Package,
   Monitor,
+  Moon,
+  NotebookPen,
   Palette,
+  Server,
+  SquareDashedBottomCode,
+  Webhook,
+  Worm,
 } from "lucide-react";
 
 export type Technology = {
@@ -18,13 +24,12 @@ export type Technology = {
 };
 
 export type TechnologyCategory = {
-  id: "frontend" | "backend";
+  id: "frontend" | "backend" | "tools";
   label: string;
   icon: React.ReactNode;
   technologies: Technology[];
 };
 
-//TODO: update
 export const categories: TechnologyCategory[] = [
   {
     id: "frontend",
@@ -52,14 +57,9 @@ export const categories: TechnologyCategory[] = [
         link: "https://tailwindcss.com/",
       },
       {
-        name: "Vue.js",
-        icon: <Box className="w-8 h-8" />,
-        link: "https://vuejs.org/",
-      },
-      {
-        name: "JavaScript",
-        icon: <Zap className="w-8 h-8" />,
-        link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+        name: "Framer Motion",
+        icon: <Palette className="w-8 h-8" />,
+        link: "https://www.framer.com/motion/",
       },
     ],
   },
@@ -74,14 +74,29 @@ export const categories: TechnologyCategory[] = [
         link: "https://nodejs.org/",
       },
       {
-        name: "Express",
-        icon: <Package className="w-8 h-8" />,
-        link: "https://expressjs.com/",
+        name: "Java Spring",
+        icon: <Layers className="w-8 h-8" />,
+        link: "https://spring.io/",
+      },
+      {
+        name: "AWS",
+        icon: <Server className="w-8 h-8" />,
+        link: "https://aws.amazon.com/",
       },
       {
         name: "MongoDB",
         icon: <Database className="w-8 h-8" />,
         link: "https://www.mongodb.com/",
+      },
+      {
+        name: "Express",
+        icon: <Moon className="w-8 h-8" />,
+        link: "https://expressjs.com/",
+      },
+      {
+        name: ".NET",
+        icon: <Globe className="w-8 h-8" />,
+        link: "https://dotnet.microsoft.com/",
       },
       {
         name: "PostgreSQL",
@@ -90,13 +105,45 @@ export const categories: TechnologyCategory[] = [
       },
       {
         name: "Python",
-        icon: <Code2 className="w-8 h-8" />,
+        icon: <Worm className="w-8 h-8" />,
         link: "https://www.python.org/",
       },
       {
-        name: "GraphQL",
-        icon: <Layers className="w-8 h-8" />,
-        link: "https://graphql.org/",
+        name: "C#",
+        icon: <SquareDashedBottomCode className="w-8 h-8" />,
+        link: "https://learn.microsoft.com/en-us/dotnet/csharp/",
+      },
+      {
+        name: "Java",
+        icon: <Coffee className="w-8 h-8" />,
+        link: "https://www.java.com/en/",
+      },
+    ],
+  },
+  {
+    id: "tools",
+    label: "Tools",
+    icon: <Hammer className="w-8 h-8" />,
+    technologies: [
+      {
+        name: "Figma",
+        icon: <Figma className="w-8 h-8" />,
+        link: "https://www.figma.com/",
+      },
+      {
+        name: "JIRA",
+        icon: <NotebookPen className="w-8 h-8" />,
+        link: "https://www.atlassian.com/software/jira",
+      },
+      {
+        name: "Docker",
+        icon: <Container className="w-8 h-8" />,
+        link: "https://www.docker.com/",
+      },
+      {
+        name: "Postman",
+        icon: <Webhook className="w-8 h-8" />,
+        link: "https://www.postman.com/",
       },
     ],
   },

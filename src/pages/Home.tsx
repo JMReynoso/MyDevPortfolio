@@ -1,30 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Code2, Palette, Rocket, Coffee } from 'lucide-react';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { useEffect } from "react";
 import {
+  ContactSection,
+  Grid,
   Hero,
+  ProjectCard,
   Section,
   SectionHeader,
-  Grid,
-  ProjectCard,
-  SkillCard,
-  ContactSection,
   Technologies,
-} from '../components';
-import { projects } from '../data/projects';
-import { strings } from '../constants/strings';
+} from "../components";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { strings } from "../constants/strings";
+import { projects } from "../data/projects";
 
 export default function Home() {
   // Check if we need to scroll to a section after page load
   useEffect(() => {
-    const scrollToSection = sessionStorage.getItem('scrollToSection');
+    const scrollToSection = sessionStorage.getItem("scrollToSection");
     if (scrollToSection) {
-      sessionStorage.removeItem('scrollToSection');
+      sessionStorage.removeItem("scrollToSection");
       // Wait for the page to render
       setTimeout(() => {
         const element = document.getElementById(scrollToSection);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 100);
     }
@@ -32,12 +30,13 @@ export default function Home() {
 
   return (
     <>
+      {/* TODO: update this photo  */}
       <Hero
         greeting="👋 omg hi! I'm a developer"
         title="Building apps on the web"
         subtitle="I create applications with a focus on backend architecture, frontend design, and seamless user experiences."
-        primaryButton={{ text: 'View My Work!', href: '#projects' }}
-        secondaryButton={{ text: 'Get in Touch!', href: '/contact' }}
+        primaryButton={{ text: "View My Work!", href: "#projects" }}
+        secondaryButton={{ text: "Get in Touch!", href: "/contact" }}
         imageComponent={
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1693159682618-074078ed271e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHdvcmtzcGFjZSUyMGRlc2t8ZW58MXx8fHwxNzcwMzA1MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080"
@@ -48,8 +47,8 @@ export default function Home() {
       />
 
       <Section id="technologies" background="white">
-        <SectionHeader 
-          title="Technologies I Use" 
+        <SectionHeader
+          title="Technologies I Use"
           subtitle="Hover or tap a category to explore the tools and frameworks I work with"
         />
         <Technologies />
@@ -57,7 +56,7 @@ export default function Home() {
 
       <Section id="projects" background="cream">
         <SectionHeader title="Featured Projects" />
-        
+
         <Grid cols={{ md: 2, lg: 3 }} gap="lg">
           {projects.map((project, index) => (
             <ProjectCard

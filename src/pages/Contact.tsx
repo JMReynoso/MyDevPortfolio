@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Mail, Send, AlertCircle } from 'lucide-react';
 import { Section, SectionHeader } from '../components';
+import { strings } from '../constants/strings';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -269,10 +270,10 @@ export default function Contact() {
             </p>
             <p className="text-center">
               <a 
-                href="mailto:hello@example.com" 
+                href={`mailto:${strings.social.email}`} 
                 className="text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
               >
-                hello@example.com
+                {strings.social.email}
               </a>
             </p>
           </div>
