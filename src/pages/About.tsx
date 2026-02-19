@@ -9,8 +9,10 @@ import { experience } from "../data/experience";
 
 import { storyIcons } from "../data/storyIcons";
 import { certifications } from "../data/certification";
+import { useIsMobile } from "../components/ui/use-mobile";
 
 export default function About() {
+  const isMobile = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
 
@@ -126,42 +128,57 @@ export default function About() {
       </Section>
 
       <Section id="story" background="cream">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#2C2416] mb-10 text-center">
-            My Story
-          </h2>
+        <div className="mx-auto">
+          <SectionHeader title="My Story" />
           <Grid cols={{ md: 2 }} gap="xl">
             <div className="space-y-6">
               <p className="text-lg text-[#8B6F47] leading-relaxed">
                 Hi! This section is about me personally, as you get to know me
                 more on a deeper level. I am a Filipino-American born and raised
                 in the suburbs of Philadelphia, Pennsylvania and I am a man who
-                is part of the L<b>G</b>BTQIA+ community 🏳️‍🌈. I've always been
-                good at math and science, and I've spent most of my free time on
-                the computer growing up, so it was natural that my interests
-                gravitated towards technology. I went to school at Widener
-                University and took their Computer Science program, but after a
-                year, my family moved to Florida and I transferred to the
-                University of North Florida. I graduated in 2020 with a
-                Bachelor's degree in Computer Science, and since then, I've been
-                working as a Backend Developer at Cadmium, where I've had the
-                opportunity to work on some really exciting projects and grow my
-                skills in web development. Unfortunately, I had to leave Cadmium
-                in late 2022 due to a mass layoff, but I'm currently looking for
-                new opportunities where I can continue to learn and contribute
-                to meaningful projects.
+                is part of the L<b>G</b>BTQIA+ community 🏳️‍🌈. My MBTI is{" "}
+                <a
+                  href="https://www.16personalities.com/isfj-personality"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
+                >
+                  ISFJ
+                </a>{" "}
+                and my horoscope is{" "}
+                <a
+                  href="https://www.astrology.com/sun-moon-rising/taurus-sun-virgo-moon-aquarius-rising"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
+                >
+                  Taurus Sun, Virgo Moon, and Aquarius Rising
+                </a>
+                . I've always been good at math and science, and I've spent most
+                of my free time on the computer growing up, so it was natural
+                that my interests gravitated towards technology. I went to
+                school at Widener University and took their Computer Science
+                program, but after a year, my family moved to Florida and I
+                transferred to the University of North Florida. I graduated in
+                2020 with a Bachelor's degree in Computer Science, and since
+                then, I've been working as a Backend Developer at Cadmium, where
+                I've had the opportunity to work on some really exciting
+                projects and grow my skills in web development. Unfortunately, I
+                had to leave Cadmium in late 2022 due to a mass layoff, but I'm
+                currently looking for new opportunities where I can continue to
+                learn and contribute to meaningful projects.
               </p>
               <p className="text-lg text-[#8B6F47] leading-relaxed">
                 Since I have a strong passion for technology, I also enjoy
-                homelab projects and tinkering with new technologies in my free
-                time. I have a home server where I run multiple self-hosted
+                homelab projects! I have a home server where I run multiple self-hosted
                 applications, and I enjoy experimenting with different tools and
-                frameworks to see what I can create. I'm also really interested
-                in generative AI and machine learning, which is why I am
-                currently taking a course on it. Whether it's building a new web
-                app, setting up a home automation system, or just playing around
-                with the latest AI tools, I love finding new tech to expand my
-                knowledge in the tech world!
+                frameworks to see what I can create!{" "}
+                {" (note: this website is self-hosted!) "} I'm also really
+                interested in generative AI and machine learning, which is why I
+                am currently taking a course on it. Whether it's building a new
+                web app, setting up a home automation system, or just playing
+                around with the latest AI tools, I love finding new tech to
+                expand my knowledge in the tech world!
               </p>
               <p className="text-lg text-[#8B6F47] leading-relaxed">
                 Beyond the screen, I enjoy music and have a strong passion for
@@ -183,75 +200,85 @@ export default function About() {
                 and I love learning about new things. I am very into language
                 and culture and I've been trying to learn Japanese and Korean,
                 however, due to my hectic schedule I couldn't find a time to
-                consistently practice it. But I hope to get back into it soon!
-                Watching polyglot videos really inspire me to get back into it.
-                I've also been trying to re-learn my mother tongue, Tagalog and
-                Bisaya, since it is more accessible in terms of practice and I
-                want to be able to speak it fluently one day so I can connect at
-                a deeper level with my family back home in the Philipines. For
-                the culture aspect, I really enjoy watching videos about
-                different societies and especially their food. I love trying new
-                foods and learning how to cook them, and I also enjoy traveling
-                and experiencing different cultures firsthand whenever I get the
-                chance!
+                consistently practice it. But I hope to get back into it soon
+                since watching polyglot videos really inspires me to get back
+                into it. I've also been trying to re-learn my mother tongue,
+                Tagalog and Bisaya, since it is more accessible in terms of
+                practice and I want to be able to speak it fluently one day so I
+                can connect at a deeper level with my family back home in the
+                Philipines. For the culture aspect, I really enjoy watching
+                videos about different societies and especially their food. I
+                love trying new foods and learning how to cook them, and I also
+                enjoy traveling and experiencing different cultures firsthand
+                whenever I get the chance!
               </p>
               <p className="text-lg text-[#8B6F47] leading-relaxed">
-                And since I am a big tech guy, of course I also do enjoy gaming
-                and have been playing video games! My favorite genres are hack
-                and slash, competitive, and open world. I've always been drawn
-                to games that have rich storytelling and immersive worlds, and I
-                find that they can be a great way to unwind and escape from the
-                stresses of everyday life. Some of my favorite games include the
-                Drakengaurd/NieR series, Final Fantasy series, Bayonetta series,
-                Overwatch, and more recently, ghacha games like Wuthering Waves.
-                Gaming has also been a great way for me to connect with friends
-                and family, whether it's through cooperative/competitive
-                multiplayer games or just sharing our favorite gaming moments
-                with each other.
+                And since I am a big tech guy, of course I enjoy gaming! My
+                favorite genres are hack and slash, competitive, and open world.
+                I've always been drawn to games that have rich storytelling and
+                immersive worlds, and I find that they can be a great way to
+                unwind and escape from the stresses of everyday life! Some of my
+                favorite games include the Drakengaurd/NieR series, Final
+                Fantasy series, Bayonetta series, Overwatch, and more recently,
+                ghacha games like Wuthering Waves. Gaming has also been a great
+                way for me to connect with friends and family, whether it's
+                through cooperative/competitive multiplayer games or just
+                sharing our favorite gaming moments with each other.
               </p>
               <p className="text-lg text-[#8B6F47] leading-relaxed">
-                When I'm not immersed in code, you might find me exploring local
-                coffee shops or shopping for fashion items. Life is too short to
-                not pursue what brings you joy, and I believe in embracing all
-                of my interests and passions. Whether it's through music,
-                gaming, or just enjoying a good cup of coffee, I try to find joy
-                in the little things and make the most out of every day.
+                When I'm not immersed in code or music, you might find me
+                exploring local coffee shops or shopping for fashion items. Life
+                is too short to not pursue what brings you joy, and I believe in
+                embracing all of my interests and passions. Whether it's through
+                learning tech, music, gaming, or just enjoying a good cup of
+                coffee, I try to find joy in the little things and make the most
+                out of every day.
               </p>
             </div>
 
             {/* TODO: Update story icons on separate file */}
-            <div className="relative hidden md:block">
+            <div
+              className={
+                isMobile
+                  ? "hidden"
+                  : "flex flex-col items-center justify-between h-full px-5"
+              }
+            >
               {/* Off-centered decorative icons */}
-              {storyIcons.map((icon) => {
+              {storyIcons.map((icon, index) => {
                 const Icon = icon.icon;
                 return (
                   <motion.div
                     key={icon.id}
-                    className={`absolute ${icon.position} cursor-pointer`}
+                    className={`cursor-pointer rounded-full ${icon.color} ${index % 2 === 0 ? "ml-auto" : "mr-auto"}`}
                     onMouseEnter={() => setHoveredIcon(icon.id)}
                     onMouseLeave={() => setHoveredIcon(null)}
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.15 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    initial={{ scale: 1.25 }}
+                    whileHover={{ scale: 1.35 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    }}
                   >
                     <div
                       className={`bg-gradient-to-br ${icon.gradient} to-white rounded-full p-6 shadow-sm border border-[#8B6F47]/10 transition-shadow duration-300 ${hoveredIcon === icon.id ? "shadow-lg" : ""}`}
                     >
                       <Icon className={`w-12 h-12 ${icon.color}`} />
-                      </div>
-                      {hoveredIcon === icon.id && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          transition={{ duration: 0.2 }}
+                    </div>
+                    {hoveredIcon === icon.id && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5, scale: 0.85 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
                         className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white px-4 py-2 rounded-xl shadow-md border border-[#8B6F47]/20 whitespace-nowrap"
-                        >
-                          <p className="text-sm font-semibold text-[#2C2416]">
-                            {icon.label}
-                          </p>
-                        </motion.div>
-                      )}
+                      >
+                        <p className="text-sm font-semibold text-[#2C2416]">
+                          {icon.label}
+                        </p>
+                      </motion.div>
+                    )}
                   </motion.div>
                 );
               })}
@@ -260,7 +287,7 @@ export default function About() {
         </div>
       </Section>
 
-      <div className="pb-24 md:pb-0"></div>
+      <div className="pb-20 md:pb-1"></div>
     </>
   );
 }
