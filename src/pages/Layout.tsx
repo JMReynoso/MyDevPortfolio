@@ -62,7 +62,7 @@ export default function Layout() {
       <Outlet />
 
       <Footer
-        text={`© ${new Date().getFullYear()} ${strings.name}. Built with care and lots of ☕`}
+        text={`© ${new Date().getFullYear()} ${strings.name}. Built with care and lots of zest🍋`}
       />
       <CursorGlow />
     </div>
