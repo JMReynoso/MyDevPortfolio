@@ -1,3 +1,5 @@
+//TODO: add skill tags
+
 export const experience = [
   {
     title: "Back-end Developer",
@@ -10,6 +12,24 @@ export const experience = [
       "Wrote API documentation (Swagger).",
       "Implemented CI/CD workflows and improved application reliability and performance.",
     ],
+    tags: [
+      "Node.js",
+      "Express",
+      "NestJS",
+      "PostgreSQL",
+      "SQL",
+      "Swagger",
+      "Jest",
+      "GitLab CI/CD",
+      "Docker",
+      "AWS",
+      ".NET API",
+      "C#",
+      "Typescript",
+      "JIRA",
+      "Confluence",
+      "SCRUM"
+    ],
   },
   {
     title: "Junior Full-Stack Developer",
@@ -21,6 +41,7 @@ export const experience = [
       "Collaborated with design and product teams.",
       "Contributed to testing and deployment processes.",
     ],
+    tags: ["Java Spring", "Java", "JIRA", "SCRUM", "SQL"],
   },
   {
     title: "Junior Software Developer & Support Analyst",
@@ -32,6 +53,18 @@ export const experience = [
       "Automated repetitive tasks and improved system monitoring.",
       "Created technical documentation and assisted in deployments.",
     ],
+    tags: [
+      ".NET Core",
+      ".NET Framework",
+      "SQL Server",
+      "SSMS",
+      "MTFS",
+      "Confluence",
+      "Customer Service",
+      "Technical Support",
+      "Troubleshooting",
+      "Documentation",
+    ],
   },
   {
     title: "Computer Science Major",
@@ -41,6 +74,7 @@ export const experience = [
       "Completed coursework in programming, data structures, algorithms, and software engineering.",
       "Participated in coding projects and collaborated with peers on assignments.",
     ],
+    tags: ["Data Structures & Algorithms", "Software Engineering", "Operating Systems", "Web Systems", "Networking", "Hardware", "Java"],
   },
   {
     title: "Computer Science Major",
@@ -49,6 +83,7 @@ export const experience = [
     description: [
       "Transfered to University of North Florida after one year due to family moving.",
     ],
+    tags: ["Python", "C", "Linux"],
   },
   {
     title: "IT Support Technician",
@@ -58,5 +93,6 @@ export const experience = [
       "Installed and maintained educational technology and servers.",
       "Provided end-user support, hardware troubleshooting, and assisted with network setup and basic system administration tasks.",
     ],
+    tags: ["Software and Hardware Trouble Shooting", "macOS", "Windows", "Next.js"],
   },
 ];

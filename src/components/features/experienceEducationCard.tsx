@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
+import { WarmBadge } from "../common/WarmBadge";
 
 export interface experienceEducationCardProps {
   title: string;
   company: string;
   date: string;
   description: string[];
+  tags: string[];
 }
 
 export function ExperienceEducationCard({
@@ -12,6 +14,7 @@ export function ExperienceEducationCard({
   company,
   date,
   description,
+  tags,
 }: experienceEducationCardProps) {
   return (
     <motion.div
@@ -23,13 +26,21 @@ export function ExperienceEducationCard({
       <p className="text-[#7BA05B] font-semibold mb-4">
         {company} · {date}
       </p>
-      <ul className="text-[#8B6F47] leading-relaxed list-disc pl-5 space-y-1">
+      <ul className="text-[#8B6F47] leading-relaxed list-disc pl-5 space-y-1 mb-4">
         {description.map((item, index) => (
-          <li key={index}>
-            {item}
-          </li>
+          <li key={index}>{item}</li>
         ))}
       </ul>
+      <p className="text-[#8B6F47] leading-relaxed font-semibold mb-2">
+        Skills:
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag, index) => (
+          <WarmBadge key={index} variant="default">
+            {tag}
+          </WarmBadge>
+        ))}
+      </div>
     </motion.div>
   );
 }

@@ -1,5 +1,3 @@
-// TODO: Update images
-
 export const projects = [
   {
     title: "My Development Portfolio",

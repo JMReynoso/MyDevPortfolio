@@ -122,6 +122,7 @@ export default function About() {
               company={item.company}
               date={item.date}
               description={item.description}
+              tags={item.tags}
             />
           ))}
         </div>
