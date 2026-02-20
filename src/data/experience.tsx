@@ -28,7 +28,7 @@ export const experience = [
       "Typescript",
       "JIRA",
       "Confluence",
-      "SCRUM"
+      "SCRUM",
     ],
   },
   {
@@ -41,7 +41,7 @@ export const experience = [
       "Collaborated with design and product teams.",
       "Contributed to testing and deployment processes.",
     ],
-    tags: ["Java Spring", "Java", "JIRA", "SCRUM", "SQL"],
+    tags: ["Java Spring", "Java", "JIRA", "SCRUM", "SQL", "JSP"],
   },
   {
     title: "Junior Software Developer & Support Analyst",
@@ -74,7 +74,15 @@ export const experience = [
       "Completed coursework in programming, data structures, algorithms, and software engineering.",
       "Participated in coding projects and collaborated with peers on assignments.",
     ],
-    tags: ["Data Structures & Algorithms", "Software Engineering", "Operating Systems", "Web Systems", "Networking", "Hardware", "Java"],
+    tags: [
+      "Data Structures & Algorithms",
+      "Software Engineering",
+      "Operating Systems",
+      "Web Systems",
+      "Networking",
+      "Hardware",
+      "Java",
+    ],
   },
   {
     title: "Computer Science Major",
@@ -93,6 +101,11 @@ export const experience = [
       "Installed and maintained educational technology and servers.",
       "Provided end-user support, hardware troubleshooting, and assisted with network setup and basic system administration tasks.",
     ],
-    tags: ["Software and Hardware Trouble Shooting", "macOS", "Windows", "Next.js"],
+    tags: [
+      "Software and Hardware Trouble Shooting",
+      "macOS",
+      "Windows",
+      "Next.js",
+    ],
   },
 ];
