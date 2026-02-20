@@ -1,4 +1,4 @@
-import { Code2, Palette, Rocket, Coffee } from "lucide-react";
+import { Code2, Palette, Rocket, Coffee, MonitorCog } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Section, SectionHeader, Grid, SkillCard } from "../components";
@@ -23,8 +23,8 @@ export default function About() {
   }, []);
 
   const skills = [
-    { name: "Frontend Development", icon: Code2, color: "green" as const },
-    { name: "UI/UX Design", icon: Palette, color: "maple" as const },
+    { name: "Backend Development", icon: Code2, color: "green" as const },
+    { name: "System Design", icon: MonitorCog, color: "maple" as const },
     {
       name: "Performance Optimization",
       icon: Rocket,
@@ -69,7 +69,7 @@ export default function About() {
               Product Managers and Product Owners to bring ideas to life.
             </p>
             <p className="text-lg text-[#8B6F47] leading-relaxed">
-              I'm a learning advocate and believe in continuous learning by
+              I'm an education advocate and believe in continuous learning by
               staying up-to-date with the latest technologies, especially in
               generative AL and ML. Having experience in the customer service
               side, my approach combines technical excellence with a deep
@@ -155,26 +155,29 @@ export default function About() {
                 >
                   Taurus Sun, Virgo Moon, and Aquarius Rising
                 </a>
-                . I've always been good at math and science, and I've spent most
-                of my free time on the computer growing up, so it was natural
-                that my interests gravitated towards technology. I went to
-                school at Widener University and took their Computer Science
-                program, but after a year, my family moved to Florida and I
-                transferred to the University of North Florida. I graduated in
-                2020 with a Bachelor's degree in Computer Science, and since
-                then, I've been working as a Backend Developer at Cadmium, where
-                I've had the opportunity to work on some really exciting
-                projects and grow my skills in web development. Unfortunately, I
-                had to leave Cadmium in late 2022 due to a mass layoff, but I'm
-                currently looking for new opportunities where I can continue to
-                learn and contribute to meaningful projects.
+                !
+              </p>
+              <p className="text-lg text-[#8B6F47] leading-relaxed">
+                I've always been good at math and science and I've spent most of
+                my free time on the computer growing up, so it was natural that
+                my interests gravitated towards technology. I went to school at
+                Widener University and took their Computer Science program, but
+                after a year, my family moved to Florida and I had to transfer
+                to the University of North Florida. I graduated in 2020 with a
+                Bachelor's degree in Computer Science, and since then, I've been
+                working as a Backend Developer at Cadmium, where I've had the
+                opportunity to work on some really exciting projects and grow my
+                skills in web development. Unfortunately, I had to leave Cadmium
+                in late 2024 due to a mass layoff, but I'm currently looking for
+                new opportunities where I can continue to learn and contribute
+                to meaningful projects.
               </p>
               <p className="text-lg text-[#8B6F47] leading-relaxed">
                 Since I have a strong passion for technology, I also enjoy
-                homelab projects! I have a home server where I run multiple self-hosted
-                applications, and I enjoy experimenting with different tools and
-                frameworks to see what I can create!{" "}
-                {" (note: this website is self-hosted!) "} I'm also really
+                homelab projects! I have a home server where I run multiple
+                self-hosted applications, and I enjoy experimenting with
+                different tools and frameworks to see what I can create!{" "}
+                {" (note: this website is ✨self-hosted✨) "} I'm also really
                 interested in generative AI and machine learning, which is why I
                 am currently taking a course on it. Whether it's building a new
                 web app, setting up a home automation system, or just playing
@@ -237,7 +240,6 @@ export default function About() {
               </p>
             </div>
 
-            {/* TODO: Update story icons on separate file */}
             <div
               className={
                 isMobile
