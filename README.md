@@ -8,6 +8,10 @@ Run `npm i` to install the dependencies.
 
 Run `npm run dev` to start the development server.
 
+Run `docker compose -f docker-compose.dev.yml up --build` to start docker development server
+
+Run `docker build -t my-portfolio:prod . && docker run -p [port]:[port] my-portfolio:prod` to run production environment
+
 ## Technologies used
 
 This project uses the following libraries and tools (detected from `package.json`):
