@@ -1,15 +1,15 @@
-import { Code2, Palette, Rocket, Coffee, MonitorCog } from "lucide-react";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Section, SectionHeader, Grid, SkillCard } from "../components";
+import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
 import { CertificationCard } from "../components/features/CertificationCard";
-import { ExperienceEducationCard } from "../components/features/ExperienceEducationCard";
+import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
 import { experience } from "../data/experience";
 
-import { storyIcons } from "../data/storyIcons";
-import { certifications } from "../data/certification";
 import { useIsMobile } from "../components/ui/use-mobile";
+import { certifications } from "../data/certification";
+import { storyIcons } from "../data/storyIcons";
 
 export default function About() {
   const isMobile = useIsMobile();

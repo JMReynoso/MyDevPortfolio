@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { WarmBadge } from "../common/WarmBadge";
 
-export interface experienceEducationCardProps {
+export interface ExperienceEducationCardProps {
   title: string;
   company: string;
   date: string;
@@ -15,7 +15,7 @@ export function ExperienceEducationCard({
   date,
   description,
   tags,
-}: experienceEducationCardProps) {
+}: EperienceEducationCardProps) {
   return (
     <motion.div
       className="bg-white rounded-2xl p-6 shadow-sm border border-[#8B6F47]/10"
