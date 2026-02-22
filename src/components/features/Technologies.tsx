@@ -12,7 +12,7 @@ export function Technologies() {
     <div className="w-full">
       <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
         {/* Left side - Category bubbles */}
-        <div className="flex md:flex-col gap-4 md:gap-8 justify-center items-center md:items-stretch">
+        <div className="relative md:flex-col gap-4 md:gap-8 justify-center items-center md:items-stretch">
           {categories.map((category, index) => (
             <button
               key={category.id}
