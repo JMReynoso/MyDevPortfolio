@@ -3,7 +3,7 @@ export const projects = [
     title: "My Development Portfolio",
     description:
       "A Front-end developer portfolio showcasing my skills, projects, and experience with a clean, modern, and warm design.",
-    image: "./public/images/projects/Screenshot 2026-02-19 193057.png",
+    image: "/images/projects/Screenshot 2026-02-19 193057.png",
     tags: [
       "React",
       "Node.js",
@@ -18,7 +18,7 @@ export const projects = [
     title: "Little Lemon Restaurant Reservation App",
     description:
       "The culmination of the course is the Capstone Project: building a fully functional restaurant reservation web app (nicknamed “Little Lemon” in the course). This is a real-world, portfolio-style project where students apply everything they’ve learned.",
-    image: "./public/images/projects/Screenshot 2026-02-19 192542.png",
+    image: "/images/projects/Screenshot 2026-02-19 192542.png",
     tags: ["React", "Node.js", "TypeScript", "Jest", "SEO", "CSS"],
     link: "https://github.com/JMReynoso/little-lemon",
   },
