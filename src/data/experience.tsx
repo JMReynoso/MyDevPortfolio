@@ -111,7 +111,7 @@ export const experience = [
       "Software and Hardware Trouble Shooting",
       "macOS",
       "Windows",
-      "Next.js",
+      "Customer Service",
     ],
   },
 ];
