@@ -30,6 +30,7 @@ export default function Home() {
 
   return (
     <>
+      {/* TODO: update this photo  */}
       <Hero
         greeting="👋 omg hi! I'm a developer"
         title="Building apps on the web"

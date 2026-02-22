@@ -1,5 +1,3 @@
-//TODO: add skill tags
-
 export const experience = [
   {
     title: "Back-end Developer",

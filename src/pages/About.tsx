@@ -36,6 +36,7 @@ export default function About() {
   return (
     <>
       <div className="pt-32 pb-20 px-6 bg-gradient-to-b from-white from-0% via-[#F5E6D3] via-25% via-75% to-white to-100%">
+        {/* TODO: add circular photo here */}
         <div
           className={`max-w-4xl mx-auto transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
