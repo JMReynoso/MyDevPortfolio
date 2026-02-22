@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { categories } from "../../data/technologies";
+import { categories } from "../../data/Technologies";
 
 export function Technologies() {
   const [activeCategory, setActiveCategory] = useState<

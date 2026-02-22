@@ -1,20 +1,20 @@
 import {
   Code2,
-  Server,
-  Globe,
+  Coffee,
+  Container,
   Database,
+  Figma,
+  Globe,
+  Hammer,
   Layers,
   Monitor,
-  Palette,
-  Hammer,
-  Figma,
-  NotebookPen,
-  Container,
-  Webhook,
-  Coffee,
-  SquareDashedBottomCode,
-  Worm,
   Moon,
+  NotebookPen,
+  Palette,
+  Server,
+  SquareDashedBottomCode,
+  Webhook,
+  Worm,
 } from "lucide-react";
 
 export type Technology = {
@@ -77,6 +77,16 @@ export const categories: TechnologyCategory[] = [
         name: "Java Spring",
         icon: <Layers className="w-8 h-8" />,
         link: "https://spring.io/",
+      },
+      {
+        name: "AWS",
+        icon: <Server className="w-8 h-8" />,
+        link: "https://aws.amazon.com/",
+      },
+      {
+        name: "MongoDB",
+        icon: <Database className="w-8 h-8" />,
+        link: "https://www.mongodb.com/",
       },
       {
         name: "Express",
