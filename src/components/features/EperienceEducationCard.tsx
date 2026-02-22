@@ -15,7 +15,7 @@ export function ExperienceEducationCard({
   date,
   description,
   tags,
-}: EperienceEducationCardProps) {
+}: ExperienceEducationCardProps) {
   return (
     <motion.div
       className="bg-white rounded-2xl p-6 shadow-sm border border-[#8B6F47]/10"
