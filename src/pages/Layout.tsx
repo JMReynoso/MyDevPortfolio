@@ -52,7 +52,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen">
       <Navigation
-        logo={{ initials: "YN", name: strings.name }}
+        logo={{ initials: strings.initials, name: strings.name }}
         links={navigationLinks}
         activeSection={activeSection}
         onSectionChange={setActiveSection}
