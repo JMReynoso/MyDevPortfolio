@@ -25,11 +25,11 @@ jobs:
       # add unit tests
 
       - name: Deploy (Docker)
+        working-directory: .
         run: |
-          cd /opt/apps/myapp
           # Option A: Docker
-          docker compose pull
-          docker compose up -d --build -p 5173:5173
+          docker build -t my-vite-react:prod .
+          docker run -p 5173:5173 my-vite-react:prod
           # Or Option B: bare-metal restart (pm2, launchctl, etc.)
           # pm2 restart myapp
 
