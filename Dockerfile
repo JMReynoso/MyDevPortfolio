@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # ---------- Run stage ----------
-#FROM nginx:1.27-alpine AS run
+FROM nginx:1.27-alpine AS run
 
 # Copy build output from Vite
 COPY --from=build /app/dist /usr/share/nginx/html
