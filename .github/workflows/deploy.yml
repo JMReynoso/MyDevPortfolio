@@ -28,8 +28,8 @@ jobs:
         working-directory: .
         run: |
           # Option A: Docker
-          docker build -t my-vite-react:prod .
-          docker run -p 5173:5173 my-vite-react:prod
+          docker build -t my-portfolio:prod .
+          docker run -p 5173:5173 my-portfolio:prod
           # Or Option B: bare-metal restart (pm2, launchctl, etc.)
           # pm2 restart myapp
 
