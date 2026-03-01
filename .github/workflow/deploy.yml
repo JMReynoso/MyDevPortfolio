@@ -7,7 +7,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node (example for a Node app)
+      - name: Install Node
         run: |
           if ! command -v node >/dev/null 2>&1; then
             brew install node
@@ -20,7 +20,7 @@ jobs:
 
       # add unit tests
 
-      - name: Deploy (Docker or bare-metal)
+      - name: Deploy (Docker)
         run: |
           cd /opt/apps/myapp
           # Option A: Docker
