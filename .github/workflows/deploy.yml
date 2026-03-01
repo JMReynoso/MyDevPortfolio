@@ -1,5 +1,9 @@
 name: Deploy to self-hosted server
 
+on:
+  push:
+    branches: [main]
+
 jobs:
   deploy:
     runs-on: [self-hosted, macOS, ARM64]  # matches runner labels
