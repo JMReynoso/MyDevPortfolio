@@ -1,9 +1,8 @@
-# ---------- Build stage ----------
-FROM node:20-alpine AS build
+FROM node:20-alpine
 
-WORKDIR .
+WORKDIR /app
 
-# Install deps (cache layer)
+# Install dependencies
 COPY package*.json ./
 RUN npm ci
 
@@ -11,14 +10,8 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# ---------- Run stage ----------
-FROM nginx:1.27-alpine AS run
+# Expose whatever port your server listens on
+EXPOSE 3000
 
-# Copy build output from Vite
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Optional: custom nginx config (for SPA routing)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 5173
-CMD ["nginx", "-g", "daemon off;"]
+# Run your app in the foreground
+CMD ["npm", "run", "start"]
