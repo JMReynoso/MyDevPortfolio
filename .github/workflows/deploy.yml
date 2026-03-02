@@ -2,7 +2,8 @@ name: Deploy to self-hosted server
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - '*'
 
 jobs:
   deploy:
