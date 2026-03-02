@@ -10,12 +10,7 @@ yarn-error.log
 .env.local
 .env.development
 .env.test
-
-# Build
-build
-dist
-.out
-*.build
+*.env
 
 # Logs
 *.log
@@ -49,10 +44,6 @@ jest.coverage.json
 *.tsbuildinfo
 .next
 
-# Docker
-.dockerignore
-Dockerfile
-.dockerfile
 
 # Cache
 .cache
