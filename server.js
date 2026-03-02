@@ -9,23 +9,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 5173;
 
-const distPath = path.join(__dirname, "dist");
-
 // Check if dist directory exists
+const distPath = path.join(__dirname, "dist");
 if (!fs.existsSync(distPath)) {
   console.error(`Error: dist directory not found at ${distPath}`);
+  console.log('Please run "npm run build" first to build your Vite app');
   process.exit(1);
 }
 
-// Serve static files with caching and performance optimizations
-app.use(
-  express.static(distPath, {
-    maxAge: "1d", // Cache static files for 1 day
-    etag: false, // Disable ETags
-    lastModified: false, // Disable Last-Modified header
-  }),
-);
-
+// Serve static files
+app.use(express.static(distPath));
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"), (err) => {
     if (err) {
@@ -37,4 +30,3 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
