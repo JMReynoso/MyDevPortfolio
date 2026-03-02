@@ -1,21 +1,20 @@
-# Production build & run in one image
-FROM node:20-alpine
-
-# Create app directory
+# --- Build stage ---
+FROM node:22-alpine AS build
 WORKDIR /app
 
-# Install dependencies (using lockfile if you have one)
 COPY package*.json ./
-RUN npm install && npm cache clean --force
+RUN npm ci
 
-# Copy the rest of the source code
 COPY . .
+RUN npm run build   # Vite production build -> /app/dist
 
-# Build the Vite app
-RUN npm run build
+# --- Runtime stage ---
+FROM node:22-alpine
+WORKDIR /app
 
-# Expose the port your server listens on
-EXPOSE 5173
+RUN npm install -g serve
 
-# Run the Node server (serves dist/)
-CMD ["npm", "run", "start"]
+COPY --from=build /app/dist ./dist
+
+EXPOSE 4173
+CMD ["serve", "-s", "dist", "-l", "4173"]
