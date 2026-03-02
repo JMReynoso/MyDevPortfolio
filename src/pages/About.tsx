@@ -10,6 +10,7 @@ import { experience } from "../data/experience";
 import { useIsMobile } from "../components/ui/use-mobile";
 import { certifications } from "../data/certification";
 import { storyIcons } from "../data/storyIcons";
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 export default function About() {
   const isMobile = useIsMobile();
@@ -42,6 +43,16 @@ export default function About() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
+          {/* Profile Picture */}
+          <div className="flex justify-center mb-8">
+            <div className="relative w-48 h-48 md:w-40 md:h-40">
+              <ImageWithFallback
+                src="./public/images/About/IMG_6529.HEIC_compressed.jpeg"
+                alt="Profile Picture"
+                className="w-full h-full rounded-full object-cover shadow-lg border-4 border-white ring-4 ring-[#7BA05B]/20"
+              />
+            </div>
+          </div>
           <h1 className="text-5xl md:text-6xl font-bold text-[#2C2416] mb-6 leading-tight text-center">
             About Me
           </h1>
