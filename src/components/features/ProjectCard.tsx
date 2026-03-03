@@ -1,7 +1,6 @@
-import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
-import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { motion } from "motion/react";
 import { WarmBadge } from "../common/WarmBadge";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 export interface ProjectCardProps {
   title: string;

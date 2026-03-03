@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { Home, User, Briefcase, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useIsMobile } from '../ui/use-mobile';
+import { Briefcase, Home, Mail, User } from "lucide-react";
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useIsMobile } from "../ui/use-mobile";
 
 export interface NavigationProps {
   logo?: {
@@ -19,18 +19,18 @@ export interface NavigationProps {
 }
 
 const iconMap: Record<string, any> = {
-  'Home': Home,
-  'About': User,
-  'Projects': Briefcase,
-  'Contact': Mail,
+  Home: Home,
+  About: User,
+  Projects: Briefcase,
+  Contact: Mail,
 };
 
-export function Navigation({ 
-  logo = { initials: 'YN', name: 'Your Name' },
+export function Navigation({
+  logo = { initials: "YN", name: "Your Name" },
   links,
   activeSection,
   onSectionChange,
-  onNavigationClick
+  onNavigationClick,
 }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useIsMobile();
@@ -39,14 +39,14 @@ export function Navigation({
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
-      
+
       // Calculate bottom offset to prevent overlapping footer
       if (isMobile) {
-        const footer = document.querySelector('footer');
+        const footer = document.querySelector("footer");
         if (footer) {
           const footerRect = footer.getBoundingClientRect();
           const windowHeight = window.innerHeight;
-          
+
           // If footer is entering viewport from bottom, push nav up
           if (footerRect.top < windowHeight) {
             const overlap = windowHeight - footerRect.top;
@@ -60,9 +60,9 @@ export function Navigation({
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
 
   // Shared nav pill content
@@ -70,80 +70,92 @@ export function Navigation({
     <motion.div
       className="bg-[#FFF8F0]/95 backdrop-blur-sm border border-[#8B6F47]/20 shadow-lg"
       style={{
-        maxWidth: isMobile ? 'fit-content' : undefined,
+        maxWidth: isMobile ? "fit-content" : undefined,
       }}
       animate={{
-        borderRadius: '16px',
-        maxWidth: isMobile ? undefined : isScrolled ? '600px' : '1152px',
+        borderRadius: "16px",
+        maxWidth: isMobile ? undefined : isScrolled ? "600px" : "1152px",
       }}
-      transition={{ 
+      transition={{
         duration: 0.4,
-        ease: "easeIn"
+        ease: "easeIn",
       }}
     >
       <div className={isMobile ? "px-3 py-2.5" : "px-6 py-3"}>
-        <motion.div 
+        <motion.div
           className="flex items-center"
           animate={{
-            gap: isMobile ? '24px' : isScrolled ? '24px' : '32px',
-            justifyContent: isMobile ? 'flex-start' : 'space-between'
+            gap: isMobile ? "24px" : isScrolled ? "24px" : "32px",
+            justifyContent: isMobile ? "flex-start" : "space-between",
           }}
-          transition={{ 
+          transition={{
             duration: 0.4,
-            ease: "easeIn"
+            ease: "easeIn",
           }}
         >
           {/* Logo/initials section */}
           <div className={`flex items-center gap-2`}>
-            <div className={`rounded-full bg-gradient-to-br from-[#7BA05B] to-[#4A6741] flex items-center justify-center flex-shrink-0 ${isMobile ? 'w-8 h-8' : 'w-10 h-10'}`}>
-              <span className={`text-white font-bold ${isMobile ? 'text-sm' : ''}`}>{logo.initials}</span>
+            <div
+              className={`rounded-full bg-gradient-to-br from-[#7BA05B] to-[#4A6741] flex items-center justify-center flex-shrink-0 ${isMobile ? "w-8 h-8" : "w-10 h-10"}`}
+            >
+              <span
+                className={`text-white font-bold ${isMobile ? "text-sm" : ""}`}
+              >
+                {logo.initials}
+              </span>
             </div>
-            <motion.span 
+            <motion.span
               className="font-semibold text-lg text-[#2C2416] whitespace-nowrap"
-              animate={{ 
-                width: isScrolled || isMobile ? 0 : 'auto',
+              animate={{
+                width: isScrolled || isMobile ? 0 : "auto",
                 opacity: isScrolled || isMobile ? 0 : 1,
               }}
-              transition={{ 
+              transition={{
                 duration: 0.4,
-                ease: "easeIn"
+                ease: "easeIn",
               }}
-              style={{ overflow: 'hidden' }}
+              style={{ overflow: "hidden" }}
             >
               {logo.name}
             </motion.span>
           </div>
-          
-          <div className={`flex ${isMobile ? 'gap-3' : 'gap-6'}`}>
+
+          <div className={`flex ${isMobile ? "gap-3" : "gap-6"}`}>
             {links.map((link, index) => {
-              const isRoute = link.href.startsWith('/') && !link.href.includes('#');
-              const sectionId = link.href.replace('/', '').replace('#', '') || 'home';
-              const isActive = activeSection === sectionId || (activeSection === 'about' && link.label === 'About');
+              const isRoute =
+                link.href.startsWith("/") && !link.href.includes("#");
+              const sectionId =
+                link.href.replace("/", "").replace("#", "") || "home";
+              const isActive =
+                activeSection === sectionId ||
+                (activeSection === "about" && link.label === "About");
               const Icon = iconMap[link.label];
-              
+
               const linkContent = (
                 <>
                   {Icon && <Icon className={isMobile ? "size-4" : "size-5"} />}
                   <motion.span
-                    animate={{ 
-                      width: isScrolled || isMobile ? 0 : 'auto',
+                    animate={{
+                      width: isScrolled || isMobile ? 0 : "auto",
                       opacity: isScrolled || isMobile ? 0 : 1,
-                      marginLeft: isScrolled || isMobile ? 0 : 8
+                      marginLeft: isScrolled || isMobile ? 0 : 8,
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 0.4,
-                      ease: "easeIn"
+                      ease: "easeIn",
                     }}
                     className="overflow-hidden whitespace-nowrap"
                   >
                     {link.label}
                   </motion.span>
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#7BA05B] transition-all ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`} />
+                  <span
+                    className={`absolute -bottom-1 left-0 h-0.5 bg-[#7BA05B] transition-all ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    }`}
+                  />
                 </>
               );
-              
+
               if (isRoute) {
                 return (
                   <motion.div
@@ -166,7 +178,7 @@ export function Navigation({
                   </motion.div>
                 );
               }
-              
+
               return (
                 <motion.a
                   key={link.label}
@@ -196,15 +208,15 @@ export function Navigation({
       <motion.nav
         className="fixed left-0 right-0 top-0 z-50 flex justify-center py-4"
         style={{
-          paddingLeft: isMobile ? '12px' : '24px',
-          paddingRight: isMobile ? '12px' : '24px',
+          paddingLeft: isMobile ? "12px" : "24px",
+          paddingRight: isMobile ? "12px" : "24px",
         }}
         animate={{
           opacity: isMobile && isScrolled ? 0 : 1,
         }}
-        transition={{ 
+        transition={{
           duration: 0.4,
-          ease: "easeOut"
+          ease: "easeOut",
         }}
       >
         {navPillContent}
@@ -216,15 +228,15 @@ export function Navigation({
           className="fixed left-0 right-0 z-50 flex justify-center py-4"
           style={{
             bottom: `${bottomOffset}px`,
-            paddingLeft: '12px',
-            paddingRight: '12px',
+            paddingLeft: "12px",
+            paddingRight: "12px",
           }}
           animate={{
             opacity: isScrolled ? 1 : 0,
           }}
-          transition={{ 
+          transition={{
             duration: 0.4,
-            ease: "easeOut"
+            ease: "easeOut",
           }}
           initial={{ opacity: 0 }}
         >

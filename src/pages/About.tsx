@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
@@ -45,7 +45,7 @@ export default function About() {
         >
           {/* Profile Picture TODO: fix, it's big on mobile and safari browser for some reason lol */}
           <div className="flex justify-center mb-8">
-            <div className="relative w-48 h-48 md:w-40 md:h-40">
+            <div className="relative w-20 h-20 md:w-48 md:h-48">
               <ImageWithFallback
                 src="/images/about/pfp.jpeg"
                 alt="Profile Picture"
