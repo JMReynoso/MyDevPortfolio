@@ -94,18 +94,15 @@ export function Navigation({
             ease: "easeIn",
           }}
         >
-          {/* Logo/initials section */}
-          <div className={`flex items-center gap-2`}>
+          <div className="flex items-center gap-2">
             <div
-              className={`rounded-full bg-gradient-to-br from-[#7BA05B] to-[#4A6741] flex items-center justify-center flex-shrink-0 ${isMobile ? "w-8 h-8" : "w-10 h-10"}`}
+              className={`rounded-full overflow-hidden flex-shrink-0 ${isMobile ? "w-8 h-8" : "w-10 h-10"}`}
             >
-              <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                <ImageWithFallback
-                  src="/images/about/pfp.jpeg"
-                  alt="Profile Picture"
-                  className="w-full h-full object-cover shadow-lg border-4 border-white ring-4 ring-[#7BA05B]/20"
-                />
-              </div>
+              <ImageWithFallback
+                src="/images/about/pfp.jpeg"
+                alt="Profile Picture"
+                className="w-full h-full object-cover"
+              />
             </div>
             <motion.span
               className="font-semibold text-lg text-[#2C2416] whitespace-nowrap"
