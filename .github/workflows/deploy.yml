@@ -28,6 +28,7 @@ jobs:
         working-directory: .
         run: |
           # Option A: Docker
+          docker-compose -f docker-compose.prod.yml down
           docker-compose -f docker-compose.prod.yml up --build -d
           # Or Option B: bare-metal restart (pm2, launchctl, etc.)
           # pm2 restart myapp
