@@ -7,10 +7,10 @@ import { CertificationCard } from "../components/features/CertificationCard";
 import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
 import { experience } from "../data/experience";
 
+import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useIsMobile } from "../components/ui/use-mobile";
 import { certifications } from "../data/certification";
 import { storyIcons } from "../data/storyIcons";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 export default function About() {
   const isMobile = useIsMobile();
@@ -47,7 +47,7 @@ export default function About() {
           <div className="flex justify-center mb-8">
             <div className="relative w-48 h-48 md:w-40 md:h-40">
               <ImageWithFallback
-                src="./public/images/About/IMG_6529.HEIC_compressed.jpeg"
+                src="/images/about/pfp.jpeg"
                 alt="Profile Picture"
                 className="w-full h-full rounded-full object-cover shadow-lg border-4 border-white ring-4 ring-[#7BA05B]/20"
               />
