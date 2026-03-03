@@ -1,118 +1,136 @@
-import { useState } from 'react';
-import { Mail, Send, AlertCircle } from 'lucide-react';
-import { Section, SectionHeader } from '../components';
-import { strings } from '../constants/strings';
+import { Mail, Send } from "lucide-react";
+import { useState } from "react";
+import { Section, SectionHeader } from "../components";
+import { strings } from "../constants/strings";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const [touched, setTouched] = useState({
     name: false,
     email: false,
     subject: false,
-    message: false
+    message: false,
   });
 
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle",
+  );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
 
     // Validate on change
-    let error = '';
-    if (name === 'name') {
+    let error = "";
+    if (name === "name") {
       if (!value.trim()) {
-        error = 'Name is required';
+        error = "Name is required";
       } else if (value.trim().length < 2) {
-        error = 'Name must be at least 2 characters';
+        error = "Name must be at least 2 characters";
       }
-    } else if (name === 'email') {
+    } else if (name === "email") {
       if (!value.trim()) {
-        error = 'Email is required';
+        error = "Email is required";
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        error = 'Please enter a valid email address';
+        error = "Please enter a valid email address";
       }
-    } else if (name === 'subject') {
+    } else if (name === "subject") {
       if (!value.trim()) {
-        error = 'Subject is required';
+        error = "Subject is required";
       } else if (value.trim().length < 3) {
-        error = 'Subject must be at least 3 characters';
+        error = "Subject must be at least 3 characters";
       }
-    } else if (name === 'message') {
+    } else if (name === "message") {
       if (!value.trim()) {
-        error = 'Message is required';
+        error = "Message is required";
       } else if (value.trim().length < 10) {
-        error = 'Message must be at least 10 characters';
+        error = "Message must be at least 10 characters";
       }
     }
 
     setErrors({
       ...errors,
-      [name]: error
+      [name]: error,
     });
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setTouched({
       ...touched,
-      [e.target.name]: true
+      [e.target.name]: true,
     });
   };
 
-  // TODO: use a proper email sending service instead of mailto link, this is just a quick solution for now. Also add a loading state and error handling for failed email sending.
+  // TODO: use a proper email sending service using web3forms.com
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Mark all fields as touched
     setTouched({
       name: true,
       email: true,
       subject: true,
-      message: true
+      message: true,
     });
 
     // Validate all fields
     const newErrors = {
-      name: !formData.name.trim() ? 'Name is required' : 
-            formData.name.trim().length < 2 ? 'Name must be at least 2 characters' : '',
-      email: !formData.email.trim() ? 'Email is required' : 
-             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ? 'Please enter a valid email address' : '',
-      subject: !formData.subject.trim() ? 'Subject is required' : 
-               formData.subject.trim().length < 3 ? 'Subject must be at least 3 characters' : '',
-      message: !formData.message.trim() ? 'Message is required' : 
-               formData.message.trim().length < 10 ? 'Message must be at least 10 characters' : ''
+      name: !formData.name.trim()
+        ? "Name is required"
+        : formData.name.trim().length < 2
+          ? "Name must be at least 2 characters"
+          : "",
+      email: !formData.email.trim()
+        ? "Email is required"
+        : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+          ? "Please enter a valid email address"
+          : "",
+      subject: !formData.subject.trim()
+        ? "Subject is required"
+        : formData.subject.trim().length < 3
+          ? "Subject must be at least 3 characters"
+          : "",
+      message: !formData.message.trim()
+        ? "Message is required"
+        : formData.message.trim().length < 10
+          ? "Message must be at least 10 characters"
+          : "",
     };
-    
+
     setErrors(newErrors);
 
     // Check if there are any errors
-    if (Object.values(newErrors).some(error => error !== '')) {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 2000);
+    if (Object.values(newErrors).some((error) => error !== "")) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 2000);
       return;
     }
 
-    setStatus('sending');
+    setStatus("sending");
 
     // Create mailto link with form data
     const mailtoLink = `mailto:hello@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
-      `From: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      `From: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
     )}`;
 
     // Open mail client
@@ -120,25 +138,23 @@ export default function Contact() {
 
     // Reset form after a short delay
     setTimeout(() => {
-      setStatus('sent');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setErrors({ name: '', email: '', subject: '', message: '' });
+      setStatus("sent");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setErrors({ name: "", email: "", subject: "", message: "" });
       setTouched({ name: false, email: false, subject: false, message: false });
-      
+
       setTimeout(() => {
-        setStatus('idle');
+        setStatus("idle");
       }, 7000);
     }, 500);
-
-
   };
 
   return (
     <>
       <Section id="contact-form" background="cream" className="pt-32 pb-24">
         <div className="max-w-2xl mx-auto">
-          <SectionHeader 
-            title="Get in Touch" 
+          <SectionHeader
+            title="Get in Touch"
             subtitle="Fill out the form below and I'll get back to you as soon as possible."
             align="center"
           />
@@ -150,7 +166,10 @@ export default function Contact() {
               <div className="space-y-6">
                 {/* Name Field */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-[#2C2416] mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-[#2C2416] mb-2"
+                  >
                     Name
                   </label>
                   <input
@@ -171,7 +190,10 @@ export default function Contact() {
 
                 {/* Email Field */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[#2C2416] mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-[#2C2416] mb-2"
+                  >
                     Email
                   </label>
                   <input
@@ -192,7 +214,10 @@ export default function Contact() {
 
                 {/* Subject Field */}
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-[#2C2416] mb-2">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-[#2C2416] mb-2"
+                  >
                     Subject
                   </label>
                   <input
@@ -207,14 +232,19 @@ export default function Contact() {
                     placeholder="What's this about?"
                   />
                   {touched.subject && errors.subject && (
-                    <p className="text-sm text-red-500 mt-1">{errors.subject}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.subject}
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* Right Column - Message */}
               <div className="flex flex-col">
-                <label htmlFor="message" className="block text-sm font-medium text-[#2C2416] mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-[#2C2416] mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -236,15 +266,15 @@ export default function Contact() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={status === 'sending'}
+              disabled={status === "sending"}
               className="w-full px-8 py-4 bg-gradient-to-r from-[#7BA05B] to-[#4A6741] text-white rounded-2xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              {status === 'sending' ? (
+              {status === "sending" ? (
                 <>
                   <Mail className="size-5 animate-pulse" />
                   <span>Sending your email to ...</span>
                 </>
-              ) : status === 'sent' ? (
+              ) : status === "sent" ? (
                 <>
                   <Send className="size-5" />
                   <span>Email sent to ...!</span>
@@ -257,7 +287,7 @@ export default function Contact() {
               )}
             </button>
 
-            {status === 'sent' && (
+            {status === "sent" && (
               <p className="text-center text-sm text-[#7BA05B]">
                 Your email will be viewed within the next couple of days!
               </p>
@@ -270,8 +300,8 @@ export default function Contact() {
               Or reach out directly at
             </p>
             <p className="text-center">
-              <a 
-                href={`mailto:${strings.social.email}`} 
+              <a
+                href={`mailto:${strings.social.email}`}
                 className="text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
               >
                 {strings.social.email}
