@@ -1,5 +1,5 @@
+import { motion } from "framer-motion";
 import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
-import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
@@ -7,7 +7,6 @@ import { CertificationCard } from "../components/features/CertificationCard";
 import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
 import { experience } from "../data/experience";
 
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useIsMobile } from "../components/ui/use-mobile";
 import { certifications } from "../data/certification";
 import { storyIcons } from "../data/storyIcons";

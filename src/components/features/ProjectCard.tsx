@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { WarmBadge } from "../common/WarmBadge";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 
