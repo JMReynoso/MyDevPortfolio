@@ -2,6 +2,7 @@ import { Briefcase, Home, Mail, User } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { useIsMobile } from "../ui/use-mobile";
 
 export interface NavigationProps {
@@ -98,11 +99,13 @@ export function Navigation({
             <div
               className={`rounded-full bg-gradient-to-br from-[#7BA05B] to-[#4A6741] flex items-center justify-center flex-shrink-0 ${isMobile ? "w-8 h-8" : "w-10 h-10"}`}
             >
-              <span
-                className={`text-white font-bold ${isMobile ? "text-sm" : ""}`}
-              >
-                {logo.initials}
-              </span>
+              <div className="relative w-20 h-20 rounded-full overflow-hidden">
+                <ImageWithFallback
+                  src="/images/about/pfp.jpeg"
+                  alt="Profile Picture"
+                  className="w-full h-full object-cover shadow-lg border-4 border-white ring-4 ring-[#7BA05B]/20"
+                />
+              </div>
             </div>
             <motion.span
               className="font-semibold text-lg text-[#2C2416] whitespace-nowrap"
