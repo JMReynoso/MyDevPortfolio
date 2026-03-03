@@ -133,7 +133,12 @@ export function Navigation({
 
               const linkContent = (
                 <>
-                  {Icon && <Icon className={isMobile ? "size-4" : "size-5"} />}
+                  {Icon && (
+                    <Icon
+                      className={isMobile ? "size-4" : "size-5"}
+                      aria-hidden="true"
+                    />
+                  )}
                   <motion.span
                     animate={{
                       width: isScrolled || isMobile ? 0 : "auto",
@@ -144,7 +149,7 @@ export function Navigation({
                       duration: 0.4,
                       ease: "easeIn",
                     }}
-                    className="overflow-hidden whitespace-nowrap"
+                    className="sr-only"
                   >
                     {link.label}
                   </motion.span>
@@ -152,6 +157,7 @@ export function Navigation({
                     className={`absolute -bottom-1 left-0 h-0.5 bg-[#7BA05B] transition-all ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
+                    aria-hidden="true"
                   />
                 </>
               );
@@ -206,6 +212,7 @@ export function Navigation({
     <>
       {/* Top nav - fades out on mobile when scrolled */}
       <motion.nav
+        aria-label="Main Navigation"
         className="fixed left-0 right-0 top-0 z-50 flex justify-center py-4"
         style={{
           paddingLeft: isMobile ? "12px" : "24px",
@@ -225,6 +232,7 @@ export function Navigation({
       {/* Bottom nav - fades in on mobile when scrolled */}
       {isMobile && (
         <motion.nav
+          aria-label="Mobile Navigation"
           className="fixed left-0 right-0 z-50 flex justify-center py-4"
           style={{
             bottom: `${bottomOffset}px`,
