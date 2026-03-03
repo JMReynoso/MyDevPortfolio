@@ -3,7 +3,7 @@
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
 
-  export default defineConfig({
+export default defineConfig({
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -53,8 +53,12 @@
       target: 'esnext',
       outDir: 'build',
     },
-    server: {
+  server: {
+      host: true,
       port: 5173,
-      open: false,
+    open: false,
+    watch: {
+      usePolling: true,
     },
+  },
   });
