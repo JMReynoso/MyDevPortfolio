@@ -75,6 +75,7 @@ export default function Contact() {
     });
   };
 
+  // TODO: use a proper email sending service instead of mailto link, this is just a quick solution for now. Also add a loading state and error handling for failed email sending.
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     

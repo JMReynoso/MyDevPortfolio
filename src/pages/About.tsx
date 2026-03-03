@@ -43,7 +43,7 @@ export default function About() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          {/* Profile Picture */}
+          {/* Profile Picture TODO: fix, it's big on mobile and safari browser for some reason lol */}
           <div className="flex justify-center mb-8">
             <div className="relative w-48 h-48 md:w-40 md:h-40">
               <ImageWithFallback
