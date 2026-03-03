@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
@@ -37,22 +37,11 @@ export default function About() {
   return (
     <>
       <div className="pt-32 pb-20 px-6 bg-gradient-to-b from-white from-0% via-[#F5E6D3] via-25% via-75% to-white to-100%">
-        {/* TODO: add circular photo here */}
         <div
           className={`max-w-4xl mx-auto transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          {/* Profile Picture TODO: fix, it's big on mobile and safari browser for some reason lol */}
-          <div className="flex justify-center mb-8">
-            <div className="relative w-48 h-48 md:w-40 md:h-40">
-              <ImageWithFallback
-                src="/images/about/pfp.jpeg"
-                alt="Profile Picture"
-                className="w-full h-full rounded-full object-cover shadow-lg border-4 border-white ring-4 ring-[#7BA05B]/20"
-              />
-            </div>
-          </div>
           <h1 className="text-5xl md:text-6xl font-bold text-[#2C2416] mb-6 leading-tight text-center">
             About Me
           </h1>

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useIsMobile } from './use-mobile';
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { useIsMobile } from "./use-mobile";
 
 export function CursorGlow() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -12,21 +12,22 @@ export function CursorGlow() {
 
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
-      
+
       // Check if hovering over a button or link
       const target = e.target as HTMLElement;
-      const isButton = target.tagName === 'BUTTON' || 
-                      target.tagName === 'A' || 
-                      target.closest('button') !== null ||
-                      target.closest('a') !== null;
-      
+      const isButton =
+        target.tagName === "BUTTON" ||
+        target.tagName === "A" ||
+        target.closest("button") !== null ||
+        target.closest("a") !== null;
+
       setIsHovering(isButton);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    
+    window.addEventListener("mousemove", handleMouseMove);
+
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [isMobile]);
 
@@ -45,7 +46,7 @@ export function CursorGlow() {
         type: "spring",
         stiffness: 500,
         damping: 28,
-        opacity: { duration: 0.2 }
+        opacity: { duration: 0.2 },
       }}
     >
       <div className="w-12 h-12 rounded-full bg-[#F4C753]/20 blur-xl" />

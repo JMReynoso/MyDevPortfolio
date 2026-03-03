@@ -1,6 +1,6 @@
-import { WarmBadge } from "../common/WarmBadge";
-import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
+import { motion } from "motion/react";
+import { WarmBadge } from "../common/WarmBadge";
 
 export interface certificationProps {
   title: string;
