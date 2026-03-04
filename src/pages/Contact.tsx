@@ -4,13 +4,6 @@ import { Section, SectionHeader } from "../components";
 import { strings } from "../constants/strings";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -33,10 +26,6 @@ export default function Contact() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
 
     // Validate on change
     let error = "";
@@ -81,9 +70,11 @@ export default function Contact() {
     });
   };
 
-  // TODO: use a proper email sending service using web3forms.com
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Get form data using FormData
+    const formData = new FormData(e.target as HTMLFormElement);
 
     // Mark all fields as touched
     setTouched({
@@ -93,26 +84,26 @@ export default function Contact() {
       message: true,
     });
 
-    // Validate all fields
+    // Validate all fields (you'll need to add this validation logic)
     const newErrors = {
-      name: !formData.name.trim()
+      name: !formData.get("name")
         ? "Name is required"
-        : formData.name.trim().length < 2
+        : (formData.get("name") as string).trim().length < 2
           ? "Name must be at least 2 characters"
           : "",
-      email: !formData.email.trim()
+      email: !formData.get("email")
         ? "Email is required"
-        : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+        : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.get("email") as string)
           ? "Please enter a valid email address"
           : "",
-      subject: !formData.subject.trim()
+      subject: !formData.get("subject")
         ? "Subject is required"
-        : formData.subject.trim().length < 3
+        : (formData.get("subject") as string).trim().length < 3
           ? "Subject must be at least 3 characters"
           : "",
-      message: !formData.message.trim()
+      message: !formData.get("message")
         ? "Message is required"
-        : formData.message.trim().length < 10
+        : (formData.get("message") as string).trim().length < 10
           ? "Message must be at least 10 characters"
           : "",
     };
@@ -128,25 +119,43 @@ export default function Contact() {
 
     setStatus("sending");
 
-    // Create mailto link with form data
-    const mailtoLink = `mailto:hello@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
-      `From: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
-    )}`;
+    // Add the access_key to formData using environment variable
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    if (!accessKey) {
+      console.error("WEB3FORMS_ACCESS_KEY is not defined in environment variables");
+      setStatus("error");
+      return;
+    }
+    formData.append("access_key", accessKey);
 
-    // Open mail client
-    window.location.href = mailtoLink;
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData, // This is now a FormData object
+      });
 
-    // Reset form after a short delay
+      const data = await response.json();
+      setStatus(data.success ? "sent" : "error");
+
+      if (data.success) {
+        // Reset form after successful submission
+        (e.target as HTMLFormElement).reset();
+        setErrors({ name: "", email: "", subject: "", message: "" });
+        setTouched({
+          name: false,
+          email: false,
+          subject: false,
+          message: false,
+        });
+      }
+    } catch (error) {
+      setStatus("error");
+      console.error("Error sending form:", error);
+    }
+
     setTimeout(() => {
-      setStatus("sent");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({ name: "", email: "", subject: "", message: "" });
-      setTouched({ name: false, email: false, subject: false, message: false });
-
-      setTimeout(() => {
-        setStatus("idle");
-      }, 7000);
-    }, 500);
+      setStatus("idle");
+    }, 7000);
   };
 
   return (
@@ -176,7 +185,6 @@ export default function Contact() {
                     type="text"
                     id="name"
                     name="name"
-                    value={formData.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
@@ -200,7 +208,6 @@ export default function Contact() {
                     type="email"
                     id="email"
                     name="email"
-                    value={formData.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
@@ -224,7 +231,6 @@ export default function Contact() {
                     type="text"
                     id="subject"
                     name="subject"
-                    value={formData.subject}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
@@ -250,7 +256,6 @@ export default function Contact() {
                 <textarea
                   id="message"
                   name="message"
-                  value={formData.message}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
@@ -287,11 +292,22 @@ export default function Contact() {
               )}
             </button>
 
-            {status === "sent" && (
+            {status === "sent" ? (
               <p className="text-center text-sm text-[#7BA05B]">
                 Your email will be viewed within the next couple of days!
               </p>
-            )}
+            ) : status === "error" ? (
+              <p className="text-center text-sm text-[#7BA05B]">
+                Error in sending the email, please try again later or reach out
+                directly at{" "}
+                <a
+                  href={`mailto:${strings.social.email}`}
+                  className="text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
+                >
+                  {strings.social.email}
+                </a>
+              </p>
+            ) : null}
           </form>
 
           {/* Alternative Contact Methods */}
