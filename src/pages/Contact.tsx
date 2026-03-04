@@ -26,8 +26,6 @@ export default function Contact() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-
-    // Validate on change
     let error = "";
     if (name === "name") {
       if (!value.trim()) {
@@ -72,11 +70,8 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Get form data using FormData
     const formData = new FormData(e.target as HTMLFormElement);
 
-    // Mark all fields as touched
     setTouched({
       name: true,
       email: true,
@@ -84,7 +79,6 @@ export default function Contact() {
       message: true,
     });
 
-    // Validate all fields (you'll need to add this validation logic)
     const newErrors = {
       name: !formData.get("name")
         ? "Name is required"
@@ -110,7 +104,6 @@ export default function Contact() {
 
     setErrors(newErrors);
 
-    // Check if there are any errors
     if (Object.values(newErrors).some((error) => error !== "")) {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 2000);
@@ -119,26 +112,23 @@ export default function Contact() {
 
     setStatus("sending");
 
-    // Add the access_key to formData using environment variable
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-    if (!accessKey) {
-      console.error("WEB3FORMS_ACCESS_KEY is not defined in environment variables");
+    if (!import.meta.env.VITE_WEB3FORMS_ACCESS_KEY) {
+      console.error("VITE_WEB3FORMS_ACCESS_KEY is not defined");
       setStatus("error");
       return;
     }
-    formData.append("access_key", accessKey);
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: formData, // This is now a FormData object
+        body: formData,
       });
 
       const data = await response.json();
       setStatus(data.success ? "sent" : "error");
 
       if (data.success) {
-        // Reset form after successful submission
         (e.target as HTMLFormElement).reset();
         setErrors({ name: "", email: "", subject: "", message: "" });
         setTouched({
