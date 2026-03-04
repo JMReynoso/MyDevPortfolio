@@ -1,5 +1,3 @@
- Also, make sure to keep all original formatting and spacing.
-
 services:
  frontend-prod:
    build:
