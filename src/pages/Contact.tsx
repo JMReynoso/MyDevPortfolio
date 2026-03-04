@@ -178,11 +178,14 @@ export default function Contact() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
+                    aria-required="true"
+                    aria-invalid={touched.name && errors.name ? "true" : undefined}
+                    aria-describedby={touched.name && errors.name ? "name-error" : undefined}
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="Your name"
                   />
                   {touched.name && errors.name && (
-                    <p className="text-sm text-red-500 mt-1">{errors.name}</p>
+                    <p id="name-error" className="text-sm text-red-500 mt-1" role="alert">{errors.name}</p>
                   )}
                 </div>
 
@@ -201,11 +204,14 @@ export default function Contact() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
+                    aria-required="true"
+                    aria-invalid={touched.email && errors.email ? "true" : undefined}
+                    aria-describedby={touched.email && errors.email ? "email-error" : undefined}
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="your.email@example.com"
                   />
                   {touched.email && errors.email && (
-                    <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                    <p id="email-error" className="text-sm text-red-500 mt-1" role="alert">{errors.email}</p>
                   )}
                 </div>
 
@@ -224,11 +230,14 @@ export default function Contact() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
+                    aria-required="true"
+                    aria-invalid={touched.subject && errors.subject ? "true" : undefined}
+                    aria-describedby={touched.subject && errors.subject ? "subject-error" : undefined}
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="What's this about?"
                   />
                   {touched.subject && errors.subject && (
-                    <p className="text-sm text-red-500 mt-1">
+                    <p id="subject-error" className="text-sm text-red-500 mt-1" role="alert">
                       {errors.subject}
                     </p>
                   )}
@@ -249,11 +258,14 @@ export default function Contact() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required
+                  aria-required="true"
+                  aria-invalid={touched.message && errors.message ? "true" : undefined}
+                  aria-describedby={touched.message && errors.message ? "message-error" : undefined}
                   className="flex-1 w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all resize-none"
                   placeholder="Tell me about your project or idea..."
                 />
                 {touched.message && errors.message && (
-                  <p className="text-sm text-red-500 mt-1">{errors.message}</p>
+                  <p id="message-error" className="text-sm text-red-500 mt-1" role="alert">{errors.message}</p>
                 )}
               </div>
             </div>
@@ -266,38 +278,40 @@ export default function Contact() {
             >
               {status === "sending" ? (
                 <>
-                  <Mail className="size-5 animate-pulse" />
+                  <Mail className="size-5 animate-pulse" aria-hidden="true" />
                   <span>Sending your email to ...</span>
                 </>
               ) : status === "sent" ? (
                 <>
-                  <Send className="size-5" />
+                  <Send className="size-5" aria-hidden="true" />
                   <span>Email sent to ...!</span>
                 </>
               ) : (
                 <>
-                  <Mail className="size-5 group-hover:scale-110 transition-transform" />
+                  <Mail className="size-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
                   <span>Send Message</span>
                 </>
               )}
             </button>
 
-            {status === "sent" ? (
-              <p className="text-center text-sm text-[#7BA05B]">
-                Your email will be viewed within the next couple of days!
-              </p>
-            ) : status === "error" ? (
-              <p className="text-center text-sm text-[#7BA05B]">
-                Error in sending the email, please try again later or reach out
-                directly at{" "}
-                <a
-                  href={`mailto:${strings.social.email}`}
-                  className="text-[#7BA05B] hover:text-[#4A6741] transition-colors font-medium"
-                >
-                  {strings.social.email}
-                </a>
-              </p>
-            ) : null}
+            <div aria-live="polite" aria-atomic="true">
+              {status === "sent" ? (
+                <p className="text-center text-sm text-[#7BA05B]">
+                  Your email will be viewed within the next couple of days!
+                </p>
+              ) : status === "error" ? (
+                <p className="text-center text-sm text-red-600">
+                  Error in sending the email, please try again later or reach out
+                  directly at{" "}
+                  <a
+                    href={`mailto:${strings.social.email}`}
+                    className="text-red-600 hover:text-red-800 transition-colors font-medium underline"
+                  >
+                    {strings.social.email}
+                  </a>
+                </p>
+              ) : null}
+            </div>
           </form>
 
           {/* Alternative Contact Methods */}
