@@ -33,7 +33,7 @@ export function SkillCard({ name, icon: Icon, color }: SkillCardProps) {
       <div
         className={`w-12 h-12 ${colorStyles[color]} rounded-xl flex items-center justify-center mb-4`}
       >
-        <Icon className="w-6 h-6 text-white" />
+        <Icon className="w-6 h-6 text-white" aria-hidden="true" />
       </div>
       <h3 className="font-semibold text-[#2C2416] text-lg">{name}</h3>
     </motion.div>

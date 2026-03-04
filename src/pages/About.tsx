@@ -253,11 +253,17 @@ export default function About() {
                 return (
                   <motion.div
                     key={icon.id}
-                    className={`cursor-pointer rounded-full ${icon.color} ${index % 2 === 0 ? "ml-auto" : "mr-auto"}`}
+                    role="img"
+                    aria-label={icon.label}
+                    tabIndex={0}
+                    className={`cursor-pointer rounded-full ${icon.color} ${index % 2 === 0 ? "ml-auto" : "mr-auto"} focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:ring-offset-2`}
                     onMouseEnter={() => setHoveredIcon(icon.id)}
                     onMouseLeave={() => setHoveredIcon(null)}
+                    onFocus={() => setHoveredIcon(icon.id)}
+                    onBlur={() => setHoveredIcon(null)}
                     initial={{ scale: 1.25 }}
                     whileHover={{ scale: 1.35 }}
+                    whileFocus={{ scale: 1.35 }}
                     transition={{
                       type: "spring",
                       stiffness: 300,
@@ -267,7 +273,7 @@ export default function About() {
                     <div
                       className={`bg-gradient-to-br ${icon.gradient} to-white rounded-full p-6 shadow-sm border border-[#8B6F47]/10 transition-shadow duration-300 ${hoveredIcon === icon.id ? "shadow-lg" : ""}`}
                     >
-                      <Icon className={`w-12 h-12 ${icon.color}`} />
+                      <Icon className={`w-12 h-12 ${icon.color}`} aria-hidden="true" />
                     </div>
                     {hoveredIcon === icon.id && (
                       <motion.div
@@ -276,6 +282,8 @@ export default function About() {
                         exit={{ opacity: 0, y: -5 }}
                         transition={{ duration: 0.2 }}
                         className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white px-4 py-2 rounded-xl shadow-md border border-[#8B6F47]/20 whitespace-nowrap"
+                        role="tooltip"
+                        id={`tooltip-${icon.id}`}
                       >
                         <p className="text-sm font-semibold text-[#2C2416]">
                           {icon.label}

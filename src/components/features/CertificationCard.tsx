@@ -37,7 +37,7 @@ export function CertificationCard({
       >
         <div className="flex items-start justify-between mb-4">
           <div className={`bg-[${statusColor}] text-white rounded-xl p-3`}>
-            <Icon className="w-8 h-8" />
+            <Icon className="w-8 h-8" aria-hidden="true" />
           </div>
           <WarmBadge variant={badgeColor}>{status}</WarmBadge>
         </div>

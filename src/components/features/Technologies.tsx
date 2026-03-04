@@ -18,6 +18,8 @@ export function Technologies() {
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
               onMouseEnter={() => setActiveCategory(category.id)}
+              onFocus={() => setActiveCategory(category.id)}
+              aria-pressed={activeCategory === category.id}
               className={`
                 relative flex flex-col items-center justify-center gap-1.5 md:gap-2
                 w-28 h-28 md:w-44 md:h-44
@@ -31,7 +33,7 @@ export function Technologies() {
                 ${category.id === "frontend" || category.id === "tools" ? "md:mr-12" : "md:ml-12"}
               `}
             >
-              <div className="relative z-10 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+              <div className="relative z-10 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center" aria-hidden="true">
                 {category.icon}
               </div>
               <span className="text-sm md:text-lg lg:text-xl font-medium relative z-10">
@@ -56,13 +58,13 @@ export function Technologies() {
                   bg-white
                   transition-all duration-300 ease-out
                   hover:scale-105 hover:shadow-lg hover:border-[var(--sage-green)]
-                  cursor-default
+                  cursor-pointer
                 "
                 style={{
                   animation: `fadeIn 0.4s ease-out ${index * 0.05}s both`,
                 }}
               >
-                <div className="text-[var(--sage-green)] flex-shrink-0 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+                <div className="text-[var(--sage-green)] flex-shrink-0 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center" aria-hidden="true">
                   {tech.icon}
                 </div>
                 <span className="text-sm md:text-base lg:text-lg">

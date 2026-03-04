@@ -141,6 +141,9 @@ export default function Contact() {
     } catch (error) {
       setStatus("error");
       console.error("Error sending form:", error);
+      setTimeout(() => {
+        setStatus("idle");
+      }, 7000);
     }
 
     setTimeout(() => {
