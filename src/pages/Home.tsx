@@ -47,6 +47,7 @@ export default function Home() {
       />
 
       <Section id="technologies" background="white">
+        {/* TODO: fix mobile view */}
         <SectionHeader
           title="Technologies I Use"
           subtitle="Hover or tap a category to explore the tools and frameworks I work with"
