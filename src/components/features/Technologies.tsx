@@ -61,6 +61,7 @@ export function Technologies() {
                   bg-white
                   transition-all duration-300 ease-out
                   hover:scale-105 hover:shadow-lg hover:border-[var(--sage-green)]
+                  focus-visible:scale-105 focus-visible:shadow-lg focus-visible:border-[var(--sage-green)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--sage-green)] focus-visible:ring-offset-2
                   cursor-pointer
                 "
                 style={{
