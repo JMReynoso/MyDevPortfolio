@@ -12,7 +12,7 @@ export function Technologies() {
     <div className="w-full">
       <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
         {/* Left side - Category bubbles */}
-        <div className="relative md:flex-col gap-4 md:gap-8 justify-center items-center md:items-stretch">
+        <div className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch">
           {categories.map((category, index) => (
             <button
               key={category.id}
@@ -33,7 +33,10 @@ export function Technologies() {
                 ${category.id === "frontend" || category.id === "tools" ? "md:mr-12" : "md:ml-12"}
               `}
             >
-              <div className="relative z-10 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center" aria-hidden="true">
+              <div
+                className="relative z-10 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center"
+                aria-hidden="true"
+              >
                 {category.icon}
               </div>
               <span className="text-sm md:text-lg lg:text-xl font-medium relative z-10">
@@ -58,13 +61,17 @@ export function Technologies() {
                   bg-white
                   transition-all duration-300 ease-out
                   hover:scale-105 hover:shadow-lg hover:border-[var(--sage-green)]
+                  focus-visible:scale-105 focus-visible:shadow-lg focus-visible:border-[var(--sage-green)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--sage-green)] focus-visible:ring-offset-2
                   cursor-pointer
                 "
                 style={{
                   animation: `fadeIn 0.4s ease-out ${index * 0.05}s both`,
                 }}
               >
-                <div className="text-[var(--sage-green)] flex-shrink-0 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center" aria-hidden="true">
+                <div
+                  className="text-[var(--sage-green)] flex-shrink-0 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center"
+                  aria-hidden="true"
+                >
                   {tech.icon}
                 </div>
                 <span className="text-sm md:text-base lg:text-lg">
