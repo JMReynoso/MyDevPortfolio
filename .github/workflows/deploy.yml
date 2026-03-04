@@ -27,6 +27,7 @@ jobs:
       - name: Deploy (Docker)
         working-directory: .
         run: |
+          export VITE_WEB3FORMS_ACCESS_KEY=${{ secrets.WEB3FORMS_ACCESS_KEY }}
           # Option A: Docker
           docker-compose -f docker-compose.prod.yml down
           docker-compose -f docker-compose.prod.yml up --build -d
