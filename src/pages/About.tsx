@@ -244,7 +244,7 @@ export default function About() {
               className={
                 isMobile
                   ? "hidden"
-                  : "flex flex-col items-center justify-between h-full px-5"
+                  : "flex flex-col items-center justify-between h-full px-15"
               }
             >
               {/* Off-centered decorative icons */}
