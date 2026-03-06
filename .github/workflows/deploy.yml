@@ -29,6 +29,18 @@ jobs:
         run: |
           npm run test
 
+      - name: Run tests and generate coverage
+        # Replace with your specific command, e.g., 'npm test -- --coverage' or 'pytest --cov=./ --cov-report=xml'
+        run: npm run coverage --coverageReporters=lcov
+
+      - name: Post coverage report to PR
+        # Example using a generic LCOV reporter action
+        uses: romeovs/lcov-reporter-action@v0.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Path to the generated coverage file
+          lcov-file: ./coverage/lcov.info
+
       - name: Deploy (Docker)
         working-directory: .
         run: |

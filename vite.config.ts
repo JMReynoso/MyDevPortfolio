@@ -56,10 +56,8 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, 'packages/template/*'],
     globals: true,
     coverage: {
-      provider: 'istanbul',
-      reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/**/*.d.ts', 'src/**/index.{ts,tsx}', 'src/**/*.{test,spec}.{ts,tsx}'],
+      exclude: ['**/utils/users.ts']
     },
     browser: {
       enabled: true,
