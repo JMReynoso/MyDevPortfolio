@@ -1,6 +1,8 @@
 name: Deploy to self-hosted server
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
 
@@ -23,6 +25,9 @@ jobs:
           npm run build
 
       # add unit tests
+      - name: Run tests
+        run: |
+          npm run test
 
       - name: Deploy (Docker)
         working-directory: .
