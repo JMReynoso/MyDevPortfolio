@@ -26,7 +26,9 @@ jobs:
 
       # add unit tests
       - name: Run tests with coverage
-        run: npm run test
+        run: |
+          npm install -D vitest
+          npx vitest run --coverage.enabled=true
 
       - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v1
