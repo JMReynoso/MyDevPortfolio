@@ -29,17 +29,15 @@ jobs:
         run: |
           npm run test
 
-      - name: Run tests and generate coverage
-        # Replace with your specific command, e.g., 'npm test -- --coverage' or 'pytest --cov=./ --cov-report=xml'
-        run: npm run coverage --coverageReporters=lcov
-
-      - name: Post coverage report to PR
-        # Example using a generic LCOV reporter action
-        uses: romeovs/lcov-reporter-action@v0.5.0
+      - name: Run tests with coverage
+        run: npx vitest run --coverage.enabled=true
+        
+      - name: Report Coverage
+        uses: davelosert/vitest-coverage-report-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Path to the generated coverage file
-          lcov-file: ./coverage/lcov.info
+          # The default paths are usually correct
+          json-summary-path: './coverage/coverage-summary.json'
+          json-final-path: './coverage/coverage-final.json'
 
       - name: Deploy (Docker)
         working-directory: .
