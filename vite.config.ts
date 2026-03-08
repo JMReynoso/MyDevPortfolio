@@ -56,6 +56,8 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, 'packages/template/*'],
     globals: true,
     coverage: {
+      enabled: true,
+      reporter: ['json-summary', 'json', 'text'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['**/utils/users.ts']
     },
