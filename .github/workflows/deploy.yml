@@ -34,7 +34,7 @@ jobs:
           npm install -D @vitest/browser-playwright
           npm install -D @vitest/coverage-v8
           npx playwright install
-          npm run test
+          npm run test:coverage
 
       - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v1
