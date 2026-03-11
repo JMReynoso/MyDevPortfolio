@@ -59,7 +59,12 @@ export default defineConfig({
       enabled: true,
       reporter: ['json-summary', 'json', 'text'],
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['**/utils/users.ts']
+      exclude: ['**/utils/users.ts'],
+      thresholds: {
+        lines: -10,
+        functions: 90,
+        branches: 90,
+      },
     },
     browser: {
       enabled: true,
