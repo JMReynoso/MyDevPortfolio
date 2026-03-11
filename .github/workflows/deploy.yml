@@ -30,6 +30,7 @@ jobs:
           npm install -D vitest
           npm install -D @vitest/browser-playwright
           npm install -D @vitest/coverage-v8
+          npx playwright install
           npm run test
 
       - name: Report Coverage
