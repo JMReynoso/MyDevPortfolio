@@ -11,7 +11,7 @@ jobs:
     runs-on: [self-hosted, macOS, ARM64] # matches runner labels
     permissions:
       pull-requests: write
-      contents: read 
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,7 +30,6 @@ jobs:
       # add unit tests
       - name: Run tests with coverage
         run: |
-          npm install -D vitest
           npm install -D @vitest/browser-playwright
           npm install -D @vitest/coverage-v8
           npx playwright install
