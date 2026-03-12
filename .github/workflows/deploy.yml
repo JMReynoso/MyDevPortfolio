@@ -30,9 +30,6 @@ jobs:
       # add unit tests
       - name: Run tests with coverage
         run: |
-          npm install -D @vitest/browser-playwright
-          npm install -D @vitest/coverage-v8
-          npx playwright install
           npm run test:coverage
 
       - name: Report Coverage
