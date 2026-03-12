@@ -10,7 +10,7 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveText("Test Content");
+    await expect.element(screen).toHaveText("Test Content");
   });
 
   it("applies default size class (lg)", async () => {
@@ -20,7 +20,7 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveClass("max-w-6xl");
+    await expect.element(screen).toHaveClass("max-w-6xl");
   });
 
   it("applies custom size class", async () => {
@@ -30,7 +30,7 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveClass("max-w-2xl");
+    await expect.element(screen).toHaveClass("max-w-2xl");
   });
 
   it("applies custom className", async () => {
@@ -40,7 +40,7 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveClass("custom-class");
+    await expect.element(screen).toHaveClass("custom-class");
   });
 
   it("applies both size and custom className", async () => {
@@ -50,8 +50,8 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveClass("max-w-7xl");
-    expect.element(screen).toHaveClass("custom-class");
+    await expect.element(screen).toHaveClass("max-w-7xl");
+    await expect.element(screen).toHaveClass("custom-class");
   });
 
   it("handles full size correctly", async () => {
@@ -61,6 +61,6 @@ describe("Container", () => {
       </Container>,
     );
 
-    expect.element(screen).toHaveClass("max-w-full");
+    await expect.element(screen).toHaveClass("max-w-full");
   });
 });

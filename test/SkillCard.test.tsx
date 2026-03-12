@@ -13,7 +13,7 @@ describe("SkillCard Component", () => {
   const defaultProps = {
     name: "Test Skill",
     icon: vi.fn(),
-    color: "green"
+    color: "green",
   };
 
   it("renders correctly with all props", async () => {
@@ -24,9 +24,9 @@ describe("SkillCard Component", () => {
 
     // Check that the component has correct classes for green color
     const cardElement = screen.getByText("Test Skill").parentElement;
-    expect(cardElement).toHaveClass("bg-gradient-to-br");
-    expect(cardElement).toHaveClass("from-[#E8F3E0]");
-    expect(cardElement).toHaveClass("to-white");
+    await expect.element(cardElement).toHaveClass("bg-gradient-to-br");
+    await expect.element(cardElement).toHaveClass("from-[#E8F3E0]");
+    await expect.element(cardElement).toHaveClass("to-white");
   });
 
   it("renders correctly with different colors", async () => {
@@ -37,17 +37,17 @@ describe("SkillCard Component", () => {
     // Test maple color
     const screenMaple = await render(<SkillCard {...mapleProps} />);
     const mapleElement = screenMaple.getByText("Test Skill").parentElement;
-    expect(mapleElement).toHaveClass("from-[#F5E6D3]");
+    await expect.element(mapleElement).toHaveClass("from-[#F5E6D3]");
 
     // Test yellow color
     const screenYellow = await render(<SkillCard {...yellowProps} />);
     const yellowElement = screenYellow.getByText("Test Skill").parentElement;
-    expect(yellowElement).toHaveClass("from-[#FFF8E7]");
+    await expect.element(yellowElement).toHaveClass("from-[#FFF8E7]");
 
     // Test brown color
     const screenBrown = await render(<SkillCard {...brownProps} />);
     const brownElement = screenBrown.getByText("Test Skill").parentElement;
-    expect(brownElement).toHaveClass("from-[#F0EAE0]");
+    await expect.element(brownElement).toHaveClass("from-[#F0EAE0]");
   });
 
   it("renders correctly with different skill names", async () => {
@@ -63,12 +63,16 @@ describe("SkillCard Component", () => {
   it("handles special characters in skill name", async () => {
     const specialCharsProps = {
       ...defaultProps,
-      name: "Skill with 'quotes' and \"double quotes\" & Co."
+      name: "Skill with 'quotes' and \"double quotes\" & Co.",
     };
 
     const screen = await render(<SkillCard {...specialCharsProps} />);
 
     // Check that special characters are handled
-    await expect.element(screen.getByText("Skill with 'quotes' and \"double quotes\" & Co.")).toBeInTheDocument();
+    await expect
+      .element(
+        screen.getByText("Skill with 'quotes' and \"double quotes\" & Co."),
+      )
+      .toBeInTheDocument();
   });
 });

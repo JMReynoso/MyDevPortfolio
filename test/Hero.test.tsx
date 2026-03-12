@@ -88,8 +88,8 @@ describe("Hero Component", () => {
     const screen = await render(<Hero {...noButtonsProps} />);
 
     // Check that no buttons are rendered
-    expect(screen.queryByTestId("warm-button-primary")).toBeNull();
-    expect(screen.queryByTestId("warm-button-secondary")).toBeNull();
+    await expect(screen.queryByTestId("warm-button-primary")).toBeNull();
+    await expect(screen.queryByTestId("warm-button-secondary")).toBeNull();
   });
 
   it("renders correctly with imageComponent", async () => {

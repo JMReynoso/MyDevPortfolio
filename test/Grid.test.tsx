@@ -10,7 +10,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveText("Test Content");
+    await expect.element(screen).toHaveText("Test Content");
   });
 
   it("applies default grid classes", async () => {
@@ -20,10 +20,10 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("grid");
-    expect.element(screen).toHaveClass("md:grid-cols-2");
-    expect.element(screen).toHaveClass("lg:grid-cols-3");
-    expect.element(screen).toHaveClass("gap-8");
+    await expect.element(screen).toHaveClass("grid");
+    await expect.element(screen).toHaveClass("md:grid-cols-2");
+    await expect.element(screen).toHaveClass("lg:grid-cols-3");
+    await expect.element(screen).toHaveClass("gap-8");
   });
 
   it("applies custom cols configuration", async () => {
@@ -33,10 +33,10 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("grid-cols-1");
-    expect.element(screen).toHaveClass("sm:grid-cols-2");
-    expect.element(screen).toHaveClass("md:grid-cols-3");
-    expect.element(screen).toHaveClass("lg:grid-cols-4");
+    await expect.element(screen).toHaveClass("grid-cols-1");
+    await expect.element(screen).toHaveClass("sm:grid-cols-2");
+    await expect.element(screen).toHaveClass("md:grid-cols-3");
+    await expect.element(screen).toHaveClass("lg:grid-cols-4");
   });
 
   it("applies custom gap class", async () => {
@@ -46,7 +46,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("gap-4");
+    await expect.element(screen).toHaveClass("gap-4");
   });
 
   it("applies custom className", async () => {
@@ -56,7 +56,7 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("custom-grid-class");
+    await expect.element(screen).toHaveClass("custom-grid-class");
   });
 
   it("applies all custom properties together", async () => {
@@ -66,10 +66,10 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("sm:grid-cols-1");
-    expect.element(screen).toHaveClass("md:grid-cols-2");
-    expect.element(screen).toHaveClass("gap-12");
-    expect.element(screen).toHaveClass("custom-class");
+    await expect.element(screen).toHaveClass("sm:grid-cols-1");
+    await expect.element(screen).toHaveClass("md:grid-cols-2");
+    await expect.element(screen).toHaveClass("gap-12");
+    await expect.element(screen).toHaveClass("custom-class");
   });
 
   it("handles partial cols configuration", async () => {
@@ -79,8 +79,8 @@ describe("Grid", () => {
       </Grid>,
     );
 
-    expect.element(screen).toHaveClass("md:grid-cols-3");
-    expect.element(screen).not.toHaveClass("sm:grid-cols-");
-    expect.element(screen).not.toHaveClass("lg:grid-cols-");
+    await expect.element(screen).toHaveClass("md:grid-cols-3");
+    await expect.element(screen).not.toHaveClass("sm:grid-cols-");
+    await expect.element(screen).not.toHaveClass("lg:grid-cols-");
   });
 });

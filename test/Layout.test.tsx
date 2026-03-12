@@ -52,7 +52,7 @@ describe("Layout", () => {
     );
 
     const screen = await render(<Layout />);
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders navigation component with correct props", async () => {
@@ -65,8 +65,8 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
-    expect.element(screen).toHaveText("John Doe");
+    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("John Doe");
   });
 
   it("renders footer with correct copyright text", async () => {
@@ -80,8 +80,8 @@ describe("Layout", () => {
     const screen = await render(<Layout />);
 
     const footer = screen.getByTestId("footer");
-    expect(footer).toBeInTheDocument();
-    expect(footer).toHaveTextContent(/©.*John Doe/);
+    await expect(footer).toBeInTheDocument();
+    await expect(footer).toHaveTextContent(/©.*John Doe/);
   });
 
   it("renders CursorGlow component", async () => {
@@ -94,8 +94,8 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
-    expect.element(screen).toHaveText("John Doe");
+    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("John Doe");
   });
 
   it("handles navigation click for projects section", async () => {
@@ -110,7 +110,7 @@ describe("Layout", () => {
     const screen = await render(<Layout />);
 
     // Test that navigation click handler works
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("scrolls to top on route change", async () => {
@@ -123,7 +123,7 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("updates active section based on current route", async () => {
@@ -136,7 +136,7 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders Outlet component", async () => {
@@ -149,7 +149,7 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders navigation links correctly", async () => {
@@ -162,6 +162,6 @@ describe("Layout", () => {
 
     const screen = await render(<Layout />);
 
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 });

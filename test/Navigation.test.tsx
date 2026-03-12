@@ -1,14 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render } from 'vitest-browser-react';
-import { Navigation } from '../src/components/layout/Navigation';
+import { describe, expect, it, vi } from "vitest";
+import { render } from "vitest-browser-react";
+import { Navigation } from "../src/components/layout/Navigation";
 
 // Mock the useIsMobile hook
-vi.mock('../ui/use-mobile', () => ({
+vi.mock("../ui/use-mobile", () => ({
   useIsMobile: vi.fn(() => false),
 }));
 
 // Mock framer-motion
-vi.mock('framer-motion', () => ({
+vi.mock("framer-motion", () => ({
   motion: {
     nav: ({ children }: any) => children,
     div: ({ children }: any) => children,
@@ -18,145 +18,121 @@ vi.mock('framer-motion', () => ({
 }));
 
 // Mock react-router-dom Link
-vi.mock('react-router-dom', () => ({
+vi.mock("react-router-dom", () => ({
   Link: ({ children }: any) => children,
 }));
 
 // Mock ImageWithFallback component
-vi.mock('../figma/ImageWithFallback', () => ({
+vi.mock("../figma/ImageWithFallback", () => ({
   ImageWithFallback: ({ children }: any) => children,
 }));
 
-describe('Navigation', () => {
+describe("Navigation", () => {
   const mockLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Contact', href: '/contact' },
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Projects", href: "/projects" },
+    { label: "Contact", href: "/contact" },
   ];
 
-  it('renders without crashing', async () => {
+  it("renders without crashing", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="home"
-      />
+      <Navigation links={mockLinks} activeSection="home" />,
     );
-    
-    expect.element(screen).toBeInTheDocument();
+
+    await expect.element(screen).toBeInTheDocument();
   });
 
-  it('renders logo initials and name', async () => {
+  it("renders logo initials and name", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="home"
-      />
+      <Navigation links={mockLinks} activeSection="home" />,
     );
-    
-    expect.element(screen).toHaveText('YN');
-    expect.element(screen).toHaveText('Your Name');
+
+    await expect.element(screen).toHaveText("YN");
+    await expect.element(screen).toHaveText("Your Name");
   });
 
-  it('renders navigation links', async () => {
+  it("renders navigation links", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="home"
-      />
+      <Navigation links={mockLinks} activeSection="home" />,
     );
-    
-    expect.element(screen).toHaveText('Home');
-    expect.element(screen).toHaveText('About');
-    expect.element(screen).toHaveText('Projects');
-    expect.element(screen).toHaveText('Contact');
+
+    await expect.element(screen).toHaveText("Home");
+    await expect.element(screen).toHaveText("About");
+    await expect.element(screen).toHaveText("Projects");
+    await expect.element(screen).toHaveText("Contact");
   });
 
-  it('renders with custom logo', async () => {
-    const customLogo = { initials: 'JS', name: 'John Smith' };
+  it("renders with custom logo", async () => {
+    const customLogo = { initials: "JS", name: "John Smith" };
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="home"
-        logo={customLogo}
-      />
+      <Navigation links={mockLinks} activeSection="home" logo={customLogo} />,
     );
-    
-    expect.element(screen).toHaveText('JS');
-    expect.element(screen).toHaveText('John Smith');
+
+    await expect.element(screen).toHaveText("JS");
+    await expect.element(screen).toHaveText("John Smith");
   });
 
-  it('applies active section styling', async () => {
+  it("applies active section styling", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="about"
-      />
+      <Navigation links={mockLinks} activeSection="about" />,
     );
-    
+
     // Should have active class on about link
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
-  it('handles scroll effect with isScrolled state', async () => {
+  it("handles scroll effect with isScrolled state", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
-        activeSection="home"
-      />
+      <Navigation links={mockLinks} activeSection="home" />,
     );
-    
-    expect.element(screen).toBeInTheDocument();
+
+    await expect.element(screen).toBeInTheDocument();
   });
 
-  it('renders with custom className', async () => {
+  it("renders with custom className", async () => {
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
+      <Navigation
+        links={mockLinks}
         activeSection="home"
         className="custom-navigation-class"
-      />
+      />,
     );
-    
-    expect.element(screen).toHaveClass('custom-navigation-class');
+
+    await expect.element(screen).toHaveClass("custom-navigation-class");
   });
 
-  it('handles empty links array', async () => {
-    const screen = await render(
-      <Navigation 
-        links={[]} 
-        activeSection="home"
-      />
-    );
-    
-    expect.element(screen).toBeInTheDocument();
+  it("handles empty links array", async () => {
+    const screen = await render(<Navigation links={[]} activeSection="home" />);
+
+    await expect.element(screen).toBeInTheDocument();
   });
 
-  it('calls onSectionChange when navigation link is clicked', async () => {
+  it("calls onSectionChange when navigation link is clicked", async () => {
     const mockOnSectionChange = vi.fn();
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
+      <Navigation
+        links={mockLinks}
         activeSection="home"
         onSectionChange={mockOnSectionChange}
-      />
+      />,
     );
-    
+
     // This test would require interaction simulation which is not possible with vitest-browser-react
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
-  it('calls onNavigationClick when navigation link is clicked', async () => {
+  it("calls onNavigationClick when navigation link is clicked", async () => {
     const mockOnNavigationClick = vi.fn();
     const screen = await render(
-      <Navigation 
-        links={mockLinks} 
+      <Navigation
+        links={mockLinks}
         activeSection="home"
         onNavigationClick={mockOnNavigationClick}
-      />
+      />,
     );
-    
+
     // This test would require interaction simulation which is not possible with vitest-browser-react
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 });

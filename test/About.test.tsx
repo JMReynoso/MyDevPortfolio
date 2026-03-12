@@ -90,14 +90,14 @@ vi.mock("../data/storyIcons", () => ({
 describe("About", () => {
   it("renders without crashing", async () => {
     const screen = await render(<About />);
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders the hero section with correct title and description", async () => {
     const screen = await render(<About />);
 
-    expect.element(screen).toHaveText("About Me");
-    expect
+    await expect.element(screen).toHaveText("About Me");
+    await expect
       .element(screen)
       .toHaveText(
         "Get to know more about my journey, skills, and what drives me as a developer.",
@@ -107,59 +107,59 @@ describe("About", () => {
   it("renders professional journey section", async () => {
     const screen = await render(<About />);
 
-    expect.element(screen).toHaveText("My Professional Journey");
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("My Professional Journey");
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders skills section with correct number of skill cards", async () => {
     const screen = await render(<About />);
 
     const skillCards = screen.getAllByTestId("skill-card");
-    expect(skillCards.length).toBe(4);
+    await expect(skillCards.length).toBe(4);
   });
 
   it("renders certifications section", async () => {
     const screen = await render(<About />);
 
-    expect.element(screen).toHaveText("Certifications");
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("Certifications");
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders experience and education section", async () => {
     const screen = await render(<About />);
 
-    expect.element(screen).toHaveText("Experience & Education");
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("Experience & Education");
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders story section", async () => {
     const screen = await render(<About />);
 
-    expect.element(screen).toHaveText("My Story");
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("My Story");
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("applies correct background gradients", async () => {
     const screen = await render(<About />);
 
     // Check for gradient backgrounds
-    expect.element(screen).toHaveClass("from-white");
-    expect.element(screen).toHaveClass("via-[#F5E6D3]");
-    expect.element(screen).toHaveClass("to-white");
+    await expect.element(screen).toHaveClass("from-white");
+    await expect.element(screen).toHaveClass("via-[#F5E6D3]");
+    await expect.element(screen).toHaveClass("to-white");
   });
 
   it("renders with correct section structure", async () => {
     const screen = await render(<About />);
 
     const sections = screen.getAllByTestId("section");
-    expect(sections.length).toBeGreaterThan(0);
+    await expect(sections.length).toBeGreaterThan(0);
   });
 
   it("renders story icons when not on mobile", async () => {
     const screen = await render(<About />);
 
     // Story icons should be rendered in desktop view
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("applies correct animation classes to hero section", async () => {
@@ -167,7 +167,7 @@ describe("About", () => {
 
     const heroSection =
       screen.getByText("About Me").parentElement?.parentElement;
-    expect(heroSection).toHaveClass("transition-all");
-    expect(heroSection).toHaveClass("duration-1000");
+    await expect(heroSection).toHaveClass("transition-all");
+    await expect(heroSection).toHaveClass("duration-1000");
   });
 });

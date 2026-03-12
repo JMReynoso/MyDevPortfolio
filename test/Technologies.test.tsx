@@ -9,31 +9,43 @@ const mockCategories = [
     label: "Frontend",
     icon: <div data-testid="frontend-icon">F</div>,
     technologies: [
-      { name: "React", icon: <div data-testid="react-icon">R</div>, link: "/react" },
-      { name: "TypeScript", icon: <div data-testid="ts-icon">T</div>, link: "/typescript" }
-    ]
+      {
+        name: "React",
+        icon: <div data-testid="react-icon">R</div>,
+        link: "/react",
+      },
+      {
+        name: "TypeScript",
+        icon: <div data-testid="ts-icon">T</div>,
+        link: "/typescript",
+      },
+    ],
   },
   {
     id: "backend",
     label: "Backend",
     icon: <div data-testid="backend-icon">B</div>,
     technologies: [
-      { name: "Node.js", icon: <div data-testid="node-icon">N</div>, link: "/node" }
-    ]
+      {
+        name: "Node.js",
+        icon: <div data-testid="node-icon">N</div>,
+        link: "/node",
+      },
+    ],
   },
   {
     id: "tools",
     label: "Tools",
     icon: <div data-testid="tools-icon">T</div>,
     technologies: [
-      { name: "Git", icon: <div data-testid="git-icon">G</div>, link: "/git" }
-    ]
-  }
+      { name: "Git", icon: <div data-testid="git-icon">G</div>, link: "/git" },
+    ],
+  },
 ];
 
 // Mock the data import
 vi.mock("../src/data/technologies", () => ({
-  categories: mockCategories
+  categories: mockCategories,
 }));
 
 describe("Technologies Component", () => {
@@ -41,18 +53,24 @@ describe("Technologies Component", () => {
     const screen = await render(<Technologies />);
 
     // Check that category bubbles are rendered
-    expect(screen.getByTestId("frontend-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("backend-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("tools-icon")).toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("frontend-icon"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("backend-icon"))
+      .toBeInTheDocument();
+    await expect.element(screen.getByTestId("tools-icon")).toBeInTheDocument();
 
     // Check that the default active category is frontend
     const frontendBubble = screen.getByText("Frontend").parentElement;
-    expect(frontendBubble).toHaveClass("bg-gradient-to-br");
-    expect(frontendBubble).toHaveClass("from-[var(--sage-green)]");
+    await expect.element(frontendBubble).toHaveClass("bg-gradient-to-br");
+    await expect
+      .element(frontendBubble)
+      .toHaveClass("from-[var(--sage-green)]");
 
     // Check that technologies for frontend are rendered
-    expect(screen.getByText("React")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
+    await expect.element(screen.getByText("React")).toBeInTheDocument();
+    await expect.element(screen.getByText("TypeScript")).toBeInTheDocument();
   });
 
   it("switches categories correctly", async () => {
@@ -63,26 +81,26 @@ describe("Technologies Component", () => {
     backendBubble?.click();
 
     // Check that backend is now active
-    expect(backendBubble).toHaveClass("bg-gradient-to-br");
-    expect(backendBubble).toHaveClass("from-[var(--sage-green)]");
+    await expect.element(backendBubble).toHaveClass("bg-gradient-to-br");
+    await expect.element(backendBubble).toHaveClass("from-[var(--sage-green)]");
 
     // Check that backend technologies are rendered
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
+    await expect.element(screen.getByText("Node.js")).toBeInTheDocument();
   });
 
   it("renders all categories and their technologies", async () => {
     const screen = await render(<Technologies />);
 
     // Check all category labels
-    expect(screen.getByText("Frontend")).toBeInTheDocument();
-    expect(screen.getByText("Backend")).toBeInTheDocument();
-    expect(screen.getByText("Tools")).toBeInTheDocument();
+    await expect.element(screen.getByText("Frontend")).toBeInTheDocument();
+    await expect.element(screen.getByText("Backend")).toBeInTheDocument();
+    await expect.element(screen.getByText("Tools")).toBeInTheDocument();
 
     // Check that all technologies are rendered
-    expect(screen.getByText("React")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByText("Git")).toBeInTheDocument();
+    await expect.element(screen.getByText("React")).toBeInTheDocument();
+    await expect.element(screen.getByText("TypeScript")).toBeInTheDocument();
+    await expect.element(screen.getByText("Node.js")).toBeInTheDocument();
+    await expect.element(screen.getByText("Git")).toBeInTheDocument();
   });
 
   it("handles empty technology lists", async () => {
@@ -92,18 +110,18 @@ describe("Technologies Component", () => {
         id: "frontend",
         label: "Frontend",
         icon: <div data-testid="frontend-icon">F</div>,
-        technologies: []
-      }
+        technologies: [],
+      },
     ];
 
     vi.mock("../src/data/technologies", () => ({
-      categories: emptyCategories
+      categories: emptyCategories,
     }));
 
     const screen = await render(<Technologies />);
-    
+
     // Check that the component renders without errors
-    expect(screen.getByText("Frontend")).toBeInTheDocument();
+    await expect.element(screen.getByText("Frontend")).toBeInTheDocument();
   });
 
   it("handles special characters in technology names", async () => {
@@ -113,18 +131,22 @@ describe("Technologies Component", () => {
         label: "Frontend",
         icon: <div data-testid="frontend-icon">F</div>,
         technologies: [
-          { name: "React & Co.", icon: <div data-testid="react-icon">R</div>, link: "/react" }
-        ]
-      }
+          {
+            name: "React & Co.",
+            icon: <div data-testid="react-icon">R</div>,
+            link: "/react",
+          },
+        ],
+      },
     ];
 
     vi.mock("../src/data/technologies", () => ({
-      categories: specialCharsCategories
+      categories: specialCharsCategories,
     }));
 
     const screen = await render(<Technologies />);
-    
+
     // Check that special characters are handled
-    expect(screen.getByText("React & Co.")).toBeInTheDocument();
+    await expect.element(screen.getByText("React & Co.")).toBeInTheDocument();
   });
 });

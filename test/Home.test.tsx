@@ -95,15 +95,15 @@ vi.mock("../constants/strings", () => ({
 describe("Home", () => {
   it("renders without crashing", async () => {
     const screen = await render(<Home />);
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("renders the hero section with correct content", async () => {
     const screen = await render(<Home />);
 
-    expect.element(screen).toHaveText("👋 omg hi! I'm a developer");
-    expect.element(screen).toHaveText("Building apps on the web");
-    expect
+    await expect.element(screen).toHaveText("👋 omg hi! I'm a developer");
+    await expect.element(screen).toHaveText("Building apps on the web");
+    await expect
       .element(screen)
       .toHaveText(
         "I create applications with a focus on backend architecture, frontend design, and seamless user experiences.",
@@ -113,8 +113,8 @@ describe("Home", () => {
   it("renders technologies section", async () => {
     const screen = await render(<Home />);
 
-    expect.element(screen).toBeInTheDocument();
-    expect.element(screen).toHaveText("Technologies I Use");
+    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("Technologies I Use");
   });
 
   it("renders projects section with correct number of project cards", async () => {
@@ -127,8 +127,8 @@ describe("Home", () => {
   it("renders contact section", async () => {
     const screen = await render(<Home />);
 
-    expect.element(screen).toBeInTheDocument();
-    expect.element(screen).toHaveText("Let's Work Together!");
+    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("Let's Work Together!");
   });
 
   it("handles scroll to section functionality", async () => {
@@ -140,7 +140,7 @@ describe("Home", () => {
     const screen = await render(<Home />);
 
     // Check that the component renders without error
-    expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toBeInTheDocument();
   });
 
   it("applies correct background classes to sections", async () => {
@@ -154,19 +154,19 @@ describe("Home", () => {
     const screen = await render(<Home />);
 
     // Check that all main sections are present
-    expect.element(screen).toBeInTheDocument();
-    expect.element(screen).toHaveText("Technologies I Use");
-    expect.element(screen).toHaveText("Featured Projects");
-    expect.element(screen).toHaveText("Let's Work Together!");
+    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen).toHaveText("Technologies I Use");
+    await expect.element(screen).toHaveText("Featured Projects");
+    await expect.element(screen).toHaveText("Let's Work Together!");
   });
 
   it("renders image with correct attributes", async () => {
     const screen = await render(<Home />);
 
     const image = screen.getByTestId("image-with-fallback");
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src");
-    expect(image).toHaveAttribute("alt");
+    await expect.element(image).toBeInTheDocument();
+    await expect.element(image).toHaveAttribute("src");
+    await expect.element(image).toHaveAttribute("alt");
   });
 
   it("passes correct props to components", async () => {
