@@ -44,6 +44,7 @@ jobs:
           json-final-path: "./coverage/coverage-final.json"
 
       - name: Deploy (Docker)
+        if: github.ref == 'refs/heads/main'
         working-directory: .
         run: |
           export VITE_WEB3FORMS_ACCESS_KEY=${{ secrets.WEB3FORMS_ACCESS_KEY }}
