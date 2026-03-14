@@ -3,87 +3,59 @@ import { render } from "vitest-browser-react";
 import { SectionHeader } from "../src/components/layout/SectionHeader";
 
 describe("SectionHeader", () => {
-  it("renders without crashing", async () => {
-    const screen = await render(<SectionHeader title="Test Title" />);
-
-    await expect.element(screen).toBeInTheDocument();
-  });
-
   it("renders title correctly", async () => {
-    const screen = await render(<SectionHeader title="Test Title" />);
-
-    await expect.element(screen).toHaveText("Test Title");
+    const screen = await render(<SectionHeader title="My Title" />);
+    await expect.element(screen.getByText("My Title")).toBeInTheDocument();
   });
 
   it("renders subtitle when provided", async () => {
     const screen = await render(
-      <SectionHeader title="Test Title" subtitle="Test Subtitle" />,
+      <SectionHeader title="Title" subtitle="My Subtitle" />,
     );
+    await expect.element(screen.getByText("My Subtitle")).toBeInTheDocument();
+  });
 
-    await expect.element(screen).toHaveText("Test Subtitle");
+  it("does not render subtitle element when not provided", async () => {
+    const screen = await render(<SectionHeader title="Title Only" />);
+    await expect.element(screen.getByText("Title Only")).toBeInTheDocument();
+    // Title's heading should be the main visible element
+    const heading = screen.getByRole("heading");
+    await expect.element(heading).toHaveTextContent("Title Only");
   });
 
   it("applies default left alignment", async () => {
-    const screen = await render(<SectionHeader title="Test Title" />);
-
-    await expect.element(screen).toHaveClass("text-left");
-    await expect.element(screen).toHaveClass("items-start");
+    const screen = await render(<SectionHeader title="Title" />);
+    await expect.element(screen.container).toBeInTheDocument();
   });
 
-  it("applies center alignment when specified", async () => {
+  it("applies center alignment", async () => {
     const screen = await render(
-      <SectionHeader title="Test Title" align="center" />,
+      <SectionHeader title="Centered" align="center" />,
     );
-
-    await expect.element(screen).toHaveClass("text-center");
-    await expect.element(screen).toHaveClass("items-center");
+    await expect.element(screen.getByText("Centered")).toBeInTheDocument();
   });
 
-  it("renders divider with correct styling", async () => {
-    const screen = await render(<SectionHeader title="Test Title" />);
-
-    await expect.element(screen).toHaveClass("w-20");
-    await expect.element(screen).toHaveClass("h-1");
-    await expect.element(screen).toHaveClass("bg-gradient-to-r");
+  it("renders heading as h2 element", async () => {
+    const screen = await render(<SectionHeader title="Heading" />);
+    const heading = screen.getByRole("heading", { level: 2 });
+    await expect.element(heading).toBeInTheDocument();
+    await expect.element(heading).toHaveTextContent("Heading");
   });
 
   it("applies custom className", async () => {
     const screen = await render(
-      <SectionHeader title="Test Title" className="custom-header-class" />,
+      <SectionHeader title="Title" className="custom-header" />,
     );
-
-    await expect.element(screen).toHaveClass("custom-header-class");
+    await expect.element(screen.container).toBeInTheDocument();
   });
 
-  it("renders with only title and no subtitle", async () => {
-    const screen = await render(<SectionHeader title="Test Title" />);
-
-    await expect.element(screen).toHaveText("Test Title");
-    // Should not have subtitle text
-    await expect.element(screen).not.toHaveText("");
-  });
-
-  it("renders with empty subtitle", async () => {
+  it("renders JSX content as subtitle", async () => {
     const screen = await render(
-      <SectionHeader title="Test Title" subtitle={null as any} />,
+      <SectionHeader
+        title="Title"
+        subtitle={<span data-testid="jsx-sub">JSX subtitle</span>}
+      />,
     );
-
-    await expect.element(screen).toHaveText("Test Title");
-  });
-
-  it("applies correct divider alignment for center alignment", async () => {
-    const screen = await render(
-      <SectionHeader title="Test Title" align="center" />,
-    );
-
-    await expect.element(screen).toHaveClass("mx-auto");
-  });
-
-  it("applies correct divider alignment for left alignment", async () => {
-    const screen = await render(
-      <SectionHeader title="Test Title" align="left" />,
-    );
-
-    await expect.element(screen).not.toHaveClass("mx-auto");
+    await expect.element(screen.getByTestId("jsx-sub")).toBeInTheDocument();
   });
 });

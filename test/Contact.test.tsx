@@ -2,120 +2,218 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import Contact from "../src/pages/Contact";
 
-// Mock lucide-react icons
-vi.mock("lucide-react", () => ({
-  Mail: ({ className }: any) => (
-    <span data-testid="mail-icon" className={className}>
-      Mail
-    </span>
+vi.mock("../src/components", () => ({
+  Section: ({ children, id, background, className }: any) => (
+    <section data-testid={`section-${id}`} data-background={background} className={className}>
+      {children}
+    </section>
   ),
-  Send: ({ className }: any) => (
-    <span data-testid="send-icon" className={className}>
-      Send
-    </span>
+  SectionHeader: ({ title, subtitle, align }: any) => (
+    <div data-testid="section-header" data-align={align}>
+      <h2>{title}</h2>
+      {subtitle && <p>{subtitle}</p>}
+    </div>
   ),
 }));
 
-// Mock strings constant
-vi.mock("../constants/strings", () => ({
+vi.mock("lucide-react", () => ({
+  Mail: (props: any) => <span data-testid="mail-icon" {...props} />,
+  Send: (props: any) => <span data-testid="send-icon" {...props} />,
+}));
+
+vi.mock("../src/constants/strings", () => ({
   strings: {
     social: {
       email: "test@example.com",
+      github: "https://github.com/test",
+      linkedin: "https://linkedin.com/in/test",
     },
+    name: "Test User",
+    initials: "TU",
   },
 }));
 
 describe("Contact", () => {
-  it("renders without crashing", async () => {
+  it("renders the page header", async () => {
     const screen = await render(<Contact />);
-    await expect.element(screen).toBeInTheDocument();
-  });
-
-  it("renders the contact form section with correct title and subtitle", async () => {
-    const screen = await render(<Contact />);
-
-    await expect.element(screen).toHaveText("Get in Touch");
+    await expect.element(screen.getByText("Get in Touch")).toBeInTheDocument();
     await expect
-      .element(screen)
-      .toHaveText(
-        "Fill out the form below and I'll get back to you as soon as possible.",
-      );
+      .element(
+        screen.getByText(
+          "Fill out the form below and I'll get back to you as soon as possible.",
+        ),
+      )
+      .toBeInTheDocument();
   });
 
-  it("renders all form fields correctly", async () => {
+  it("renders all form fields", async () => {
     const screen = await render(<Contact />);
-
-    // Check for form fields
-    await expect.element(screen).toBeInTheDocument();
-    await expect(screen.getByLabelText("Name")).toBeInTheDocument();
-    await expect(screen.getByLabelText("Email")).toBeInTheDocument();
-    await expect(screen.getByLabelText("Subject")).toBeInTheDocument();
-    await expect(screen.getByLabelText("Message")).toBeInTheDocument();
+    await expect.element(screen.getByLabelText("Name")).toBeInTheDocument();
+    await expect.element(screen.getByLabelText("Email")).toBeInTheDocument();
+    await expect.element(screen.getByLabelText("Subject")).toBeInTheDocument();
+    await expect.element(screen.getByLabelText("Message")).toBeInTheDocument();
   });
 
-  it("renders submit button with correct initial state", async () => {
+  it("renders form fields with correct placeholders", async () => {
     const screen = await render(<Contact />);
-
-    const submitButton = screen.getByRole("button", { name: "Send Message" });
-    await expect(submitButton).toBeInTheDocument();
-    await expect(submitButton).not.toBeDisabled();
+    await expect
+      .element(screen.getByPlaceholder("Your name"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByPlaceholder("your.email@example.com"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByPlaceholder("What's this about?"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByPlaceholder("Tell me about your project or idea..."))
+      .toBeInTheDocument();
   });
 
-  it("shows validation errors when fields are touched and invalid", async () => {
+  it("renders submit button with default state", async () => {
     const screen = await render(<Contact />);
+    const submitButton = screen.getByRole("button", { name: /send message/i });
+    await expect.element(submitButton).toBeInTheDocument();
+  });
 
-    // Touch fields to trigger validation
+  it("renders all form fields as required", async () => {
+    const screen = await render(<Contact />);
+    await expect
+      .element(screen.getByLabelText("Name"))
+      .toHaveAttribute("aria-required", "true");
+    await expect
+      .element(screen.getByLabelText("Email"))
+      .toHaveAttribute("aria-required", "true");
+    await expect
+      .element(screen.getByLabelText("Subject"))
+      .toHaveAttribute("aria-required", "true");
+    await expect
+      .element(screen.getByLabelText("Message"))
+      .toHaveAttribute("aria-required", "true");
+  });
+
+  it("shows name validation error on blur with empty value", async () => {
+    const screen = await render(<Contact />);
     const nameInput = screen.getByLabelText("Name");
-    nameInput.focus();
-    nameInput.blur();
-
-    await expect.element(screen).toHaveText("Name is required");
+    await nameInput.fill("x");
+    await nameInput.fill("");
+    await screen.getByLabelText("Email").click(); // blur name
+    await expect
+      .element(screen.getByText("Name is required"))
+      .toBeInTheDocument();
   });
 
-  it("renders alternative contact methods", async () => {
+  it("shows name length validation error", async () => {
     const screen = await render(<Contact />);
-
-    await expect.element(screen).toHaveText("Or reach out directly at");
-    await expect.element(screen).toHaveText("test@example.com");
-  });
-
-  it("applies correct background class to section", async () => {
-    const screen = await render(<Contact />);
-
-    const section = screen.getByTestId("section");
-    await expect(section).toHaveClass("bg-cream");
-  });
-
-  it("renders form with proper accessibility attributes", async () => {
-    const screen = await render(<Contact />);
-
     const nameInput = screen.getByLabelText("Name");
-    await expect(nameInput).toHaveAttribute("aria-required", "true");
-    await expect(nameInput).toHaveAttribute("required");
+    await nameInput.click();
+    await nameInput.fill("A");
+    await screen.getByLabelText("Email").click(); // blur
+    await expect
+      .element(screen.getByText("Name must be at least 2 characters"))
+      .toBeInTheDocument();
   });
 
-  it("handles form submission and shows sending state", async () => {
+  it("shows email validation error for invalid email", async () => {
     const screen = await render(<Contact />);
-
-    // Mock the fetch API
-    global.fetch = vi.fn().mockResolvedValue({
-      json: vi.fn().mockResolvedValue({ success: true }),
-    });
-
-    const form = screen.getByRole("form");
-    await screen.user.click(form);
-
-    // The button should be disabled during submission
-    const submitButton = screen.getByRole("button", { name: "Send Message" });
-    await expect(submitButton).not.toBeDisabled();
+    const emailInput = screen.getByLabelText("Email");
+    await emailInput.click();
+    await emailInput.fill("notanemail");
+    await screen.getByLabelText("Subject").click(); // blur
+    await expect
+      .element(screen.getByText("Please enter a valid email address"))
+      .toBeInTheDocument();
   });
 
-  it("renders email sent confirmation message when status is sent", async () => {
-    // This would require mocking the form submission to change state
+  it("shows email required error on empty blur", async () => {
     const screen = await render(<Contact />);
+    const emailInput = screen.getByLabelText("Email");
+    await emailInput.fill("x");
+    await emailInput.fill("");
+    await screen.getByLabelText("Subject").click(); // blur
+    await expect
+      .element(screen.getByText("Email is required"))
+      .toBeInTheDocument();
+  });
 
-    // Since we can't easily trigger the actual submission in test,
-    // we'll just verify the structure exists
-    await expect.element(screen).toBeInTheDocument();
+  it("shows subject validation error for short subject", async () => {
+    const screen = await render(<Contact />);
+    const subjectInput = screen.getByLabelText("Subject");
+    await subjectInput.click();
+    await subjectInput.fill("Hi");
+    await screen.getByLabelText("Message").click(); // blur
+    await expect
+      .element(screen.getByText("Subject must be at least 3 characters"))
+      .toBeInTheDocument();
+  });
+
+  it("shows message validation error for short message", async () => {
+    const screen = await render(<Contact />);
+    const messageInput = screen.getByLabelText("Message");
+    await messageInput.click();
+    await messageInput.fill("Short");
+    await screen.getByLabelText("Name").click(); // blur
+    await expect
+      .element(screen.getByText("Message must be at least 10 characters"))
+      .toBeInTheDocument();
+  });
+
+  it("clears validation error when input becomes valid", async () => {
+    const screen = await render(<Contact />);
+    const nameInput = screen.getByLabelText("Name");
+    await nameInput.click();
+    await nameInput.fill("A");
+    await screen.getByLabelText("Email").click(); // blur to trigger error
+    await expect
+      .element(screen.getByText("Name must be at least 2 characters"))
+      .toBeInTheDocument();
+    // Now fix the name
+    await nameInput.click();
+    await nameInput.fill("Valid Name");
+    await expect
+      .element(screen.getByText("Name must be at least 2 characters"))
+      .not.toBeInTheDocument();
+  });
+
+  it("renders alternative contact section", async () => {
+    const screen = await render(<Contact />);
+    await expect
+      .element(screen.getByText("Or reach out directly at"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByText("test@example.com"))
+      .toBeInTheDocument();
+  });
+
+  it("renders email link in alternative contact", async () => {
+    const screen = await render(<Contact />);
+    const emailLink = screen.getByText("test@example.com");
+    await expect
+      .element(emailLink)
+      .toHaveAttribute("href", "mailto:test@example.com");
+  });
+
+  it("renders the form inside a Section with correct props", async () => {
+    const screen = await render(<Contact />);
+    await expect
+      .element(screen.getByTestId("section-contact-form"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("section-contact-form"))
+      .toHaveAttribute("data-background", "cream");
+  });
+
+  it("renders name input with correct type", async () => {
+    const screen = await render(<Contact />);
+    await expect
+      .element(screen.getByLabelText("Name"))
+      .toHaveAttribute("type", "text");
+  });
+
+  it("renders email input with correct type", async () => {
+    const screen = await render(<Contact />);
+    await expect
+      .element(screen.getByLabelText("Email"))
+      .toHaveAttribute("type", "email");
   });
 });

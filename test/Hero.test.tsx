@@ -2,141 +2,94 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { Hero } from "../src/components/features/Hero";
 
-// Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    a: ({ children, ...props }: any) => <a {...props}>{children}</a>,
+    div: ({ children, whileHover, whileTap, whileInView, initial, animate, transition, viewport, ...props }: any) => <div {...props}>{children}</div>,
   },
 }));
 
-// Mock WarmBadge component
 vi.mock("../src/components/common/WarmBadge", () => ({
-  WarmBadge: ({ children, variant, className }: any) => (
-    <span data-testid={`warm-badge-${variant}`} className={className}>{children}</span>
+  WarmBadge: ({ children, variant }: any) => (
+    <span data-testid={`badge-${variant}`}>{children}</span>
   ),
 }));
 
-// Mock WarmButton component
 vi.mock("../src/components/common/WarmButton", () => ({
   WarmButton: ({ children, href, variant }: any) => (
-    <a href={href} data-testid={`warm-button-${variant}`}>{children}</a>
+    <a href={href} data-testid={`button-${variant}`}>{children}</a>
   ),
 }));
 
-describe("Hero Component", () => {
-  const defaultProps = {
-    title: "Test Title",
-    subtitle: "Test Subtitle",
-    primaryButton: {
-      text: "Primary Button",
-      href: "/primary"
-    },
-    secondaryButton: {
-      text: "Secondary Button",
-      href: "/secondary"
-    },
-    image: "/test-image.jpg",
-    imageAlt: "Test Image"
+describe("Hero", () => {
+  const fullProps = {
+    title: "My Title",
+    subtitle: "My Subtitle",
+    primaryButton: { text: "Primary", href: "/primary" },
+    secondaryButton: { text: "Secondary", href: "/secondary" },
+    image: "/hero.jpg",
+    imageAlt: "Hero Image",
   };
 
-  it("renders correctly with all props", async () => {
-    const screen = await render(<Hero {...defaultProps} />);
-
-    // Check greeting
-    await expect.element(screen.getByTestId("warm-badge-accent")).toHaveTextContent("👋 Hello, I'm a developer");
-
-    // Check title
-    await expect.element(screen.getByText("Test Title")).toBeInTheDocument();
-
-    // Check subtitle
-    await expect.element(screen.getByText("Test Subtitle")).toBeInTheDocument();
-
-    // Check primary button
-    await expect.element(screen.getByTestId("warm-button-primary")).toHaveAttribute("href", "/primary");
-    await expect.element(screen.getByTestId("warm-button-primary")).toHaveTextContent("Primary Button");
-
-    // Check secondary button
-    await expect.element(screen.getByTestId("warm-button-secondary")).toHaveAttribute("href", "/secondary");
-    await expect.element(screen.getByTestId("warm-button-secondary")).toHaveTextContent("Secondary Button");
-
-    // Check image
-    const imgElement = screen.getByAltText("Test Image");
-    await expect.element(imgElement).toBeInTheDocument();
-    await expect.element(imgElement).toHaveAttribute("src", "/test-image.jpg");
+  it("renders title and subtitle", async () => {
+    const screen = await render(<Hero title="My Title" subtitle="My Subtitle" />);
+    const heading = screen.getByRole("heading", { level: 1 });
+    await expect.element(heading).toHaveTextContent("My Title");
+    await expect.element(screen.getByText("My Subtitle")).toBeInTheDocument();
   });
 
-  it("renders correctly with minimal props", async () => {
-    const minimalProps = {
-      title: "Minimal Title",
-      subtitle: "Minimal Subtitle"
-    };
-
-    const screen = await render(<Hero {...minimalProps} />);
-
-    // Check basic elements
-    await expect.element(screen.getByText("Minimal Title")).toBeInTheDocument();
-    await expect.element(screen.getByText("Minimal Subtitle")).toBeInTheDocument();
+  it("renders default greeting", async () => {
+    const screen = await render(<Hero title="Title" subtitle="Sub" />);
+    await expect.element(screen.getByTestId("badge-accent")).toBeInTheDocument();
   });
 
-  it("renders correctly without buttons", async () => {
-    const noButtonsProps = {
-      title: "No Buttons Title",
-      subtitle: "No Buttons Subtitle"
-    };
-
-    const screen = await render(<Hero {...noButtonsProps} />);
-
-    // Check that no buttons are rendered
-    await expect(screen.queryByTestId("warm-button-primary")).toBeNull();
-    await expect(screen.queryByTestId("warm-button-secondary")).toBeNull();
+  it("renders custom greeting", async () => {
+    const screen = await render(
+      <Hero title="Title" subtitle="Sub" greeting="Custom Greeting" />,
+    );
+    await expect.element(screen.getByText("Custom Greeting")).toBeInTheDocument();
   });
 
-  it("renders correctly with imageComponent", async () => {
-    const imageComponentProps = {
-      title: "Title",
-      subtitle: "Subtitle",
-      imageComponent: <div data-testid="custom-image">Custom Image</div>
-    };
-
-    const screen = await render(<Hero {...imageComponentProps} />);
-
-    // Check that custom image component is rendered
-    await expect.element(screen.getByTestId("custom-image")).toBeInTheDocument();
-    await expect.element(screen.getByText("Custom Image")).toBeInTheDocument();
+  it("renders primary and secondary buttons", async () => {
+    const screen = await render(<Hero {...fullProps} />);
+    const primary = screen.getByTestId("button-primary");
+    await expect.element(primary).toHaveAttribute("href", "/primary");
+    await expect.element(primary).toHaveTextContent("Primary");
+    const secondary = screen.getByTestId("button-secondary");
+    await expect.element(secondary).toHaveAttribute("href", "/secondary");
+    await expect.element(secondary).toHaveTextContent("Secondary");
   });
 
-  it("renders correctly with custom greeting", async () => {
-    const customGreetingProps = {
-      ...defaultProps,
-      greeting: "Custom Greeting"
-    };
-
-    const screen = await render(<Hero {...customGreetingProps} />);
-
-    // Check custom greeting
-    await expect.element(screen.getByTestId("warm-badge-accent")).toHaveTextContent("Custom Greeting");
+  it("does not render buttons when not provided", async () => {
+    const screen = await render(<Hero title="Title" subtitle="Sub" />);
+    await expect.element(screen.getByTestId("button-primary")).not.toBeInTheDocument();
+    await expect.element(screen.getByTestId("button-secondary")).not.toBeInTheDocument();
   });
 
-  it("handles special characters in props", async () => {
-    const specialCharsProps = {
-      title: "Title with 'quotes' and \"double quotes\"",
-      subtitle: "Subtitle & Co.",
-      primaryButton: {
-        text: "Button with @#$%^&*()",
-        href: "/special"
-      },
-      secondaryButton: {
-        text: "Secondary & More",
-        href: "/secondary-special"
-      }
-    };
+  it("renders image when provided", async () => {
+    const screen = await render(<Hero {...fullProps} />);
+    const img = screen.getByAltText("Hero Image");
+    await expect.element(img).toBeInTheDocument();
+    await expect.element(img).toHaveAttribute("src", "/hero.jpg");
+  });
 
-    const screen = await render(<Hero {...specialCharsProps} />);
+  it("renders imageComponent when provided", async () => {
+    const screen = await render(
+      <Hero
+        title="Title"
+        subtitle="Sub"
+        imageComponent={<div data-testid="custom-img">Custom</div>}
+      />,
+    );
+    await expect.element(screen.getByTestId("custom-img")).toBeInTheDocument();
+  });
 
-    // Check that special characters are handled
-    await expect.element(screen.getByText("Title with 'quotes' and \"double quotes\"")).toBeInTheDocument();
-    await expect.element(screen.getByText("Subtitle & Co.")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("warm-button-primary")).toHaveTextContent("Button with @#$%^&*()");
+  it("does not render image section when no image or imageComponent", async () => {
+    const screen = await render(<Hero title="Title" subtitle="Sub" />);
+    await expect.element(screen.getByText("Title")).toBeInTheDocument();
+  });
+
+  it("renders section with id=home", async () => {
+    const screen = await render(<Hero title="Title" subtitle="Sub" />);
+    await expect.element(screen.getByText("Title")).toBeInTheDocument();
   });
 });

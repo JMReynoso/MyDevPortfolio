@@ -2,27 +2,19 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { ContactSection } from "../src/components/features/ContactSection";
 
-// Mock lucide-react icons
 vi.mock("lucide-react", () => ({
-  Mail: () => <span data-testid="mail-icon">Mail</span>,
-  Github: () => <span data-testid="github-icon">Github</span>,
-  Linkedin: () => <span data-testid="linkedin-icon">Linkedin</span>,
+  Mail: (props: any) => <span data-testid="icon-mail" {...props} />,
+  Github: (props: any) => <span data-testid="icon-github" {...props} />,
+  Linkedin: (props: any) => <span data-testid="icon-linkedin" {...props} />,
 }));
 
-// Mock react-router-dom
 vi.mock("react-router-dom", () => ({
-  Link: ({ children, to, ...props }: any) => (
-    <a href={to} {...props}>{children}</a>
-  ),
+  Link: ({ children, to, ...props }: any) => <a href={to} {...props}>{children}</a>,
 }));
 
-// Mock components
 vi.mock("../src/components/common/IconButton", () => ({
-  IconButton: ({ icon: Icon, href, variant, label }: any) => (
-    <div data-testid={`icon-button-${variant}`}>
-      <Icon />
-      {label}
-    </div>
+  IconButton: ({ label, variant, href }: any) => (
+    <div data-testid={`icon-button-${variant}`} data-href={href}>{label}</div>
   ),
 }));
 
@@ -34,7 +26,7 @@ vi.mock("../src/components/common/WarmButton", () => ({
 
 vi.mock("../src/components/layout/SectionHeader", () => ({
   SectionHeader: ({ title, subtitle }: any) => (
-    <div>
+    <div data-testid="section-header">
       <h2>{title}</h2>
       <p>{subtitle}</p>
     </div>
@@ -42,80 +34,44 @@ vi.mock("../src/components/layout/SectionHeader", () => ({
 }));
 
 describe("ContactSection", () => {
-  it("renders correctly with default props", async () => {
+  it("renders with default props", async () => {
     const screen = await render(<ContactSection />);
-
-    // Check SectionHeader
     await expect.element(screen.getByText("Let's Work Together")).toBeInTheDocument();
-    await expect.element(screen.getByText("I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.")).toBeInTheDocument();
-
-    // Check icon buttons
-    await expect.element(screen.getByTestId("icon-button-green")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-maple")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-yellow")).toBeInTheDocument();
-
-    // Check warm button
     await expect.element(screen.getByText("Send Me an Email")).toBeInTheDocument();
   });
 
-  it("renders correctly with custom props", async () => {
-    const screen = await render(
-      <ContactSection 
-        title="Custom Title"
-        subtitle="Custom subtitle"
-        email="custom@example.com"
-        githubUrl="https://github.com/custom"
-        linkedinUrl="https://linkedin.com/custom"
-      />
-    );
+  it("renders default subtitle", async () => {
+    const screen = await render(<ContactSection />);
+    await expect.element(
+      screen.getByText("I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision."),
+    ).toBeInTheDocument();
+  });
 
-    // Check custom title and subtitle
+  it("renders all three icon buttons", async () => {
+    const screen = await render(<ContactSection />);
+    await expect.element(screen.getByTestId("icon-button-green")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-button-maple")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-button-yellow")).toBeInTheDocument();
+  });
+
+  it("renders with custom title and subtitle", async () => {
+    const screen = await render(
+      <ContactSection title="Custom Title" subtitle="Custom subtitle" />,
+    );
     await expect.element(screen.getByText("Custom Title")).toBeInTheDocument();
     await expect.element(screen.getByText("Custom subtitle")).toBeInTheDocument();
-
-    // Check icon buttons
-    await expect.element(screen.getByTestId("icon-button-green")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-maple")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-yellow")).toBeInTheDocument();
-
-    // Check warm button
-    await expect.element(screen.getByText("Send Me an Email")).toBeInTheDocument();
   });
 
-  it("renders correctly with custom email", async () => {
-    const screen = await render(<ContactSection email="test@example.com" />);
-
-    // The email is used internally but not directly rendered in the component
-    await expect.element(screen.getByText("Let's Work Together")).toBeInTheDocument();
-  });
-
-  it("renders correctly with custom githubUrl", async () => {
-    const screen = await render(<ContactSection githubUrl="https://github.com/test" />);
-
-    // The githubUrl is used internally but not directly rendered in the component
-    await expect.element(screen.getByText("Let's Work Together")).toBeInTheDocument();
-  });
-
-  it("renders correctly with custom linkedinUrl", async () => {
-    const screen = await render(<ContactSection linkedinUrl="https://linkedin.com/test" />);
-
-    // The linkedinUrl is used internally but not directly rendered in the component
-    await expect.element(screen.getByText("Let's Work Together")).toBeInTheDocument();
-  });
-
-  it("renders all expected elements", async () => {
+  it("renders email CTA button", async () => {
     const screen = await render(<ContactSection />);
+    const button = screen.getByText("Send Me an Email");
+    await expect.element(button).toBeInTheDocument();
+  });
 
-    // Check SectionHeader components
-    await expect.element(screen.getByText("Let's Work Together")).toBeInTheDocument();
-    await expect.element(screen.getByText("I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.")).toBeInTheDocument();
-
-    // Check icon buttons
-    await expect.element(screen.getByTestId("icon-button-green")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-maple")).toBeInTheDocument();
-    await expect.element(screen.getByTestId("icon-button-yellow")).toBeInTheDocument();
-
-    // Check warm button
-    await expect.element(screen.getByText("Send Me an Email")).toBeInTheDocument();
+  it("renders icon button labels", async () => {
+    const screen = await render(<ContactSection />);
+    await expect.element(screen.getByText("Send email")).toBeInTheDocument();
+    await expect.element(screen.getByText("View GitHub profile")).toBeInTheDocument();
+    await expect.element(screen.getByText("View LinkedIn profile")).toBeInTheDocument();
   });
 });

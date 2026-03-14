@@ -2,30 +2,28 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { WarmButton } from "../src/components/common/WarmButton";
 
-// Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    a: ({ children, ...props }: any) => <a {...props}>{children}</a>,
-    button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    a: ({ children, whileHover, whileTap, initial, animate, transition, ...props }: any) => <a {...props}>{children}</a>,
+    button: ({ children, whileHover, whileTap, initial, animate, transition, ...props }: any) => <button {...props}>{children}</button>,
   },
 }));
 
-// Mock react-router
 vi.mock("react-router", () => ({
-  Link: ({ children, to, ...props }: any) => (
-    <a href={to} {...props}>{children}</a>
-  ),
+  Link: ({ children, to, ...props }: any) => <a href={to} {...props}>{children}</a>,
 }));
 
 describe("WarmButton", () => {
-  const mockChildren = "Test Button";
-
-  it("renders correctly with default props", async () => {
-    const screen = await render(<WarmButton>{mockChildren}</WarmButton>);
-
-    // Check that the component is rendered
-    const button = screen.getByText(mockChildren);
+  it("renders as a button by default (no href)", async () => {
+    const screen = await render(<WarmButton>Click Me</WarmButton>);
+    const button = screen.getByRole("button");
     await expect.element(button).toBeInTheDocument();
+    await expect.element(button).toHaveTextContent("Click Me");
+  });
+
+  it("applies default primary variant and md size classes", async () => {
+    const screen = await render(<WarmButton>Btn</WarmButton>);
+    const button = screen.getByRole("button");
     await expect.element(button).toHaveClass("bg-[#7BA05B]");
     await expect.element(button).toHaveClass("text-white");
     await expect.element(button).toHaveClass("px-8");
@@ -33,82 +31,68 @@ describe("WarmButton", () => {
     await expect.element(button).toHaveClass("text-base");
   });
 
-  it("renders correctly with different variants", async () => {
-    const variants = ["primary", "secondary", "outline"] as const;
-    
-    for (const variant of variants) {
-      const screen = await render(<WarmButton variant={variant}>{mockChildren}</WarmButton>);
-      
-      const button = screen.getByText(mockChildren);
-      await expect.element(button).toBeInTheDocument();
-    }
+  it("applies secondary variant classes", async () => {
+    const screen = await render(<WarmButton variant="secondary">Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveClass("bg-white");
+    await expect.element(button).toHaveClass("text-[#2C2416]");
   });
 
-  it("renders correctly with different sizes", async () => {
-    const sizes = ["sm", "md", "lg"] as const;
-    
-    for (const size of sizes) {
-      const screen = await render(<WarmButton size={size}>{mockChildren}</WarmButton>);
-      
-      const button = screen.getByText(mockChildren);
-      await expect.element(button).toBeInTheDocument();
-    }
+  it("applies outline variant classes", async () => {
+    const screen = await render(<WarmButton variant="outline">Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveClass("bg-transparent");
+    await expect.element(button).toHaveClass("text-[#7BA05B]");
+    await expect.element(button).toHaveClass("border-2");
   });
 
-  it("renders correctly with href prop (external URL)", async () => {
-    const screen = await render(<WarmButton href="https://example.com">{mockChildren}</WarmButton>);
+  it("applies sm size classes", async () => {
+    const screen = await render(<WarmButton size="sm">Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveClass("px-4");
+    await expect.element(button).toHaveClass("py-2");
+    await expect.element(button).toHaveClass("text-sm");
+  });
 
+  it("applies lg size classes", async () => {
+    const screen = await render(<WarmButton size="lg">Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveClass("px-10");
+    await expect.element(button).toHaveClass("py-5");
+    await expect.element(button).toHaveClass("text-lg");
+  });
+
+  it("renders as Link for internal route href", async () => {
+    const screen = await render(<WarmButton href="/about">Go</WarmButton>);
     const link = screen.getByRole("link");
     await expect.element(link).toBeInTheDocument();
+    await expect.element(link).toHaveAttribute("href", "/about");
+    await expect.element(link).toHaveTextContent("Go");
+  });
+
+  it("renders as anchor for external href", async () => {
+    const screen = await render(<WarmButton href="https://example.com">External</WarmButton>);
+    const link = screen.getByRole("link");
     await expect.element(link).toHaveAttribute("href", "https://example.com");
   });
 
-  it("renders correctly with href prop (internal route)", async () => {
-    const screen = await render(<WarmButton href="/internal">{mockChildren}</WarmButton>);
-
+  it("renders as anchor for anchor link href", async () => {
+    const screen = await render(<WarmButton href="#section">Anchor</WarmButton>);
     const link = screen.getByRole("link");
-    await expect.element(link).toBeInTheDocument();
-    await expect.element(link).toHaveAttribute("href", "/internal");
+    await expect.element(link).toHaveAttribute("href", "#section");
   });
 
-  it("renders correctly with href prop (anchor link)", async () => {
-    const screen = await render(<WarmButton href="#section1">{mockChildren}</WarmButton>);
-
-    const link = screen.getByRole("link");
-    await expect.element(link).toBeInTheDocument();
-    await expect.element(link).toHaveAttribute("href", "#section1");
-  });
-
-  it("renders correctly with onClick prop", async () => {
+  it("calls onClick handler when clicked", async () => {
     const handleClick = vi.fn();
-    const screen = await render(<WarmButton onClick={handleClick}>{mockChildren}</WarmButton>);
-
+    const screen = await render(<WarmButton onClick={handleClick}>Click</WarmButton>);
     const button = screen.getByRole("button");
-    await expect.element(button).toBeInTheDocument();
-
-    // Simulate click
-    button.click();
-    await expect(handleClick).toHaveBeenCalledTimes(1);
+    await button.click();
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it("applies custom className correctly", async () => {
-    const screen = await render(<WarmButton className="custom-class">{mockChildren}</WarmButton>);
-    
-    const button = screen.getByText(mockChildren);
-    await expect.element(button).toHaveClass("custom-class");
-  });
-
-  it("renders with children correctly", async () => {
-    const screen = await render(<WarmButton>{mockChildren}</WarmButton>);
-    
-    const button = screen.getByText(mockChildren);
-    await expect.element(button).toBeInTheDocument();
-  });
-
-  it("renders with complex children", async () => {
-    const complexChildren = <span data-testid="complex-child">Complex Content</span>;
-    const screen = await render(<WarmButton>{complexChildren}</WarmButton>);
-    
-    await expect.element(screen.getByTestId("complex-child")).toBeInTheDocument();
+  it("applies custom className", async () => {
+    const screen = await render(<WarmButton className="my-class">Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveClass("my-class");
   });
 });

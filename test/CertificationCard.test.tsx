@@ -2,76 +2,66 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { CertificationCard } from "../src/components/features/CertificationCard";
 
-// Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    a: "a",
+    a: ({ children, whileHover, whileTap, whileInView, initial, animate, transition, viewport, ...props }: any) => <a {...props}>{children}</a>,
   },
-  useInView: vi.fn(),
 }));
 
-// Mock Lucide icon
-const MockIcon = () => <div data-testid="mock-icon">Icon</div>;
+vi.mock("../src/components/common/WarmBadge", () => ({
+  WarmBadge: ({ children, variant }: any) => (
+    <span data-testid={`badge-${variant}`}>{children}</span>
+  ),
+}));
+
+const MockIcon = ((props: any) => <span data-testid="cert-icon" {...props} />) as any;
 
 describe("CertificationCard", () => {
-  const mockProps = {
-    title: "Test Certification",
-    text: "This is a test certification description",
+  const defaultProps = {
+    title: "AWS Certification",
+    text: "Cloud practitioner certification",
     status: "Certified",
-    delay: 0.2,
+    delay: 0,
     icon: MockIcon,
-    link: "https://example.com",
+    link: "https://aws.amazon.com/cert",
   };
 
-  it("renders correctly with all props", async () => {
-    const screen = await render(<CertificationCard {...mockProps} />);
+  it("renders title and description", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    await expect.element(screen.getByText("AWS Certification")).toBeInTheDocument();
+    await expect.element(screen.getByText("Cloud practitioner certification")).toBeInTheDocument();
+  });
 
-    // Check title
-    await expect
-      .element(screen.getByText("Test Certification", { exact: true })).toBeInTheDocument();
+  it("renders as a link with correct attributes", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    const link = screen.getByRole("link");
+    await expect.element(link).toHaveAttribute("href", "https://aws.amazon.com/cert");
+    await expect.element(link).toHaveAttribute("target", "_blank");
+    await expect.element(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
 
-    // Check description
-    await expect
-      .element(screen.getByText("This is a test certification description"))
-      .toBeInTheDocument();
+  it("renders icon", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    await expect.element(screen.getByTestId("cert-icon")).toBeInTheDocument();
+  });
 
-    // Check status badge
+  it("renders Certified status with success badge", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    await expect.element(screen.getByTestId("badge-success")).toBeInTheDocument();
     await expect.element(screen.getByText("Certified")).toBeInTheDocument();
-
-    // Check icon
-    await expect.element(screen.getByTestId("mock-icon")).toBeInTheDocument();
-
-    // Check link
-    const linkElement = screen.getByRole("link");
-    await expect
-      .element(linkElement)
-      .toHaveAttribute("href", "https://example.com");
   });
 
-  it('renders with "Not Certified" status', async () => {
-    const props = {
-      ...mockProps,
-      status: "Not Certified",
-    };
-
-    const screen = await render(<CertificationCard {...props} />);
-
-    await expect.element(screen.getByText("Not Certified")).toBeInTheDocument();
+  it("renders non-Certified status with accent badge", async () => {
+    const screen = await render(
+      <CertificationCard {...defaultProps} status="In Progress" />,
+    );
+    await expect.element(screen.getByTestId("badge-accent")).toBeInTheDocument();
+    await expect.element(screen.getByText("In Progress")).toBeInTheDocument();
   });
 
-  it("applies correct styling based on status", async () => {
-    const screen = await render(<CertificationCard {...mockProps} />);
-
-    // Check that the component renders with proper structure
-    const cardElement = screen.getByRole("link");
-    await expect.element(cardElement).toBeInTheDocument();
-
-    // The actual styling is complex, so we mainly check structure
-    await expect
-      .element(screen.getByText("Test Certification", { exact: true }))
-      .toBeInTheDocument();
-    await expect
-      .element(screen.getByText("This is a test certification description", { exact: true }))
-      .toBeInTheDocument();
+  it("renders heading as h3", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    const heading = screen.getByRole("heading", { level: 3 });
+    await expect.element(heading).toHaveTextContent("AWS Certification");
   });
 });

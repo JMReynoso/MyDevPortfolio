@@ -2,166 +2,139 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import Layout from "../src/pages/Layout";
 
-// Mock components
-vi.mock("../components/Navigation", () => ({
-  Navigation: ({ logo, links, activeSection }: any) => (
-    <nav data-testid="navigation" data-active={activeSection}>
-      <span>{logo.name}</span>
+const mockNavigate = vi.fn();
+let mockPathname = "/";
+
+vi.mock("react-router", () => ({
+  useLocation: () => ({ pathname: mockPathname }),
+  useNavigate: () => mockNavigate,
+  Outlet: () => <div data-testid="outlet">Page Content</div>,
+}));
+
+vi.mock("../src/components", () => ({
+  Navigation: ({ logo, links, activeSection, onSectionChange, onNavigationClick }: any) => (
+    <nav data-testid="navigation">
+      <span data-testid="logo-initials">{logo.initials}</span>
+      <span data-testid="logo-name">{logo.name}</span>
+      <span data-testid="active-section">{activeSection}</span>
       {links.map((link: any) => (
-        <a key={link.href} href={link.href}>
+        <a
+          key={link.label}
+          data-testid={`nav-link-${link.label}`}
+          href={link.href}
+          onClick={() => {
+            onSectionChange(link.label.toLowerCase());
+            if (onNavigationClick) {
+              onNavigationClick(link.href, link.label.toLowerCase());
+            }
+          }}
+        >
           {link.label}
         </a>
       ))}
     </nav>
   ),
-}));
-
-vi.mock("../components/Footer", () => ({
   Footer: ({ text }: any) => <footer data-testid="footer">{text}</footer>,
-}));
-
-vi.mock("../components/CursorGlow", () => ({
   CursorGlow: () => <div data-testid="cursor-glow" />,
 }));
 
-// Mock react-router
-vi.mock("react-router", async () => {
-  const actual = await vi.importActual("react-router");
-  return {
-    ...actual,
-    useLocation: vi.fn(),
-    useNavigate: vi.fn(),
-  };
-});
-
-// Mock strings constant
-vi.mock("../constants/strings", () => ({
+vi.mock("../src/constants/strings", () => ({
   strings: {
-    initials: "JD",
-    name: "John Doe",
+    social: {
+      email: "test@example.com",
+      github: "https://github.com/test",
+      linkedin: "https://linkedin.com/in/test",
+    },
+    name: "Test User",
+    initials: "TU",
   },
 }));
 
 describe("Layout", () => {
-  it("renders without crashing", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
+  it("renders the Navigation component", async () => {
     const screen = await render(<Layout />);
-    await expect.element(screen).toBeInTheDocument();
+    await expect.element(screen.getByTestId("navigation")).toBeInTheDocument();
   });
 
-  it("renders navigation component with correct props", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
+  it("renders the Outlet for page content", async () => {
     const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
-    await expect.element(screen).toHaveText("John Doe");
+    await expect.element(screen.getByTestId("outlet")).toBeInTheDocument();
+    await expect.element(screen.getByText("Page Content")).toBeInTheDocument();
   });
 
-  it("renders footer with correct copyright text", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
+  it("renders the Footer component", async () => {
     const screen = await render(<Layout />);
+    await expect.element(screen.getByTestId("footer")).toBeInTheDocument();
+  });
 
+  it("renders the CursorGlow component", async () => {
+    const screen = await render(<Layout />);
+    await expect.element(screen.getByTestId("cursor-glow")).toBeInTheDocument();
+  });
+
+  it("passes correct logo props to Navigation", async () => {
+    const screen = await render(<Layout />);
+    await expect
+      .element(screen.getByTestId("logo-initials"))
+      .toHaveTextContent("TU");
+    await expect
+      .element(screen.getByTestId("logo-name"))
+      .toHaveTextContent("Test User");
+  });
+
+  it("renders all navigation links", async () => {
+    const screen = await render(<Layout />);
+    await expect
+      .element(screen.getByTestId("nav-link-Home"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("nav-link-About"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("nav-link-Projects"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("nav-link-Contact"))
+      .toBeInTheDocument();
+  });
+
+  it("renders navigation links with correct hrefs", async () => {
+    const screen = await render(<Layout />);
+    await expect
+      .element(screen.getByTestId("nav-link-Home"))
+      .toHaveAttribute("href", "/");
+    await expect
+      .element(screen.getByTestId("nav-link-About"))
+      .toHaveAttribute("href", "/about");
+    await expect
+      .element(screen.getByTestId("nav-link-Projects"))
+      .toHaveAttribute("href", "/?scrollTo=projects");
+    await expect
+      .element(screen.getByTestId("nav-link-Contact"))
+      .toHaveAttribute("href", "/contact");
+  });
+
+  it("sets home as the default active section", async () => {
+    mockPathname = "/";
+    const screen = await render(<Layout />);
+    await expect
+      .element(screen.getByTestId("active-section"))
+      .toHaveTextContent("home");
+  });
+
+  it("renders footer with copyright text including the user name", async () => {
+    const screen = await render(<Layout />);
     const footer = screen.getByTestId("footer");
-    await expect(footer).toBeInTheDocument();
-    await expect(footer).toHaveTextContent(/©.*John Doe/);
+    await expect.element(footer).toBeInTheDocument();
+    const year = new Date().getFullYear().toString();
+    const footerEl = footer.element();
+    expect(footerEl.textContent).toContain(year);
+    expect(footerEl.textContent).toContain("Test User");
   });
 
-  it("renders CursorGlow component", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
+  it("renders min-h-screen container", async () => {
     const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
-    await expect.element(screen).toHaveText("John Doe");
-  });
-
-  it("handles navigation click for projects section", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    const mockNavigate = vi.fn();
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      mockNavigate,
-    );
-
-    const screen = await render(<Layout />);
-
-    // Test that navigation click handler works
-    await expect.element(screen).toBeInTheDocument();
-  });
-
-  it("scrolls to top on route change", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/about",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
-    const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
-  });
-
-  it("updates active section based on current route", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/about",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
-    const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
-  });
-
-  it("renders Outlet component", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
-    const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
-  });
-
-  it("renders navigation links correctly", async () => {
-    vi.mocked(vi.importActual("react-router")).useLocation.mockReturnValue({
-      pathname: "/",
-    });
-    vi.mocked(vi.importActual("react-router")).useNavigate.mockReturnValue(
-      vi.fn(),
-    );
-
-    const screen = await render(<Layout />);
-
-    await expect.element(screen).toBeInTheDocument();
+    const container = screen.getByTestId("navigation").element().parentElement;
+    expect(container?.classList.contains("min-h-screen")).toBe(true);
   });
 });
