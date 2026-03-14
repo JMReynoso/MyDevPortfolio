@@ -120,7 +120,7 @@ export function Navigation({
             </motion.span>
           </div>
 
-          <div className={`flex ${isMobile ? "gap-3" : "gap-6"}`}>
+          <div className={`flex ${isMobile ? "gap-6" : "gap-8"}`}>
             {links.map((link, index) => {
               const isRoute =
                 link.href.startsWith("/") && !link.href.includes("#");
@@ -149,7 +149,6 @@ export function Navigation({
                       duration: 0.4,
                       ease: "easeIn",
                     }}
-                    className="sr-only"
                   >
                     {link.label}
                   </motion.span>

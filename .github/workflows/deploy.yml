@@ -1,12 +1,17 @@
 name: Deploy to self-hosted server
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
 
 jobs:
   deploy:
-    runs-on: [self-hosted, macOS, ARM64]  # matches runner labels
+    runs-on: [self-hosted, macOS, ARM64] # matches runner labels
+    permissions:
+      pull-requests: write
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,15 +21,25 @@ jobs:
           if ! command -v node >/dev/null 2>&1; then
             brew install node
           fi
+      
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Report Coverage
+        if: always() && github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-path: "./coverage/coverage-summary.json"
+          json-final-path: "./coverage/coverage-final.json"
 
       - name: Build app
-        run: |
-          npm ci
-          npm run build
-
-      # add unit tests
+        run: npm run build
 
       - name: Deploy (Docker)
+        if: github.ref == 'refs/heads/main'
         working-directory: .
         run: |
           export VITE_WEB3FORMS_ACCESS_KEY=${{ secrets.WEB3FORMS_ACCESS_KEY }}
