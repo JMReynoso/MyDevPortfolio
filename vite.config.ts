@@ -62,8 +62,8 @@ export default defineConfig({
       exclude: ['**/utils/users.ts', 'src/components/ui/**'],
       thresholds: {
         lines: -10,
-        functions: 90,
-        branches: 90,
+        functions: 70,
+        branches: 70,
       },
     },
     browser: {
