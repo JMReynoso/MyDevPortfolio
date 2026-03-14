@@ -74,6 +74,9 @@ export default defineConfig({
       ],
     },
   },
+  optimizeDeps: {
+    include: ['react-dom/client'],
+  },
     build: {
       target: 'esnext',
       outDir: 'build',
