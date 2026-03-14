@@ -63,10 +63,13 @@ export default function About() {
               applications that users love!
             </p>
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              My expertise spans across modern backend frameworks (Node.js and
-              .NET API), RESTful APIs, and cloud technologies. I can also work
-              in collaborative environments where I can work closely with
-              Product Managers and Product Owners to bring ideas to life.
+              My expertise spans across modern backend frameworks (Node.js, Java
+              Spring, and .NET API), RESTful APIs, and cloud technologies. I
+              also have experience in cloud infrastructure and deployment
+              strategies (such as AWS, Github/GitLab, Docker, etc.) from my time
+              as a SaaS ackend Engineer. I can also work in collaborative
+              environments where I can work closely with Product Managers and
+              Product Owners to bring ideas to life.
             </p>
             <p className="text-lg text-[#8B6F47] leading-relaxed">
               I'm an education advocate and believe in continuous learning by
@@ -273,7 +276,10 @@ export default function About() {
                     <div
                       className={`bg-gradient-to-br ${icon.gradient} to-white rounded-full p-6 shadow-sm border border-[#8B6F47]/10 transition-shadow duration-300 ${hoveredIcon === icon.id ? "shadow-lg" : ""}`}
                     >
-                      <Icon className={`w-12 h-12 ${icon.color}`} aria-hidden="true" />
+                      <Icon
+                        className={`w-12 h-12 ${icon.color}`}
+                        aria-hidden="true"
+                      />
                     </div>
                     {hoveredIcon === icon.id && (
                       <motion.div
