@@ -82,9 +82,9 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {skills.map((skill, index) => (
+            {skills.map((skill) => (
               <SkillCard
-                key={index}
+                key={skill.name}
                 name={skill.name}
                 icon={skill.icon}
                 color={skill.color}

@@ -19,7 +19,7 @@ export interface NavigationProps {
   onNavigationClick?: (href: string, sectionId: string) => void;
 }
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Home: Home,
   About: User,
   Projects: Briefcase,
