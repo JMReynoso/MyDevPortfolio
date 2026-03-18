@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { categories } from "../../data/technologies";
 
 export function Technologies() {
@@ -8,17 +8,22 @@ export function Technologies() {
 
   const activeData = categories.find((cat) => cat.id === activeCategory);
 
+  const handleCategoryChange = useCallback(
+    (id: "frontend" | "backend" | "tools") => setActiveCategory(id),
+    [],
+  );
+
   return (
     <div className="w-full">
       <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
         {/* Left side - Category bubbles */}
         <div className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              onMouseEnter={() => setActiveCategory(category.id)}
-              onFocus={() => setActiveCategory(category.id)}
+              onClick={() => handleCategoryChange(category.id)}
+              onMouseEnter={() => handleCategoryChange(category.id)}
+              onFocus={() => handleCategoryChange(category.id)}
               aria-pressed={activeCategory === category.id}
               className={`
                 relative flex flex-col items-center justify-center gap-1.5 md:gap-2

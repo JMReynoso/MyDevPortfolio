@@ -38,12 +38,14 @@ export function Navigation({
   const [bottomOffset, setBottomOffset] = useState(0);
 
   useEffect(() => {
+    // Cache the footer reference once per effect run — avoids querying the DOM on every scroll
+    const footer = document.querySelector("footer");
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
 
       // Calculate bottom offset to prevent overlapping footer
       if (isMobile) {
-        const footer = document.querySelector("footer");
         if (footer) {
           const footerRect = footer.getBoundingClientRect();
           const windowHeight = window.innerHeight;
