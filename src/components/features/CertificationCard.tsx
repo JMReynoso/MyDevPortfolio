@@ -20,7 +20,7 @@ export function CertificationCard({
   link,
 }: certificationProps) {
   const badgeColor = status === "Certified" ? "success" : "accent";
-  const statusColor = status === "Certified" ? "#7BA05B" : "#FFD166";
+  const statusBg = status === "Certified" ? "bg-[#7BA05B]" : "bg-[#FFD166]";
   return (
     <motion.a
       href={link}
@@ -36,7 +36,7 @@ export function CertificationCard({
         className={`h-full bg-gradient-to-br to-white rounded-2xl p-8 shadow-sm border border-[#8B6F47]/10 hover:shadow-md transition-shadow duration-300`}
       >
         <div className="flex items-start justify-between mb-4">
-          <div className={`bg-[${statusColor}] text-white rounded-xl p-3`}>
+          <div className={`${statusBg} text-white rounded-xl p-3`}>
             <Icon className="w-8 h-8" aria-hidden="true" />
           </div>
           <WarmBadge variant={badgeColor}>{status}</WarmBadge>

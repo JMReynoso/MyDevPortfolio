@@ -25,19 +25,33 @@ export function Grid({
     xl: 'gap-12'
   };
   
-  const getColsClass = () => {
-    const classes: string[] = ['grid'];
-    
-    if (cols.default) classes.push(`grid-cols-${cols.default}`);
-    if (cols.sm) classes.push(`sm:grid-cols-${cols.sm}`);
-    if (cols.md) classes.push(`md:grid-cols-${cols.md}`);
-    if (cols.lg) classes.push(`lg:grid-cols-${cols.lg}`);
-    
-    return classes.join(' ');
+  const defaultColsMap: Record<number, string> = {
+    1: 'grid-cols-1', 2: 'grid-cols-2', 3: 'grid-cols-3',
+    4: 'grid-cols-4', 5: 'grid-cols-5', 6: 'grid-cols-6',
   };
-  
+  const smColsMap: Record<number, string> = {
+    1: 'sm:grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3',
+    4: 'sm:grid-cols-4', 5: 'sm:grid-cols-5', 6: 'sm:grid-cols-6',
+  };
+  const mdColsMap: Record<number, string> = {
+    1: 'md:grid-cols-1', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3',
+    4: 'md:grid-cols-4', 5: 'md:grid-cols-5', 6: 'md:grid-cols-6',
+  };
+  const lgColsMap: Record<number, string> = {
+    1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3',
+    4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5', 6: 'lg:grid-cols-6',
+  };
+
+  const colClasses = [
+    'grid',
+    cols.default ? defaultColsMap[cols.default] : '',
+    cols.sm ? smColsMap[cols.sm] : '',
+    cols.md ? mdColsMap[cols.md] : '',
+    cols.lg ? lgColsMap[cols.lg] : '',
+  ].filter(Boolean).join(' ');
+
   return (
-    <div className={`${getColsClass()} ${gapStyles[gap]} ${className}`}>
+    <div className={`${colClasses} ${gapStyles[gap]} ${className}`}>
       {children}
     </div>
   );
