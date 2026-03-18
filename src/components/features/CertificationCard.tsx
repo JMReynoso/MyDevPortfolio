@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { WarmBadge } from "../common/WarmBadge";
 
-export interface certificationProps {
+export interface CertificationCardProps {
   title: string;
   text: string;
   status: string;
@@ -18,7 +18,7 @@ export function CertificationCard({
   delay,
   icon: Icon,
   link,
-}: certificationProps) {
+}: CertificationCardProps) {
   const badgeColor = status === "Certified" ? "success" : "accent";
   const statusBg = status === "Certified" ? "bg-[#7BA05B]" : "bg-[#FFD166]";
   return (

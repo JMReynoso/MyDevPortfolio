@@ -101,7 +101,7 @@ export default function About() {
           <Grid cols={{ md: 2 }} gap="lg">
             {certifications.map((item, index) => (
               <CertificationCard
-                key={index}
+                key={item.title}
                 title={item.title}
                 text={item.text}
                 status={item.status}
@@ -118,9 +118,9 @@ export default function About() {
         <SectionHeader title="Experience & Education" />
 
         <div className="max-w-3xl mx-auto space-y-8">
-          {experience.map((item, index) => (
+          {experience.map((item) => (
             <ExperienceEducationCard
-              key={index}
+              key={item.title}
               title={item.title}
               company={item.company}
               date={item.date}
@@ -140,7 +140,7 @@ export default function About() {
                 Hi! This section is about me personally, as you get to know me
                 more on a deeper level. I am a Filipino-American born and raised
                 in the suburbs of Philadelphia, Pennsylvania and I am a man who
-                is part of the L<b>G</b>BTQIA+ community 🏳️‍🌈. My MBTI is{" "}
+                is part of the L<strong>G</strong>BTQIA+ community 🏳️‍🌈. My MBTI is{" "}
                 <a
                   href="https://www.16personalities.com/isfj-personality"
                   target="_blank"

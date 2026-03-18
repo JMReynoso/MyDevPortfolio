@@ -3,12 +3,19 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { Navigation, Footer, CursorGlow } from "../components";
 import { strings } from "../constants/strings";
 
+const navigationLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/?scrollTo=projects" },
+  { label: "Contact", href: "/contact" },
+];
+
 export default function Layout() {
   const [activeSection, setActiveSection] = useState("home");
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNavigationClick = (href: string, sectionId: string) => {
+  const handleNavigationClick = (href: string, _sectionId: string) => {
     if (href === "/?scrollTo=projects") {
       if (location.pathname === "/") {
         // Already on home page, just scroll to section
@@ -25,13 +32,6 @@ export default function Layout() {
       }
     }
   };
-
-  const navigationLinks = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Projects", href: "/?scrollTo=projects" },
-    { label: "Contact", href: "/contact" },
-  ];
 
   // Scroll to top on route change
   useEffect(() => {

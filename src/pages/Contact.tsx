@@ -119,7 +119,6 @@ export default function Contact() {
     setStatus("sending");
 
     if (!import.meta.env.VITE_WEB3FORMS_ACCESS_KEY) {
-      console.error("VITE_WEB3FORMS_ACCESS_KEY is not defined");
       setStatus("error");
       return;
     }
@@ -144,9 +143,8 @@ export default function Contact() {
           message: false,
         });
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
-      console.error("Error sending form:", error);
     }
   };
 

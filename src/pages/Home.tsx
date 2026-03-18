@@ -30,7 +30,6 @@ export default function Home() {
 
   return (
     <>
-      {/* TODO: update this photo  */}
       <Hero
         greeting="👋 omg hi! I'm a developer"
         title="Building apps on the web"
@@ -47,7 +46,6 @@ export default function Home() {
       />
 
       <Section id="technologies" background="white">
-        {/* TODO: fix mobile view */}
         <SectionHeader
           title="Technologies I Use"
           subtitle="Hover or tap a category to explore the tools and frameworks I work with"
