@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
+import { Code2, Coffee, MonitorCog, Rocket, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
@@ -11,6 +11,19 @@ import { useIsMobile } from "../components/ui/use-mobile";
 import { certifications } from "../data/certification";
 import { storyIcons } from "../data/storyIcons";
 
+type Skill = {
+  name: string;
+  icon: LucideIcon;
+  color: "green" | "maple" | "yellow" | "brown";
+};
+
+const skills: Skill[] = [
+  { name: "Backend Development", icon: Code2, color: "green" },
+  { name: "System Design", icon: MonitorCog, color: "maple" },
+  { name: "Performance Optimization", icon: Rocket, color: "yellow" },
+  { name: "Coffee Consumption", icon: Coffee, color: "brown" },
+];
+
 export default function About() {
   const isMobile = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
@@ -21,17 +34,6 @@ export default function About() {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  const skills = [
-    { name: "Backend Development", icon: Code2, color: "green" as const },
-    { name: "System Design", icon: MonitorCog, color: "maple" as const },
-    {
-      name: "Performance Optimization",
-      icon: Rocket,
-      color: "yellow" as const,
-    },
-    { name: "Coffee Consumption", icon: Coffee, color: "brown" as const },
-  ];
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Briefcase, Home, Mail, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { useIsMobile } from "../ui/use-mobile";
@@ -19,7 +19,7 @@ export interface NavigationProps {
   onNavigationClick?: (href: string, sectionId: string) => void;
 }
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+const iconMap: Record<string, ComponentType<{ className?: string }>> = {
   Home: Home,
   About: User,
   Projects: Briefcase,

@@ -5,7 +5,7 @@ import {
   Coffee,
   Container,
   Database,
-  Figma,
+  PenTool,
   FlaskConical,
   Frame,
   Globe,
@@ -20,17 +20,18 @@ import {
   Webhook,
   Worm,
 } from "lucide-react";
+import { ReactNode } from "react";
 
 export type Technology = {
   name: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   link?: string;
 };
 
 export type TechnologyCategory = {
   id: "frontend" | "backend" | "tools";
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   technologies: Technology[];
 };
 
@@ -141,7 +142,7 @@ export const categories: TechnologyCategory[] = [
     technologies: [
       {
         name: "Figma",
-        icon: <Figma className="w-8 h-8" />,
+        icon: <PenTool className="w-8 h-8" />,
         link: "https://www.figma.com/",
       },
       {
