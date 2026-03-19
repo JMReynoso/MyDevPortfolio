@@ -170,6 +170,11 @@ export const categories: TechnologyCategory[] = [
         icon: <Boxes className="w-8 h-8" />,
         link: "https://continue.dev/",
       },
+      {
+        name: "Claude Code",
+        icon: <Brain className="w-8 h-8" />,
+        link: "https://claude.co/code",
+      },
     ],
   },
 ];

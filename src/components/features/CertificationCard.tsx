@@ -5,6 +5,7 @@ import { WarmBadge } from "../common/WarmBadge";
 export interface CertificationCardProps {
   title: string;
   text: string;
+  fromClass: string;
   status: string;
   delay: number;
   icon: LucideIcon;
@@ -14,6 +15,7 @@ export interface CertificationCardProps {
 export function CertificationCard({
   title,
   text,
+  fromClass,
   status,
   delay,
   icon: Icon,
@@ -33,7 +35,7 @@ export function CertificationCard({
       whileHover={{ y: -5 }}
     >
       <div
-        className={`h-full bg-gradient-to-br to-white rounded-2xl p-8 shadow-sm border border-[#8B6F47]/10 hover:shadow-md transition-shadow duration-300`}
+        className={`h-full bg-gradient-to-br ${fromClass} to-white rounded-2xl p-8 shadow-sm border border-[#8B6F47]/10 hover:shadow-md transition-shadow duration-300`}
       >
         <div className="flex items-start justify-between mb-4">
           <div className={`${statusBg} text-white rounded-xl p-3`}>

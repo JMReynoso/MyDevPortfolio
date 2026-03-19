@@ -376,7 +376,7 @@ export default function Contact() {
         </div>
       </Section>
 
-      <div className="pb-24 md:pb-0"></div>
+      <div className="pb-24 md:pb-0" aria-hidden="true" />
     </>
   );
 }

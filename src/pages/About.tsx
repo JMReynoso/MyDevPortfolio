@@ -106,6 +106,7 @@ export default function About() {
                 key={item.title}
                 title={item.title}
                 text={item.text}
+                fromClass={item.fromClass}
                 status={item.status}
                 delay={index * 0.1}
                 icon={item.icon}
@@ -306,7 +307,7 @@ export default function About() {
         </div>
       </Section>
 
-      <div className="pb-20 md:pb-1"></div>
+      <div className="pb-20 md:pb-1" aria-hidden="true" />
     </>
   );
 }

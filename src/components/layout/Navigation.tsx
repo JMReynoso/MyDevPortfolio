@@ -107,7 +107,7 @@ export function Navigation({
               />
             </div>
             <motion.span
-              className="font-semibold text-lg text-[#2C2416] whitespace-nowrap"
+              className="font-semibold text-lg text-[#2C2416] whitespace-nowrap overflow-hidden"
               animate={{
                 width: isScrolled || isMobile ? 0 : "auto",
                 opacity: isScrolled || isMobile ? 0 : 1,
@@ -116,7 +116,6 @@ export function Navigation({
                 duration: 0.4,
                 ease: "easeIn",
               }}
-              style={{ overflow: "hidden" }}
             >
               {logo.name}
             </motion.span>
@@ -214,11 +213,7 @@ export function Navigation({
       {/* Top nav - fades out on mobile when scrolled */}
       <motion.nav
         aria-label="Main Navigation"
-        className="fixed left-0 right-0 top-0 z-50 flex justify-center py-4"
-        style={{
-          paddingLeft: isMobile ? "12px" : "24px",
-          paddingRight: isMobile ? "12px" : "24px",
-        }}
+        className={`fixed left-0 right-0 top-0 z-50 flex justify-center py-4 ${isMobile ? "px-3" : "px-6"}`}
         animate={{
           opacity: isMobile && isScrolled ? 0 : 1,
         }}
@@ -234,11 +229,9 @@ export function Navigation({
       {isMobile && (
         <motion.nav
           aria-label="Mobile Navigation"
-          className="fixed left-0 right-0 z-50 flex justify-center py-4"
+          className="fixed left-0 right-0 z-50 flex justify-center py-4 px-3"
           style={{
             bottom: `${bottomOffset}px`,
-            paddingLeft: "12px",
-            paddingRight: "12px",
           }}
           animate={{
             opacity: isScrolled ? 1 : 0,
