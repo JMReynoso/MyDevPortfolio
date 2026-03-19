@@ -1,4 +1,37 @@
-User-agent: *
+# Allow search engines
+User-agent: Googlebot
 Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+# Block everything else by default
+User-agent: *
+Disallow: /
 
 Sitemap: https://justinreynoso.dev/sitemap.xml
