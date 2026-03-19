@@ -27,16 +27,16 @@ export function ExperienceEducationCard({
         {company} · {date}
       </p>
       <ul className="text-[#8B6F47] leading-relaxed list-disc pl-5 space-y-1 mb-4">
-        {description.map((item, index) => (
-          <li key={index}>{item}</li>
+        {description.map((item) => (
+          <li key={item}>{item}</li>
         ))}
       </ul>
       <p className="text-[#8B6F47] leading-relaxed font-semibold mb-2">
         Skills:
       </p>
       <div className="flex flex-wrap gap-2">
-        {tags.map((tag, index) => (
-          <WarmBadge key={index} variant="default">
+        {tags.map((tag) => (
+          <WarmBadge key={tag} variant="default">
             {tag}
           </WarmBadge>
         ))}

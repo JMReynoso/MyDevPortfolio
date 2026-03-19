@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Code2, Coffee, MonitorCog, Rocket } from "lucide-react";
+import { Code2, Coffee, MonitorCog, Rocket, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
@@ -11,6 +11,19 @@ import { useIsMobile } from "../components/ui/use-mobile";
 import { certifications } from "../data/certification";
 import { storyIcons } from "../data/storyIcons";
 
+type Skill = {
+  name: string;
+  icon: LucideIcon;
+  color: "green" | "maple" | "yellow" | "brown";
+};
+
+const skills: Skill[] = [
+  { name: "Backend Development", icon: Code2, color: "green" },
+  { name: "System Design", icon: MonitorCog, color: "maple" },
+  { name: "Performance Optimization", icon: Rocket, color: "yellow" },
+  { name: "Coffee Consumption", icon: Coffee, color: "brown" },
+];
+
 export default function About() {
   const isMobile = useIsMobile();
   const [isVisible, setIsVisible] = useState(false);
@@ -21,17 +34,6 @@ export default function About() {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
-  const skills = [
-    { name: "Backend Development", icon: Code2, color: "green" as const },
-    { name: "System Design", icon: MonitorCog, color: "maple" as const },
-    {
-      name: "Performance Optimization",
-      icon: Rocket,
-      color: "yellow" as const,
-    },
-    { name: "Coffee Consumption", icon: Coffee, color: "brown" as const },
-  ];
 
   return (
     <>
@@ -82,9 +84,9 @@ export default function About() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {skills.map((skill, index) => (
+            {skills.map((skill) => (
               <SkillCard
-                key={index}
+                key={skill.name}
                 name={skill.name}
                 icon={skill.icon}
                 color={skill.color}
@@ -101,9 +103,10 @@ export default function About() {
           <Grid cols={{ md: 2 }} gap="lg">
             {certifications.map((item, index) => (
               <CertificationCard
-                key={index}
+                key={item.title}
                 title={item.title}
                 text={item.text}
+                fromClass={item.fromClass}
                 status={item.status}
                 delay={index * 0.1}
                 icon={item.icon}
@@ -118,9 +121,9 @@ export default function About() {
         <SectionHeader title="Experience & Education" />
 
         <div className="max-w-3xl mx-auto space-y-8">
-          {experience.map((item, index) => (
+          {experience.map((item) => (
             <ExperienceEducationCard
-              key={index}
+              key={item.title}
               title={item.title}
               company={item.company}
               date={item.date}
@@ -140,7 +143,7 @@ export default function About() {
                 Hi! This section is about me personally, as you get to know me
                 more on a deeper level. I am a Filipino-American born and raised
                 in the suburbs of Philadelphia, Pennsylvania and I am a man who
-                is part of the L<b>G</b>BTQIA+ community 🏳️‍🌈. My MBTI is{" "}
+                is part of the L<strong>G</strong>BTQIA+ community 🏳️‍🌈. My MBTI is{" "}
                 <a
                   href="https://www.16personalities.com/isfj-personality"
                   target="_blank"
@@ -304,7 +307,7 @@ export default function About() {
         </div>
       </Section>
 
-      <div className="pb-20 md:pb-1"></div>
+      <div className="pb-20 md:pb-1" aria-hidden="true" />
     </>
   );
 }
