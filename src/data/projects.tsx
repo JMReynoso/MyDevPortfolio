@@ -1,4 +1,12 @@
-export const projects = [
+export type Project = {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  link: string;
+};
+
+export const projects: Project[] = [
   {
     title: "My Development Portfolio",
     description:

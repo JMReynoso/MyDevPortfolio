@@ -10,10 +10,10 @@ export function CursorGlow() {
   useEffect(() => {
     if (isMobile) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    let rafId: number;
 
-      // Check if hovering over a button or link
+    const handleMouseMove = (e: MouseEvent) => {
+      // Evaluate hover target immediately (no layout cost)
       const target = e.target as HTMLElement;
       const isButton =
         target.tagName === "BUTTON" ||
@@ -21,13 +21,19 @@ export function CursorGlow() {
         target.closest("button") !== null ||
         target.closest("a") !== null;
 
-      setIsHovering(isButton);
+      // Batch position + hover state updates to one frame — avoids a setState on every pixel
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+        setIsHovering(isButton);
+      });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
     };
   }, [isMobile]);
 

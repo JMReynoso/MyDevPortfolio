@@ -5,9 +5,19 @@ import {
   Shirt,
   Server,
   Laptop,
+  type LucideIcon,
 } from "lucide-react";
 
-export const storyIcons = [
+export type StoryIcon = {
+  id: string;
+  icon: LucideIcon;
+  color: string;
+  gradient: string;
+  label: string;
+  position: string;
+};
+
+export const storyIcons: StoryIcon[] = [
   {
     id: "music",
     icon: Music,

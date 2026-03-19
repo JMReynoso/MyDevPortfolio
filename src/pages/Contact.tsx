@@ -1,5 +1,5 @@
 import { Mail, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Section, SectionHeader } from "../components";
 import { strings } from "../constants/strings";
 
@@ -21,6 +21,13 @@ export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+
+  // Single source-of-truth for resetting status — avoids overlapping timeouts and cleans up on unmount
+  useEffect(() => {
+    if (status !== "sent" && status !== "error") return;
+    const timer = setTimeout(() => setStatus("idle"), status === "sent" ? 7000 : 3000);
+    return () => clearTimeout(timer);
+  }, [status]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -106,14 +113,12 @@ export default function Contact() {
 
     if (Object.values(newErrors).some((error) => error !== "")) {
       setStatus("error");
-      setTimeout(() => setStatus("idle"), 2000);
       return;
     }
 
     setStatus("sending");
 
     if (!import.meta.env.VITE_WEB3FORMS_ACCESS_KEY) {
-      console.error("VITE_WEB3FORMS_ACCESS_KEY is not defined");
       setStatus("error");
       return;
     }
@@ -138,17 +143,9 @@ export default function Contact() {
           message: false,
         });
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
-      console.error("Error sending form:", error);
-      setTimeout(() => {
-        setStatus("idle");
-      }, 7000);
     }
-
-    setTimeout(() => {
-      setStatus("idle");
-    }, 7000);
   };
 
   return (
@@ -182,13 +179,23 @@ export default function Contact() {
                     onBlur={handleBlur}
                     required
                     aria-required="true"
-                    aria-invalid={touched.name && errors.name ? "true" : undefined}
-                    aria-describedby={touched.name && errors.name ? "name-error" : undefined}
+                    aria-invalid={
+                      touched.name && errors.name ? "true" : undefined
+                    }
+                    aria-describedby={
+                      touched.name && errors.name ? "name-error" : undefined
+                    }
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="Your name"
                   />
                   {touched.name && errors.name && (
-                    <p id="name-error" className="text-sm text-red-500 mt-1" role="alert">{errors.name}</p>
+                    <p
+                      id="name-error"
+                      className="text-sm text-red-500 mt-1"
+                      role="alert"
+                    >
+                      {errors.name}
+                    </p>
                   )}
                 </div>
 
@@ -208,13 +215,23 @@ export default function Contact() {
                     onBlur={handleBlur}
                     required
                     aria-required="true"
-                    aria-invalid={touched.email && errors.email ? "true" : undefined}
-                    aria-describedby={touched.email && errors.email ? "email-error" : undefined}
+                    aria-invalid={
+                      touched.email && errors.email ? "true" : undefined
+                    }
+                    aria-describedby={
+                      touched.email && errors.email ? "email-error" : undefined
+                    }
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="your.email@example.com"
                   />
                   {touched.email && errors.email && (
-                    <p id="email-error" className="text-sm text-red-500 mt-1" role="alert">{errors.email}</p>
+                    <p
+                      id="email-error"
+                      className="text-sm text-red-500 mt-1"
+                      role="alert"
+                    >
+                      {errors.email}
+                    </p>
                   )}
                 </div>
 
@@ -234,13 +251,23 @@ export default function Contact() {
                     onBlur={handleBlur}
                     required
                     aria-required="true"
-                    aria-invalid={touched.subject && errors.subject ? "true" : undefined}
-                    aria-describedby={touched.subject && errors.subject ? "subject-error" : undefined}
+                    aria-invalid={
+                      touched.subject && errors.subject ? "true" : undefined
+                    }
+                    aria-describedby={
+                      touched.subject && errors.subject
+                        ? "subject-error"
+                        : undefined
+                    }
                     className="w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all"
                     placeholder="What's this about?"
                   />
                   {touched.subject && errors.subject && (
-                    <p id="subject-error" className="text-sm text-red-500 mt-1" role="alert">
+                    <p
+                      id="subject-error"
+                      className="text-sm text-red-500 mt-1"
+                      role="alert"
+                    >
                       {errors.subject}
                     </p>
                   )}
@@ -262,13 +289,25 @@ export default function Contact() {
                   onBlur={handleBlur}
                   required
                   aria-required="true"
-                  aria-invalid={touched.message && errors.message ? "true" : undefined}
-                  aria-describedby={touched.message && errors.message ? "message-error" : undefined}
+                  aria-invalid={
+                    touched.message && errors.message ? "true" : undefined
+                  }
+                  aria-describedby={
+                    touched.message && errors.message
+                      ? "message-error"
+                      : undefined
+                  }
                   className="flex-1 w-full px-4 py-3 bg-white border border-[#8B6F47]/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#7BA05B] focus:border-transparent transition-all resize-none"
                   placeholder="Tell me about your project or idea..."
                 />
                 {touched.message && errors.message && (
-                  <p id="message-error" className="text-sm text-red-500 mt-1" role="alert">{errors.message}</p>
+                  <p
+                    id="message-error"
+                    className="text-sm text-red-500 mt-1"
+                    role="alert"
+                  >
+                    {errors.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -282,16 +321,19 @@ export default function Contact() {
               {status === "sending" ? (
                 <>
                   <Mail className="size-5 animate-pulse" aria-hidden="true" />
-                  <span>Sending your email to ...</span>
+                  <span>Sending your email to {strings.social.email}</span>
                 </>
               ) : status === "sent" ? (
                 <>
                   <Send className="size-5" aria-hidden="true" />
-                  <span>Email sent to ...!</span>
+                  <span>Email sent to {strings.social.email}!</span>
                 </>
               ) : (
                 <>
-                  <Mail className="size-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  <Mail
+                    className="size-5 group-hover:scale-110 transition-transform"
+                    aria-hidden="true"
+                  />
                   <span>Send Message</span>
                 </>
               )}
@@ -304,8 +346,8 @@ export default function Contact() {
                 </p>
               ) : status === "error" ? (
                 <p className="text-center text-sm text-red-600">
-                  Error in sending the email, please try again later or reach out
-                  directly at{" "}
+                  Error in sending the email, please try again later or reach
+                  out directly at{" "}
                   <a
                     href={`mailto:${strings.social.email}`}
                     className="text-red-600 hover:text-red-800 transition-colors font-medium underline"
@@ -334,7 +376,7 @@ export default function Contact() {
         </div>
       </Section>
 
-      <div className="pb-24 md:pb-0"></div>
+      <div className="pb-24 md:pb-0" aria-hidden="true" />
     </>
   );
 }

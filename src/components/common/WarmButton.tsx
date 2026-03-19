@@ -41,7 +41,6 @@ export function WarmButton({
   if (href) {
     // Check if it's an internal route (starts with /) or an anchor link (starts with #)
     const isInternalRoute = href.startsWith("/") && !href.includes("#");
-    const isAnchorLink = href.startsWith("#");
 
     if (isInternalRoute) {
       // Use React Router Link for internal routes
