@@ -58,28 +58,34 @@ export default function About() {
           <div>
             <SectionHeader title="My Professional Journey" />
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              I'm a passionate Backend Developer with a love for solving puzzles
-              and creating elegant solutions to complex problems. With almost
-              several years of experience in web development in SaaS companies,
-              I specialize in building scalable, responsive, and accessible
-              applications that users love!
+              I'm a Backend Developer with 4+ years of professional
+              experience building and maintaining SaaS products. At Cadmium,
+              I built internal REST APIs, consolidated data into normalized
+              databases, and implemented CI/CD pipelines that improved
+              deployment reliability across multiple products.
             </p>
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              My expertise spans across modern backend frameworks (Node.js, Java
-              Spring, and .NET API), RESTful APIs, and cloud technologies. I
-              also have experience in cloud infrastructure and deployment
-              strategies (such as AWS, Github/GitLab, Docker, etc.) from my time
-              as a SaaS ackend Engineer. I can also work in collaborative
-              environments where I can work closely with Product Managers and
-              Product Owners to bring ideas to life.
+              My core stack includes Node.js, NestJS, Java Spring, and .NET,
+              backed by PostgreSQL and MongoDB. I've worked hands-on with
+              Docker, AWS, and GitLab CI/CD to ship production services, and
+              I collaborate closely with Product Managers and design teams to
+              turn requirements into working software.
+            </p>
+            <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
+              Beyond my professional work, I run a homelab where I
+              self-host applications on my own server — including this
+              portfolio. Managing my own infrastructure has deepened my
+              understanding of CI/CD, containerization, networking, and
+              deployment workflows in ways that go beyond what's typical in
+              a day job.
             </p>
             <p className="text-lg text-[#8B6F47] leading-relaxed">
-              I'm an education advocate and believe in continuous learning by
-              staying up-to-date with the latest technologies, especially in
-              generative AL and ML. Having experience in the customer service
-              side, my approach combines technical excellence with a deep
-              understanding of user needs, ensuring that every project I work on
-              delivers real value and measurable impact to the business.
+              What sets me apart is my background in customer-facing support
+              — I understand the end-user perspective and build with that in
+              mind. I'm continuously expanding my skill set, currently
+              exploring generative AI and machine learning, and I'm actively
+              seeking new opportunities where I can contribute to a team
+              building meaningful products!
             </p>
           </div>
 
