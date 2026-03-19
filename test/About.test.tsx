@@ -298,13 +298,11 @@ describe("About", () => {
   it("renders professional journey paragraphs", async () => {
     const screen = await render(<About />);
     await expect
-      .element(
-        screen.getByText(/passionate Backend Developer/),
-      )
+      .element(screen.getByText('Backend Developer with 4+'))
       .toBeInTheDocument();
     await expect
       .element(
-        screen.getByText(/modern backend frameworks/),
+        screen.getByText('containerization, networking, and deployment'),
       )
       .toBeInTheDocument();
   });
