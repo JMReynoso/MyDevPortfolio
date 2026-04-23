@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { Link } from "react-router";
 
+const MotionLink = motion.create(Link);
+
 export interface WarmButtonProps {
   children: ReactNode;
   variant?: "primary" | "secondary" | "outline";
@@ -45,9 +47,14 @@ export function WarmButton({
     if (isInternalRoute) {
       // Use React Router Link for internal routes
       return (
-        <Link to={href} className={combinedClassName}>
+        <MotionLink
+          to={href}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={combinedClassName}
+        >
           {children}
-        </Link>
+        </MotionLink>
       );
     } else {
       // Use regular anchor tag for anchor links and external URLs

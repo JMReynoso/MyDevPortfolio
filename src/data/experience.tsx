@@ -10,13 +10,14 @@ export const experience: Experience[] = [
   {
     title: "Back-end Developer",
     company: "Cadmium",
-    date: "Dec 2020 - Nov 2022",
+    date: "Dec 2022 - Nov 2024",
     description: [
       "Created features and managed bugs across multiple products.",
       "Developed an internal REST API (Next.js) to enable seamless data transfer between services.",
       "Consolidated and migrated data to a normalized database.",
       "Wrote API documentation (Swagger).",
       "Implemented CI/CD workflows and improved application reliability and performance.",
+      "Created a Rate Limiter to optimize API call bottlenecks and reduce server load, increasing performance by up to 70% in high-traffic scenarios.",
     ],
     tags: [
       "Node.js",
@@ -43,12 +44,12 @@ export const experience: Experience[] = [
   {
     title: "Junior Full-Stack Developer",
     company: "Cadmium",
-    date: "Mar 2022 - Dec 2022",
+    date: "Mar 2022 - Jan 2023",
     description: [
       "Developed new features and resolved bugs for a SaaS platform.",
       "Worked on front-end and back-end tasks to deliver polished user experiences.",
-      "Collaborated with design and product teams.",
-      "Contributed to testing and deployment processes.",
+      "Collaborated with design and product teams to implement new features and improve existing ones.",
+      "Contributed to testing and deployment processes, increasing code quality and reliability by up to 40%.",
     ],
     tags: ["Java Spring", "Java", "JIRA", "SCRUM", "SQL", "JSP"],
   },
@@ -59,7 +60,7 @@ export const experience: Experience[] = [
     description: [
       "Built and maintained internal tools.",
       "Provided application support and troubleshooting for internal and customer-facing modules.",
-      "Automated repetitive tasks and improved system monitoring.",
+      "Automated repetitive tasks and improved system monitoring, increasing efficiency and reducing downtime by up to 30%.",
       "Created technical documentation and assisted in deployments.",
     ],
     tags: [

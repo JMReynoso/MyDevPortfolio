@@ -31,11 +31,12 @@ export default function Home() {
   return (
     <>
       <Hero
-        greeting="👋 omg hi! I'm a developer"
+        greeting="👋 omg hi!"
         title="Building apps on the web"
-        subtitle="I create applications with a focus on backend architecture, frontend design, and seamless user experiences."
-        primaryButton={{ text: "View My Work!", href: "#projects" }}
-        secondaryButton={{ text: "Get in Touch!", href: "/contact" }}
+        subtitle="I'm a Software Developer and Software Engineer that build backend systems that scale for SaaS startups and SMBs! I also create applications with a focus on backend architecture, frontend design, and seamless user experiences."
+        primaryButton={{ text: "View My Projects!", href: "#projects" }}
+        secondaryButton={{ text: "View my Experience!", href: "/about" }}
+        tertiaryButton={{ text: "Get in Touch!", href: "/contact" }}
         imageComponent={
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1693159682618-074078ed271e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHdvcmtzcGFjZSUyMGRlc2t8ZW58MXx8fHwxNzcwMzA1MzM4fDA&ixlib=rb-4.1.0&q=80&w=1080"

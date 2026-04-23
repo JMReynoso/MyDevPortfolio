@@ -26,6 +26,7 @@ describe("Hero", () => {
     subtitle: "My Subtitle",
     primaryButton: { text: "Primary", href: "/primary" },
     secondaryButton: { text: "Secondary", href: "/secondary" },
+    tertiaryButton: { text: "Tertiary", href: "/tertiary" },
     image: "/hero.jpg",
     imageAlt: "Hero Image",
   };
@@ -49,20 +50,26 @@ describe("Hero", () => {
     await expect.element(screen.getByText("Custom Greeting")).toBeInTheDocument();
   });
 
-  it("renders primary and secondary buttons", async () => {
+  it("renders all buttons with correct text and hrefs", async () => {
     const screen = await render(<Hero {...fullProps} />);
-    const primary = screen.getByTestId("button-primary");
+    const primary = screen.getByText("Primary");
     await expect.element(primary).toHaveAttribute("href", "/primary");
-    await expect.element(primary).toHaveTextContent("Primary");
-    const secondary = screen.getByTestId("button-secondary");
+    const secondary = screen.getByText("Secondary");
     await expect.element(secondary).toHaveAttribute("href", "/secondary");
-    await expect.element(secondary).toHaveTextContent("Secondary");
+    const tertiary = screen.getByText("Tertiary");
+    await expect.element(tertiary).toHaveAttribute("href", "/tertiary");
+  });
+
+  it("renders all buttons using primary variant", async () => {
+    const screen = await render(<Hero {...fullProps} />);
+    await expect.element(screen.getByText("Primary")).toHaveAttribute("data-testid", "button-primary");
+    await expect.element(screen.getByText("Secondary")).toHaveAttribute("data-testid", "button-primary");
+    await expect.element(screen.getByText("Tertiary")).toHaveAttribute("data-testid", "button-primary");
   });
 
   it("does not render buttons when not provided", async () => {
     const screen = await render(<Hero title="Title" subtitle="Sub" />);
     await expect.element(screen.getByTestId("button-primary")).not.toBeInTheDocument();
-    await expect.element(screen.getByTestId("button-secondary")).not.toBeInTheDocument();
   });
 
   it("renders image when provided", async () => {
