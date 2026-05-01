@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { Link } from "react-router";
 
-const MotionLink = motion.create(Link);
+const MotionLink = motion(Link);
 
 export interface WarmButtonProps {
   children: ReactNode;
