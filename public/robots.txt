@@ -5,6 +5,19 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+# Allow link preview bots
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
 # Block AI training crawlers
 User-agent: GPTBot
 Disallow: /

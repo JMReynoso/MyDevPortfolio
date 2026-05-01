@@ -2,15 +2,53 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { WarmButton } from "../src/components/common/WarmButton";
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    a: ({ children, whileHover, whileTap, initial, animate, transition, ...props }: any) => <a {...props}>{children}</a>,
-    button: ({ children, whileHover, whileTap, initial, animate, transition, ...props }: any) => <button {...props}>{children}</button>,
-  },
-}));
+vi.mock("framer-motion", () => {
+  const mockMotion = (component: any) => {
+    return ({
+      children,
+      whileHover,
+      whileTap,
+      initial,
+      animate,
+      transition,
+      ...props
+    }: any) => {
+      const Component = component;
+      return <Component {...props}>{children}</Component>;
+    };
+  };
+  mockMotion.a = ({
+    children,
+    whileHover,
+    whileTap,
+    initial,
+    animate,
+    transition,
+    ...props
+  }: any) => <a {...props}>{children}</a>;
+  mockMotion.button = ({
+    children,
+    whileHover,
+    whileTap,
+    initial,
+    animate,
+    transition,
+    ...props
+  }: any) => <button {...props}>{children}</button>;
+  mockMotion.Link = ({ children, to, ...props }: any) => (
+    <a href={to} {...props}>
+      {children}
+    </a>
+  );
+  return { motion: mockMotion };
+});
 
 vi.mock("react-router", () => ({
-  Link: ({ children, to, ...props }: any) => <a href={to} {...props}>{children}</a>,
+  Link: ({ children, to, ...props }: any) => (
+    <a href={to} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 describe("WarmButton", () => {
@@ -32,7 +70,9 @@ describe("WarmButton", () => {
   });
 
   it("applies secondary variant classes", async () => {
-    const screen = await render(<WarmButton variant="secondary">Btn</WarmButton>);
+    const screen = await render(
+      <WarmButton variant="secondary">Btn</WarmButton>,
+    );
     const button = screen.getByRole("button");
     await expect.element(button).toHaveClass("bg-white");
     await expect.element(button).toHaveClass("text-[#2C2416]");
@@ -71,27 +111,35 @@ describe("WarmButton", () => {
   });
 
   it("renders as anchor for external href", async () => {
-    const screen = await render(<WarmButton href="https://example.com">External</WarmButton>);
+    const screen = await render(
+      <WarmButton href="https://example.com">External</WarmButton>,
+    );
     const link = screen.getByRole("link");
     await expect.element(link).toHaveAttribute("href", "https://example.com");
   });
 
   it("renders as anchor for anchor link href", async () => {
-    const screen = await render(<WarmButton href="#section">Anchor</WarmButton>);
+    const screen = await render(
+      <WarmButton href="#section">Anchor</WarmButton>,
+    );
     const link = screen.getByRole("link");
     await expect.element(link).toHaveAttribute("href", "#section");
   });
 
   it("calls onClick handler when clicked", async () => {
     const handleClick = vi.fn();
-    const screen = await render(<WarmButton onClick={handleClick}>Click</WarmButton>);
+    const screen = await render(
+      <WarmButton onClick={handleClick}>Click</WarmButton>,
+    );
     const button = screen.getByRole("button");
     await button.click();
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it("applies custom className", async () => {
-    const screen = await render(<WarmButton className="my-class">Btn</WarmButton>);
+    const screen = await render(
+      <WarmButton className="my-class">Btn</WarmButton>,
+    );
     const button = screen.getByRole("button");
     await expect.element(button).toHaveClass("my-class");
   });

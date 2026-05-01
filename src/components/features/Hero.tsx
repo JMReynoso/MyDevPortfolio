@@ -15,6 +15,10 @@ export interface HeroProps {
     text: string;
     href: string;
   };
+  tertiaryButton?: {
+    text: string;
+    href: string;
+  };
   image?: string;
   imageAlt?: string;
   imageComponent?: ReactNode;
@@ -26,6 +30,7 @@ export function Hero({
   subtitle,
   primaryButton,
   secondaryButton,
+  tertiaryButton,
   image,
   imageAlt = "Hero image",
   imageComponent,
@@ -53,6 +58,10 @@ export function Hero({
             {subtitle}
           </p>
 
+          <p className="text-xl text-[#8B6F47] mb-8 leading-relaxed max-w-2xl mx-auto">
+            4+ years in SaaS | .NET Core and Node.js | Optimizing API call bottlenecks | Passion for clean code and architecture
+          </p>
+
           <div className="flex gap-4 justify-center mb-12">
             {primaryButton && (
               <WarmButton variant="primary" href={primaryButton.href}>
@@ -60,8 +69,13 @@ export function Hero({
               </WarmButton>
             )}
             {secondaryButton && (
-              <WarmButton variant="secondary" href={secondaryButton.href}>
+              <WarmButton variant="primary" href={secondaryButton.href}>
                 {secondaryButton.text}
+              </WarmButton>
+            )}
+            {tertiaryButton && (
+              <WarmButton variant="primary" href={tertiaryButton.href}>
+                {tertiaryButton.text}
               </WarmButton>
             )}
           </div>
