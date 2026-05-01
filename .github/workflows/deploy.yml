@@ -12,6 +12,8 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,7 +23,7 @@ jobs:
           if ! command -v node >/dev/null 2>&1; then
             brew install node
           fi
-      
+
       - name: Install dependencies
         run: npm ci
 
