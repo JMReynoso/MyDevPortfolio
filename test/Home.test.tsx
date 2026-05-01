@@ -3,13 +3,14 @@ import { render } from "vitest-browser-react";
 import Home from "../src/pages/Home";
 
 vi.mock("../src/components", () => ({
-  Hero: ({ greeting, title, subtitle, primaryButton, secondaryButton, imageComponent }: any) => (
+  Hero: ({ greeting, title, subtitle, primaryButton, secondaryButton, tertiaryButton, imageComponent }: any) => (
     <div data-testid="hero">
       <span>{greeting}</span>
       <span>{title}</span>
       <span>{subtitle}</span>
       {primaryButton && <a href={primaryButton.href}>{primaryButton.text}</a>}
       {secondaryButton && <a href={secondaryButton.href}>{secondaryButton.text}</a>}
+      {tertiaryButton && <a href={tertiaryButton.href}>{tertiaryButton.text}</a>}
       {imageComponent && <div data-testid="hero-image">{imageComponent}</div>}
     </div>
   ),
@@ -95,21 +96,20 @@ describe("Home", () => {
     await expect.element(screen.getByText("Building apps on the web")).toBeInTheDocument();
     await expect.element(
       screen.getByText(
-        "I create applications with a focus on backend architecture, frontend design, and seamless user experiences.",
+        "I'm a Software Developer and Software Engineer that build backend systems that scale for SaaS startups and SMBs! I also create applications with a focus on backend architecture, frontend design, and seamless user experiences.",
       ),
     ).toBeInTheDocument();
   });
 
   it("renders hero greeting", async () => {
     const screen = await render(<Home />);
-    await expect
-      .element(screen.getByText("👋 omg hi! I'm a developer"))
-      .toBeInTheDocument();
+    await expect.element(screen.getByText("👋 omg hi!")).toBeInTheDocument();
   });
 
   it("renders hero buttons", async () => {
     const screen = await render(<Home />);
-    await expect.element(screen.getByText("View My Work!")).toBeInTheDocument();
+    await expect.element(screen.getByText("View My Projects!")).toBeInTheDocument();
+    await expect.element(screen.getByText("View my Experience!")).toBeInTheDocument();
     await expect.element(screen.getByText("Get in Touch!")).toBeInTheDocument();
   });
 
