@@ -1,9 +1,7 @@
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Grid, Section, SectionHeader, WarmCard } from "../components";
+import { Grid, Section, SectionHeader, ServiceCard } from "../components";
 import {
-  colorGradient,
-  colorIcon,
+  batchProductizedServices,
   productizedServices,
   retainerPlans,
 } from "../data/services";
@@ -40,95 +38,33 @@ export default function Services() {
           subtitle="Pre-scoped, fixed-price offerings for common needs and clear deliverables."
         />
         <Grid cols={{ md: 2, lg: 3 }} gap="lg">
-          {productizedServices.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-              >
-                <WarmCard
-                  hover
-                  padding="lg"
-                  className={`h-full bg-gradient-to-br ${colorGradient[service.color]} to-white border border-[#8B6F47]/10 shadow-sm hover:shadow-md`}
-                >
-                  <div
-                    className={`w-12 h-12 ${colorIcon[service.color]} rounded-xl flex items-center justify-center mb-4`}
-                  >
-                    <Icon className="w-6 h-6 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#2C2416] mb-2">
-                    {service.title}
-                  </h3>
-                  <p className="text-[#8B6F47] text-sm leading-relaxed mb-4">
-                    {service.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {service.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2 py-1 rounded-lg bg-[#8B6F47]/10 text-[#8B6F47] font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </WarmCard>
-              </motion.div>
-            );
-          })}
+          {productizedServices.map((service, index) => (
+            <ServiceCard key={service.title} service={service} index={index} />
+          ))}
         </Grid>
       </Section>
 
-      <Section id="contact" background="cream">
+      <Section id="batchProductized" background="cream">
+        <SectionHeader
+          title="Productized Services in batches"
+          subtitle="Pre-scoped, fixed-price offerings for common needs and clear deliverables in batches."
+        />
+        <Grid cols={{ md: 2, lg: 3 }} gap="lg">
+          {batchProductizedServices.map((service, index) => (
+            <ServiceCard key={service.title} service={service} index={index} />
+          ))}
+        </Grid>
+      </Section>
+
+      <Section id="retainer" background="white">
         <SectionHeader
           title="Retainer Plans"
           subtitle="Ongoing support and maintenance packages for long-term partnerships."
         />
         <Grid cols={{ md: 2, lg: 3 }} gap="lg">
-          {retainerPlans.map((plan, index) => {
-            const Icon = plan.icon;
-            return (
-              <motion.div
-                key={plan.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-              >
-                <WarmCard
-                  hover
-                  padding="lg"
-                  className={`h-full bg-gradient-to-br ${colorGradient[plan.color]} to-white border border-[#8B6F47]/10 shadow-sm hover:shadow-md`}
-                >
-                  <div
-                    className={`w-12 h-12 ${colorIcon[plan.color]} rounded-xl flex items-center justify-center mb-4`}
-                  >
-                    <Icon className="w-6 h-6 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#2C2416] mb-2">
-                    {plan.title}
-                  </h3>
-                  <p className="text-[#8B6F47] text-sm leading-relaxed mb-4">
-                    {plan.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {plan.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2 py-1 rounded-lg bg-[#8B6F47]/10 text-[#8B6F47] font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </WarmCard>
-              </motion.div>
-            );
-          })}
+          {retainerPlans.map((plan, index) => (
+            <ServiceCard key={plan.title} service={plan} index={index} />
+          ))}
         </Grid>
       </Section>
 
@@ -178,6 +114,13 @@ export default function Services() {
           </Section>
         */}
       <div className="pb-20 md:pb-1" aria-hidden="true" />
+      <div className="max-w-4xl mx-auto text-center text-lg text-[#8B6F47]">
+        <p>
+          <b>NOTE:</b> Some services may be unavailable due to high demand or
+          resource constraints.
+        </p>
+      </div>
+      <div className="pb-20 md:pb-2" aria-hidden="true" />
     </>
   );
 }
