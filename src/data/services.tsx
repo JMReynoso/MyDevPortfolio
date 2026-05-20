@@ -1,90 +1,131 @@
 import {
+    Code,
     Code2,
+    CodeXml,
     Container,
-    Database,
-    Layers,
+    FileCode,
+    FolderCode,
     type LucideIcon,
 } from "lucide-react";
 
 export type Service = {
     icon: LucideIcon;
     title: string;
-    description: string;
+    description: React.ReactNode;
     price?: string;
     tags: string[];
     color: "green" | "maple" | "yellow" | "brown";
     status: "available" | "unavailable" | "coming_soon";
 };
 
-//TODO: update productized services
+//TODO: update productized services with price and status
 export const productizedServices: Service[] = [
     {
         icon: Code2,
-        title: "Backend API Development",
-        description:
-            "Design and build production-ready REST APIs with clean architecture, proper error handling, auth, and documentation.",
-        tags: ["Node.js", "NestJS", "Java Spring", ".NET", "REST"],
+        title: "Backend Performance Audit",
+        description: (
+            <>
+                For <b>1 service</b>, I can provide a comprehensive review of
+                your backend architecture, code quality, and performance
+                bottlenecks with actionable recommendations. if more services
+                are needed, refer to the 'Productized Services in batches'
+                section below.
+            </>
+        ),
+        tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "green",
-        price: "$750",
-        status: "unavailable",
+        price: "TBD",
+        status: "coming_soon",
     },
     {
-        icon: Database,
-        title: "Database Design & Optimization",
-        description:
-            "Schema design, data normalization, query tuning, and migrations for relational and document-based databases.",
-        tags: ["PostgreSQL", "MongoDB", "Migrations", "Indexing"],
+        icon: CodeXml,
+        title: "API Health Check",
+        description: (
+            <>
+                For <b>1 service</b>, I can perform a focused review of your API
+                endpoints, including response times, error rates, and adherence
+                to best practices with specific recommendations for improvement!
+            </>
+        ),
+        tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "maple",
-        price: "$500",
+        price: "TBD",
+        status: "coming_soon",
     },
 ];
 
-//TODO: update batch productized services
+//TODO: update batch productized services with price and status
 export const batchProductizedServices: Service[] = [
     {
-        icon: Code2,
-        title: "Backend API Development",
-        description:
-            "Design and build production-ready REST APIs with clean architecture, proper error handling, auth, and documentation.",
-        tags: ["Node.js", "NestJS", "Java Spring", ".NET", "REST"],
-        color: "green",
-        price: "$750",
-        status: "unavailable",
-    },
-    {
-        icon: Database,
-        title: "Database Design & Optimization",
-        description:
-            "Schema design, data normalization, query tuning, and migrations for relational and document-based databases.",
-        tags: ["PostgreSQL", "MongoDB", "Migrations", "Indexing"],
+        icon: Code,
+        title: "Enterprise Performance Audit",
+        description: (
+            <>
+                For <b>2-4 services</b> and depending on the scope of work, I
+                can provide a comprehensive review of your backend architecture,
+                code quality, and performance bottlenecks with actionable
+                recommendations (including summary, findings, prioritized
+                recommendations, and possible roadmap for implementation).
+            </>
+        ),
+        tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "maple",
-        price: "$500",
+        price: "TBD",
+        status: "coming_soon",
     },
 ];
 
-//TODO: Update retainer plans
+//TODO: Update retainer plans with price and status
 export const retainerPlans: Service[] = [
     {
         icon: Container,
-        title: "Ongoing Development Support",
-        description:
-            "Monthly retainer for continuous development, feature additions, and iterative improvements.",
+        title: "Monitoring and Maintenance",
+        description: (
+            <>
+                Ongoing monitoring of your backend services, regular health
+                checks, and proactive maintenance to ensure optimal performance
+                and reliability.
+            </>
+        ),
         tags: [
             "Feature Development",
             "Iterative Improvements",
             "Priority Support",
         ],
         color: "yellow",
-        price: "Starting at $1500/month",
+        price: "TBD",
+        status: "coming_soon",
     },
     {
-        icon: Layers,
-        title: "Architecture Review & Refactoring",
-        description:
-            "Regular codebase reviews, refactoring sessions, and architectural guidance to keep your project healthy.",
-        tags: ["Code Review", "Refactoring", "Architectural Guidance"],
+        icon: FileCode,
+        title: "Backend Developer",
+        description: (
+            <>
+                Ongoing support for your backend development needs, including
+                new feature development, iterative improvements, and priority
+                support to ensure your services are always running smoothly.
+            </>
+        ),
+        tags: ["Endpoint Creation", "Refactoring", "Performance Optimization"],
         color: "brown",
-        price: "Starting at $6000/month",
+        price: "TBD",
+        status: "coming_soon",
+    },
+    {
+        icon: FolderCode,
+        title: "Lead Backend Developer",
+        description: (
+            <>
+                Ongoing support for your backend development needs, including
+                new feature development, iterative improvements, and priority
+                support to ensure your services are always running smoothly. I
+                can also provide architectural guidance and code reviews to help
+                your team grow and improve over time.
+            </>
+        ),
+        tags: ["Code Review", "Refactoring", "Architectural Guidance"],
+        color: "green",
+        price: "TBD",
         status: "coming_soon",
     },
 ];
@@ -93,25 +134,41 @@ export const steps = [
     {
         number: "01",
         title: "Discovery",
-        description:
-            "We start with a conversation about your goals, constraints, and existing stack so I can understand what you actually need.",
+        description: (
+            <>
+                We start with a conversation about your goals, constraints, and
+                existing stack so I can understand what you actually need.
+            </>
+        ),
     },
     {
         number: "02",
         title: "Scoping",
-        description:
-            "I break the work into clear deliverables with timelines — no surprise scope creep.",
+        description: (
+            <>
+                I break the work into clear deliverables with timelines — no
+                surprise scope creep.
+            </>
+        ),
     },
     {
         number: "03",
         title: "Build",
-        description:
-            "Iterative development with regular check-ins. You always know where things stand.",
+        description: (
+            <>
+                Iterative development with regular check-ins. You always know
+                where things stand.
+            </>
+        ),
     },
     {
         number: "04",
         title: "Handoff",
-        description:
-            "Clean code, documented decisions, and a walkthrough so your team can own and extend the work.",
+        description: (
+            <>
+                Clean code, documented decisions, and a walkthrough so your team
+                can own and extend the work.
+            </>
+        ),
     },
 ];
