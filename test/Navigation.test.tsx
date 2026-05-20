@@ -2,8 +2,10 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { Navigation } from "../src/components/layout/Navigation";
 
+const mockUseIsMobile = vi.fn(() => false);
+
 vi.mock("../src/components/ui/use-mobile", () => ({
-  useIsMobile: vi.fn(() => false),
+  useIsMobile: () => mockUseIsMobile(),
 }));
 
 vi.mock("framer-motion", () => ({
@@ -37,7 +39,8 @@ vi.mock("../src/components/figma/ImageWithFallback", () => ({
 vi.mock("lucide-react", () => ({
   Home: (props: any) => <span data-testid="icon-home" {...props} />,
   User: (props: any) => <span data-testid="icon-user" {...props} />,
-  Briefcase: (props: any) => <span data-testid="icon-briefcase" {...props} />,
+  BriefcaseBusiness: (props: any) => <span data-testid="icon-briefcase-business" {...props} />,
+  FolderDot: (props: any) => <span data-testid="icon-folder-dot" {...props} />,
   Mail: (props: any) => <span data-testid="icon-mail" {...props} />,
 }));
 
@@ -45,6 +48,7 @@ describe("Navigation", () => {
   const mockLinks = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
     { label: "Projects", href: "#projects" },
     { label: "Contact", href: "/contact" },
   ];
@@ -80,6 +84,7 @@ describe("Navigation", () => {
     );
     await expect.element(screen.getByText("Home")).toBeInTheDocument();
     await expect.element(screen.getByText("About")).toBeInTheDocument();
+    await expect.element(screen.getByText("Services")).toBeInTheDocument();
     await expect.element(screen.getByText("Projects")).toBeInTheDocument();
     await expect.element(screen.getByText("Contact")).toBeInTheDocument();
   });
@@ -96,6 +101,47 @@ describe("Navigation", () => {
       <Navigation links={[]} activeSection="home" />,
     );
     await expect.element(screen.getByText("Your Name")).toBeInTheDocument();
+  });
+
+  it("renders main nav with correct aria-label", async () => {
+    const screen = await render(
+      <Navigation links={mockLinks} activeSection="home" />,
+    );
+    await expect
+      .element(screen.getByRole("navigation", { name: "Main Navigation" }))
+      .toBeInTheDocument();
+  });
+
+  it("renders icons for each nav item", async () => {
+    const screen = await render(
+      <Navigation links={mockLinks} activeSection="home" />,
+    );
+    await expect.element(screen.getByTestId("icon-home")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-user")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-briefcase-business")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-folder-dot")).toBeInTheDocument();
+    await expect.element(screen.getByTestId("icon-mail")).toBeInTheDocument();
+  });
+
+  it("does not render mobile navigation when not on mobile", async () => {
+    mockUseIsMobile.mockReturnValue(false);
+    const screen = await render(
+      <Navigation links={mockLinks} activeSection="home" />,
+    );
+    await expect
+      .element(screen.getByRole("navigation", { name: "Mobile Navigation" }))
+      .not.toBeInTheDocument();
+  });
+
+  it("renders mobile navigation when on mobile", async () => {
+    mockUseIsMobile.mockReturnValue(true);
+    const screen = await render(
+      <Navigation links={mockLinks} activeSection="home" />,
+    );
+    await expect
+      .element(screen.getByRole("navigation", { name: "Mobile Navigation" }))
+      .toBeInTheDocument();
+    mockUseIsMobile.mockReturnValue(false);
   });
 
   it("calls onSectionChange when link is clicked", async () => {
@@ -122,5 +168,31 @@ describe("Navigation", () => {
     );
     await screen.getByText("About").click();
     expect(mockOnNavigationClick).toHaveBeenCalledWith("/about", "about");
+  });
+
+  it("calls onNavigationClick with hash href for non-route links", async () => {
+    const mockOnNavigationClick = vi.fn();
+    const screen = await render(
+      <Navigation
+        links={mockLinks}
+        activeSection="home"
+        onNavigationClick={mockOnNavigationClick}
+      />,
+    );
+    await screen.getByText("Projects").click();
+    expect(mockOnNavigationClick).toHaveBeenCalledWith("#projects", "projects");
+  });
+
+  it("calls onNavigationClick for the Services link", async () => {
+    const mockOnNavigationClick = vi.fn();
+    const screen = await render(
+      <Navigation
+        links={mockLinks}
+        activeSection="home"
+        onNavigationClick={mockOnNavigationClick}
+      />,
+    );
+    await screen.getByText("Services").click();
+    expect(mockOnNavigationClick).toHaveBeenCalledWith("/services", "services");
   });
 });
