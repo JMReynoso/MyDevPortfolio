@@ -6,6 +6,7 @@ import { strings } from "../constants/strings";
 const navigationLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
   { label: "Projects", href: "/?scrollTo=projects" },
   { label: "Contact", href: "/contact" },
 ];
@@ -44,6 +45,8 @@ export default function Layout() {
       setActiveSection("home");
     } else if (location.pathname === "/about") {
       setActiveSection("about");
+    } else if (location.pathname === "/services") {
+      setActiveSection("services");
     } else if (location.pathname === "/contact") {
       setActiveSection("contact");
     }
