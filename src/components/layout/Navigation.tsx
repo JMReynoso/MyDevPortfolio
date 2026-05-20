@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, Home, Mail, User } from "lucide-react";
+import { BriefcaseBusiness, FolderDot, Home, Mail, User } from "lucide-react";
 import { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
@@ -22,7 +22,8 @@ export interface NavigationProps {
 const iconMap: Record<string, ComponentType<{ className?: string }>> = {
   Home: Home,
   About: User,
-  Projects: Briefcase,
+  Services: BriefcaseBusiness,
+  Projects: FolderDot,
   Contact: Mail,
 };
 

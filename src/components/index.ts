@@ -45,4 +45,7 @@ export type { ContactSectionProps } from './features/ContactSection';
 
 export { Technologies } from './features/Technologies';
 
+export { ServiceCard } from './features/ServiceCard';
+export type { ServiceCardProps } from './features/ServiceCard';
+
 export { CursorGlow } from './ui/CursorGlow';
