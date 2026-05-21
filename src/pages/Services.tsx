@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, ServiceCard } from "../components";
 import {
   batchProductizedServices,
+  customProjects,
   productizedServices,
   retainerPlans,
 } from "../data/services";
@@ -64,6 +65,22 @@ export default function Services() {
         <Grid cols={{ md: 2, lg: 3 }} gap="lg">
           {retainerPlans.map((plan, index) => (
             <ServiceCard key={plan.title} service={plan} index={index} />
+          ))}
+        </Grid>
+      </Section>
+
+      <Section id="customProjects" background="cream">
+        <SectionHeader
+          title="Custom Projects"
+          subtitle="Tailored engagements for unique needs that don't fit a standard package."
+        />
+        <Grid cols={{ md: 2, lg: 3 }} gap="lg">
+          {customProjects.map((project, index) => (
+            <ServiceCard
+              key={project.title}
+              service={project}
+              index={index}
+            />
           ))}
         </Grid>
       </Section>

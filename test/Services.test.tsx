@@ -39,7 +39,7 @@ vi.mock("../src/data/services", () => ({
       description: "Audit description",
       tags: ["Node.js", "NestJS", ".NET", "REST"],
       color: "green",
-      price: "TBD",
+      price: "Price TBD",
       status: "coming_soon",
     },
     {
@@ -48,7 +48,7 @@ vi.mock("../src/data/services", () => ({
       description: "Health check description",
       tags: ["Node.js", "NestJS", ".NET", "REST"],
       color: "maple",
-      price: "TBD",
+      price: "Price TBD",
       status: "coming_soon",
     },
   ],
@@ -59,7 +59,7 @@ vi.mock("../src/data/services", () => ({
       description: "Enterprise audit description",
       tags: ["Node.js", "NestJS", ".NET", "REST"],
       color: "maple",
-      price: "TBD",
+      price: "Price TBD",
       status: "coming_soon",
     },
   ],
@@ -70,7 +70,7 @@ vi.mock("../src/data/services", () => ({
       description: "Monitoring description",
       tags: ["Feature Development", "Iterative Improvements", "Priority Support"],
       color: "yellow",
-      price: "TBD",
+      price: "Price TBD",
       status: "coming_soon",
     },
     {
@@ -79,7 +79,7 @@ vi.mock("../src/data/services", () => ({
       description: "Backend developer description",
       tags: ["Endpoint Creation", "Refactoring", "Performance Optimization"],
       color: "brown",
-      price: "TBD",
+      price: "Price TBD",
       status: "coming_soon",
     },
     {
@@ -88,7 +88,36 @@ vi.mock("../src/data/services", () => ({
       description: "Lead developer description",
       tags: ["Code Review", "Refactoring", "Architectural Guidance"],
       color: "green",
-      price: "TBD",
+      price: "Price TBD",
+      status: "coming_soon",
+    },
+  ],
+  customProjects: [
+    {
+      icon: () => null,
+      title: "Tailored Backend Solution",
+      description: "Tailored solution description",
+      tags: ["Custom Architecture", "Scoping", "End-to-End Delivery"],
+      color: "green",
+      price: "Price TBD",
+      status: "coming_soon",
+    },
+    {
+      icon: () => null,
+      title: "Third-Party Integration",
+      description: "Integration description",
+      tags: ["API Integration", "Webhooks", "Data Sync"],
+      color: "maple",
+      price: "Price TBD",
+      status: "coming_soon",
+    },
+    {
+      icon: () => null,
+      title: "Legacy Modernization",
+      description: "Modernization description",
+      tags: ["Migration", "Refactoring", "Modernization"],
+      color: "brown",
+      price: "Price TBD",
       status: "coming_soon",
     },
   ],
@@ -166,6 +195,19 @@ describe("Services", () => {
       .toBeInTheDocument();
   });
 
+  it("renders the Custom Projects section", async () => {
+    const screen = await render(<Services />);
+    await expect
+      .element(screen.getByTestId("section-customProjects"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("section-header-Custom Projects"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByText("Custom Projects"))
+      .toBeInTheDocument();
+  });
+
   it("renders sections with correct backgrounds", async () => {
     const screen = await render(<Services />);
     await expect
@@ -177,6 +219,9 @@ describe("Services", () => {
     await expect
       .element(screen.getByTestId("section-retainer"))
       .toHaveAttribute("data-background", "white");
+    await expect
+      .element(screen.getByTestId("section-customProjects"))
+      .toHaveAttribute("data-background", "cream");
   });
 
   it("renders all productized service cards", async () => {
@@ -206,6 +251,19 @@ describe("Services", () => {
       .toBeInTheDocument();
     await expect
       .element(screen.getByTestId("service-card-Lead Backend Developer"))
+      .toBeInTheDocument();
+  });
+
+  it("renders all custom project cards", async () => {
+    const screen = await render(<Services />);
+    await expect
+      .element(screen.getByTestId("service-card-Tailored Backend Solution"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("service-card-Third-Party Integration"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("service-card-Legacy Modernization"))
       .toBeInTheDocument();
   });
 
@@ -243,9 +301,9 @@ describe("Services", () => {
     const screen = await render(<Services />);
     await expect
       .element(screen.getByTestId("price-Backend Performance Audit"))
-      .toHaveTextContent("TBD");
+      .toHaveTextContent("Price TBD");
     await expect
       .element(screen.getByTestId("price-Lead Backend Developer"))
-      .toHaveTextContent("TBD");
+      .toHaveTextContent("Price TBD");
   });
 });

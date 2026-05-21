@@ -5,6 +5,9 @@ import {
     Container,
     FileCode,
     FolderCode,
+    Puzzle,
+    Sparkles,
+    Wrench,
     type LucideIcon,
 } from "lucide-react";
 
@@ -34,7 +37,7 @@ export const productizedServices: Service[] = [
         ),
         tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "green",
-        price: "TBD",
+        price: "Price TBD",
         status: "coming_soon",
     },
     {
@@ -49,7 +52,7 @@ export const productizedServices: Service[] = [
         ),
         tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "maple",
-        price: "TBD",
+        price: "Price TBD",
         status: "coming_soon",
     },
 ];
@@ -70,7 +73,7 @@ export const batchProductizedServices: Service[] = [
         ),
         tags: ["Node.js", "NestJS", ".NET", "REST"],
         color: "maple",
-        price: "TBD",
+        price: "Price TBD",
         status: "coming_soon",
     },
 ];
@@ -93,7 +96,7 @@ export const retainerPlans: Service[] = [
             "Priority Support",
         ],
         color: "yellow",
-        price: "TBD",
+        price: "Price TBD",
         status: "coming_soon",
     },
     {
@@ -108,7 +111,7 @@ export const retainerPlans: Service[] = [
         ),
         tags: ["Endpoint Creation", "Refactoring", "Performance Optimization"],
         color: "brown",
-        price: "TBD",
+        price: "Price TBD",
         status: "coming_soon",
     },
     {
@@ -125,7 +128,57 @@ export const retainerPlans: Service[] = [
         ),
         tags: ["Code Review", "Refactoring", "Architectural Guidance"],
         color: "green",
-        price: "TBD",
+        price: "Price TBD",
+        status: "coming_soon",
+    },
+];
+
+//TODO: Update custom projects with price and status
+export const customProjects: Service[] = [
+    {
+        icon: Sparkles,
+        title: "Tailored Backend Solution",
+        description: (
+            <>
+                Have a unique idea that doesn't fit a standard package? I can
+                design and build a custom backend solution tailored to your
+                business goals, from initial concept through production
+                deployment.
+            </>
+        ),
+        tags: ["Custom Architecture", "Scoping", "End-to-End Delivery"],
+        color: "green",
+        price: "Price TBD",
+        status: "coming_soon",
+    },
+    {
+        icon: Puzzle,
+        title: "Third-Party Integration",
+        description: (
+            <>
+                Need to connect your systems with external services, payment
+                processors, or partner APIs? I can build reliable integrations
+                with proper error handling, retries, and observability.
+            </>
+        ),
+        tags: ["API Integration", "Webhooks", "Data Sync"],
+        color: "maple",
+        price: "Price TBD",
+        status: "coming_soon",
+    },
+    {
+        icon: Wrench,
+        title: "Legacy Modernization",
+        description: (
+            <>
+                Working with an aging codebase? I can help migrate, refactor, or
+                incrementally modernize legacy backend systems while keeping
+                business operations running smoothly throughout the transition.
+            </>
+        ),
+        tags: ["Migration", "Refactoring", "Modernization"],
+        color: "brown",
+        price: "Price TBD",
         status: "coming_soon",
     },
 ];
