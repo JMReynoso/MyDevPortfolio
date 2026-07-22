@@ -1,0 +1,56 @@
+version: 0.2
+
+# CodeBuild replaces the "Build & Test" job from .github/workflows/deploy.yml,
+# plus it publishes the new Lambda version and hands an appspec to CodeDeploy.
+
+env:
+  variables:
+    CI: "true" # makes vitest browser mode run headless
+    FUNCTION_NAME: portfolio-site
+    FUNCTION_ALIAS: live
+  parameter-store:
+    VITE_WEB3FORMS_ACCESS_KEY: /portfolio/web3forms-access-key
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - npm ci
+      - npx playwright install --with-deps chromium
+
+  pre_build:
+    commands:
+      - npm run test:coverage
+
+  build:
+    commands:
+      - npm run build
+      # Package handler + dist/ into the Lambda bundle
+      - mkdir -p bundle
+      - cp lambda/handler.mjs bundle/
+      - cp -r dist bundle/dist
+      - cd bundle && zip -rq ../function.zip . && cd ..
+      # Remember what the alias points at now (CodeDeploy shifts FROM this)
+      - CURRENT_VERSION=$(aws lambda get-alias --function-name "$FUNCTION_NAME" --name "$FUNCTION_ALIAS" --query FunctionVersion --output text)
+      # Upload new code and publish an immutable version (CodeDeploy shifts TO this)
+      - TARGET_VERSION=$(aws lambda update-function-code --function-name "$FUNCTION_NAME" --zip-file fileb://function.zip --publish --query Version --output text)
+      - aws lambda wait function-updated --function-name "$FUNCTION_NAME"
+      - echo "Deploying $CURRENT_VERSION -> $TARGET_VERSION"
+      # Generate the appspec CodeDeploy consumes
+      - |
+        cat > appspec.yaml <<EOF
+        version: 0.0
+        Resources:
+          - portfolioFunction:
+              Type: AWS::Lambda::Function
+              Properties:
+                Name: $FUNCTION_NAME
+                Alias: $FUNCTION_ALIAS
+                CurrentVersion: $CURRENT_VERSION
+                TargetVersion: $TARGET_VERSION
+        EOF
+
+artifacts:
+  files:
+    - appspec.yaml
