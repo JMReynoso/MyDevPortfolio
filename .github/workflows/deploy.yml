@@ -1,9 +1,12 @@
-name: CI / Deploy
+name: CI (pull requests)
+
+# Deploys now run on AWS: CodePipeline -> CodeBuild -> CodeDeploy -> Lambda
+# (see aws/SETUP.md and buildspec.yml). This workflow only provides PR checks
+# and the coverage comment, which AWS CodePipeline can't post to GitHub PRs.
+# Delete this file if you want zero GitHub Actions usage.
 
 on:
   pull_request:
-    branches: [main]
-  push:
     branches: [main]
 
 jobs:
@@ -32,7 +35,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Report Coverage
-        if: always() && github.event_name == 'pull_request'
+        if: always()
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-path: "./coverage/coverage-summary.json"
@@ -40,21 +43,3 @@ jobs:
 
       - name: Build app
         run: npm run build
-
-  deploy:
-    name: Deploy
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, macOS, ARM64]
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Deploy (Docker)
-        working-directory: .
-        run: |
-          export VITE_WEB3FORMS_ACCESS_KEY=${{ secrets.WEB3FORMS_ACCESS_KEY }}
-          docker-compose -f docker-compose.prod.yml down
-          docker-compose -f docker-compose.prod.yml up --build -d
