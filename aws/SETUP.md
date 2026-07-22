@@ -4,6 +4,14 @@ One-time setup to move deploys off GitHub Actions. After this, every push to
 `main` triggers: **CodePipeline → CodeBuild (test + build + publish Lambda
 version) → CodeDeploy (shift the `live` alias to the new version)**.
 
+**Run all commands from the repo root** (the checkout that contains
+`lambda/handler.mjs`). First, put your account ID in a shell variable — the
+commands below reference it as `$ACCOUNT_ID`:
+
+```bash
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+```
+
 Region examples use `us-east-1`; replace with yours. Names used throughout:
 
 | Thing              | Name                      |
@@ -46,7 +54,7 @@ aws lambda create-function \
   --function-name portfolio-site \
   --runtime nodejs22.x \
   --handler handler.handler \
-  --role arn:aws:iam::<ACCOUNT_ID>:role/portfolio-lambda-role \
+  --role arn:aws:iam::$ACCOUNT_ID:role/portfolio-lambda-role \
   --zip-file fileb://function.zip \
   --memory-size 256 --timeout 10
 
@@ -81,7 +89,7 @@ aws deploy create-application \
 aws deploy create-deployment-group \
   --application-name portfolio-site \
   --deployment-group-name portfolio-site-dg \
-  --service-role-arn arn:aws:iam::<ACCOUNT_ID>:role/portfolio-codedeploy-role \
+  --service-role-arn arn:aws:iam::$ACCOUNT_ID:role/portfolio-codedeploy-role \
   --deployment-config-name CodeDeployDefault.LambdaAllAtOnce
 ```
 
@@ -104,7 +112,9 @@ Console: **CodeBuild → Create project**
   (small = the free-tier size; Playwright needs the Ubuntu image for `--with-deps`)
 - Buildspec: "Use a buildspec file" (it reads `buildspec.yml` from the repo)
 - Let it create a service role, then attach this inline policy to that role so
-  the build can read the SSM param and publish Lambda versions:
+  the build can read the SSM param and publish Lambda versions (this JSON is
+  pasted into the IAM console, so replace `$ACCOUNT_ID` with your literal
+  12-digit account ID):
 
 ```json
 {
@@ -113,7 +123,7 @@ Console: **CodeBuild → Create project**
     {
       "Effect": "Allow",
       "Action": ["ssm:GetParameter", "ssm:GetParameters"],
-      "Resource": "arn:aws:ssm:*:<ACCOUNT_ID>:parameter/portfolio/*"
+      "Resource": "arn:aws:ssm:*:$ACCOUNT_ID:parameter/portfolio/*"
     },
     {
       "Effect": "Allow",
@@ -124,7 +134,7 @@ Console: **CodeBuild → Create project**
         "lambda:GetFunction",
         "lambda:GetFunctionConfiguration"
       ],
-      "Resource": "arn:aws:lambda:*:<ACCOUNT_ID>:function:portfolio-site*"
+      "Resource": "arn:aws:lambda:*:$ACCOUNT_ID:function:portfolio-site*"
     }
   ]
 }
