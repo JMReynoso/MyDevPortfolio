@@ -106,7 +106,24 @@ export default function About() {
         </Grid>
       </Section>
 
-      <Section id="certifications" background="cream">
+      <Section id="experience" background="cream">
+        <SectionHeader title="Experience" />
+
+        <div className="max-w-3xl mx-auto space-y-8">
+          {experience.map((item) => (
+            <ExperienceEducationCard
+              key={item.title}
+              title={item.title}
+              company={item.company}
+              date={item.date}
+              description={item.description}
+              tags={item.tags}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section id="certifications" background="white">
         <SectionHeader title="Certifications" />
 
         <div className="max-w-3xl mx-auto">
@@ -124,23 +141,6 @@ export default function About() {
               />
             ))}
           </Grid>
-        </div>
-      </Section>
-
-      <Section id="experience" background="white">
-        <SectionHeader title="Experience & Education" />
-
-        <div className="max-w-3xl mx-auto space-y-8">
-          {experience.map((item) => (
-            <ExperienceEducationCard
-              key={item.title}
-              title={item.title}
-              company={item.company}
-              date={item.date}
-              description={item.description}
-              tags={item.tags}
-            />
-          ))}
         </div>
       </Section>
 

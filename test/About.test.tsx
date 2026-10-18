@@ -259,7 +259,7 @@ describe("About", () => {
       .element(screen.getByTestId("section-experience"))
       .toBeInTheDocument();
     await expect
-      .element(screen.getByTestId("section-header-Experience & Education"))
+      .element(screen.getByTestId("section-header-Experience"))
       .toBeInTheDocument();
   });
 
@@ -306,11 +306,26 @@ describe("About", () => {
       .element(screen.getByTestId("section-profession"))
       .toHaveAttribute("data-background", "white");
     await expect
-      .element(screen.getByTestId("section-certifications"))
+      .element(screen.getByTestId("section-experience"))
       .toHaveAttribute("data-background", "cream");
     await expect
-      .element(screen.getByTestId("section-experience"))
+      .element(screen.getByTestId("section-certifications"))
       .toHaveAttribute("data-background", "white");
+  });
+
+  it("orders the sections Experience, Certifications", async () => {
+    const screen = await render(<About />);
+    await expect
+      .element(screen.getByTestId("section-certifications"))
+      .toBeInTheDocument();
+    const order = Array.from(screen.container.querySelectorAll("section")).map(
+      (section) => section.dataset.testid,
+    );
+    expect(order).toEqual([
+      "section-profession",
+      "section-experience",
+      "section-certifications",
+    ]);
   });
 
   it("renders the About Me heading as h1", async () => {
