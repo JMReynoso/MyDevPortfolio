@@ -44,10 +44,14 @@ vi.mock("../src/components", () => ({
 }));
 
 vi.mock("../src/components/features/CertificationCard", () => ({
-  CertificationCard: ({ title, text, status }: any) => (
+  CertificationCard: ({ title, details, status }: any) => (
     <div data-testid={`cert-card-${title}`} data-status={status}>
       <span>{title}</span>
-      <span>{text}</span>
+      <ul>
+        {details.map((detail: string) => (
+          <li key={detail}>{detail}</li>
+        ))}
+      </ul>
       <span>{status}</span>
     </div>
   ),
@@ -102,7 +106,7 @@ vi.mock("../src/data/certification", () => ({
   certifications: [
     {
       title: "AWS Cert",
-      text: "Cloud cert description",
+      details: ["Cloud cert first Detail", "Cloud cert second Detail"],
       color: "F5E6D3",
       status: "Certified",
       icon: (props: any) => <span {...props} />,
@@ -110,7 +114,7 @@ vi.mock("../src/data/certification", () => ({
     },
     {
       title: "AI Cert",
-      text: "AI cert description",
+      details: ["AI cert only Detail"],
       color: "FFF8E7",
       status: "In Progress",
       icon: (props: any) => <span {...props} />,
@@ -218,6 +222,18 @@ describe("About", () => {
     await expect
       .element(screen.getByTestId("cert-card-AI Cert"))
       .toBeInTheDocument();
+  });
+
+  it("passes each certification's Details to its card", async () => {
+    const screen = await render(<About />);
+    const awsDetails = screen
+      .getByTestId("cert-card-AWS Cert")
+      .getByRole("listitem");
+    await expect.element(awsDetails.nth(0)).toHaveTextContent("Cloud cert first Detail");
+    await expect.element(awsDetails.nth(1)).toHaveTextContent("Cloud cert second Detail");
+    await expect
+      .element(screen.getByTestId("cert-card-AI Cert").getByRole("listitem"))
+      .toHaveTextContent("AI cert only Detail");
   });
 
   it("renders certification statuses correctly", async () => {

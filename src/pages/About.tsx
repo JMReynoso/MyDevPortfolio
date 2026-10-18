@@ -111,7 +111,7 @@ export default function About() {
               <CertificationCard
                 key={item.title}
                 title={item.title}
-                text={item.text}
+                details={item.details}
                 fromClass={item.fromClass}
                 status={item.status}
                 delay={index * 0.1}
