@@ -14,6 +14,12 @@ vi.mock("../src/components/common/WarmBadge", () => ({
   ),
 }));
 
+vi.mock("../src/components/common/WarmButton", () => ({
+  WarmButton: ({ children, ...props }: any) => (
+    <button {...props}>{children}</button>
+  ),
+}));
+
 describe("ExperienceEducationCard", () => {
   const defaultProps = {
     title: "Frontend Developer",
@@ -88,5 +94,104 @@ describe("ExperienceEducationCard", () => {
     );
     await expect.element(screen.getByText("Dev & Designer")).toBeInTheDocument();
     await expect.element(screen.getByText("A&B Co. · 2024")).toBeInTheDocument();
+  });
+  describe("Highlights toggle", () => {
+    const highlights = (count: number) =>
+      Array.from({ length: count }, (_, i) => `Highlight ${i + 1}`);
+
+    it("renders all highlights and no toggle when there are six or fewer", async () => {
+      const screen = await render(
+        <ExperienceEducationCard {...defaultProps} description={highlights(6)} />,
+      );
+      for (const item of highlights(6)) {
+        await expect.element(screen.getByText(item)).toBeInTheDocument();
+      }
+      await expect.element(screen.getByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("renders only the first six highlights and a collapsed Show N more toggle when there are more", async () => {
+      const screen = await render(
+        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
+      );
+      for (const item of highlights(6)) {
+        await expect.element(screen.getByText(item, { exact: true })).toBeInTheDocument();
+      }
+      for (const item of highlights(9).slice(6)) {
+        await expect.element(screen.getByText(item, { exact: true })).not.toBeInTheDocument();
+      }
+      const toggle = screen.getByRole("button");
+      await expect.element(toggle).toHaveTextContent("Show 3 more");
+      await expect.element(toggle).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("points the toggle's aria-controls at the highlights list id", async () => {
+      const screen = await render(
+        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
+      );
+      const listId = screen.getByRole("list").element().id;
+      expect(listId).not.toBe("");
+      await expect
+        .element(screen.getByRole("button"))
+        .toHaveAttribute("aria-controls", listId);
+    });
+
+    it("keeps the Skills label and tags visible when collapsed and expanded", async () => {
+      const screen = await render(
+        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
+      );
+      const expectSkillsVisible = async () => {
+        await expect.element(screen.getByText("Skills:")).toBeInTheDocument();
+        for (const tag of defaultProps.tags) {
+          await expect.element(screen.getByTestId(`warm-badge-${tag}`)).toBeInTheDocument();
+        }
+      };
+
+      await expectSkillsVisible();
+      await screen.getByRole("button").click();
+      await expectSkillsVisible();
+    });
+
+    it("expands each card on its own", async () => {
+      const screen = await render(
+        <>
+          <ExperienceEducationCard
+            {...defaultProps}
+            title="First"
+            description={highlights(9)}
+          />
+          <ExperienceEducationCard
+            {...defaultProps}
+            title="Second"
+            description={highlights(9)}
+          />
+        </>,
+      );
+      const toggles = screen.getByRole("button");
+      await toggles.first().click();
+
+      await expect.element(toggles.first()).toHaveAttribute("aria-expanded", "true");
+      await expect.element(toggles.last()).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("shows every highlight and Show fewer when expanded, and goes back to six when clicked again", async () => {
+      const screen = await render(
+        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
+      );
+      const toggle = screen.getByRole("button");
+
+      await toggle.click();
+      for (const item of highlights(9)) {
+        await expect.element(screen.getByText(item, { exact: true })).toBeInTheDocument();
+      }
+      await expect.element(toggle).toHaveTextContent("Show fewer");
+      await expect.element(toggle).toHaveAttribute("aria-expanded", "true");
+
+      await toggle.click();
+      for (const item of highlights(9).slice(6)) {
+        await expect.element(screen.getByText(item, { exact: true })).not.toBeInTheDocument();
+      }
+      await expect.element(toggle).toHaveTextContent("Show 3 more");
+      await expect.element(toggle).toHaveAttribute("aria-expanded", "false");
+    });
   });
 });
