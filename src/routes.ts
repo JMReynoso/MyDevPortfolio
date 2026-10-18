@@ -1,19 +1,22 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
+import { features } from "./constants/features";
 
-export const router = createBrowserRouter([
+export const routes: RouteObject[] = [
   {
     path: "/",
     Component: Layout,
     children: [
       { index: true, Component: Home },
       { path: "about", Component: About },
-      { path: "services", Component: Services },
+      ...(features.services ? [{ path: "services", Component: Services }] : []),
       { path: "contact", Component: Contact },
     ],
   },
-]);
+];
+
+export const router = createBrowserRouter(routes);

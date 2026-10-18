@@ -98,6 +98,13 @@ describe("Layout", () => {
       .toBeInTheDocument();
   });
 
+  it("does not render a Services link while Services is Hidden", async () => {
+    const screen = await render(<Layout />);
+    await expect
+      .element(screen.getByTestId("nav-link-Services"))
+      .not.toBeInTheDocument();
+  });
+
   it("renders navigation links with correct hrefs", async () => {
     const screen = await render(<Layout />);
     await expect
