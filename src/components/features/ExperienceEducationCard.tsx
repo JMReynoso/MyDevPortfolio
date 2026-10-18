@@ -23,7 +23,7 @@ export function ExperienceEducationCard({
 }: ExperienceEducationCardProps) {
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
-  const hiddenCount = description.length - COLLAPSED_HIGHLIGHT_COUNT;
+  const extraHighlightCount = description.length - COLLAPSED_HIGHLIGHT_COUNT;
   const visibleDescription = expanded
     ? description
     : description.slice(0, COLLAPSED_HIGHLIGHT_COUNT);
@@ -46,7 +46,7 @@ export function ExperienceEducationCard({
           <li key={item}>{item}</li>
         ))}
       </ul>
-      {hiddenCount > 0 && (
+      {extraHighlightCount > 0 && (
         <div className="flex justify-end mb-4">
           <WarmButton
             variant="primary"
@@ -55,7 +55,7 @@ export function ExperienceEducationCard({
             aria-expanded={expanded}
             aria-controls={listId}
           >
-            {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
+            {expanded ? "Show fewer" : `Show ${extraHighlightCount} more`}
             {expanded ? (
               <ChevronUp className="ml-1 h-4 w-4" aria-hidden="true" />
             ) : (

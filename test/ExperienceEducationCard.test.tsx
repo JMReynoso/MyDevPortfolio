@@ -95,14 +95,21 @@ describe("ExperienceEducationCard", () => {
     await expect.element(screen.getByText("Dev & Designer")).toBeInTheDocument();
     await expect.element(screen.getByText("A&B Co. · 2024")).toBeInTheDocument();
   });
+
   describe("Highlights toggle", () => {
     const highlights = (count: number) =>
       Array.from({ length: count }, (_, i) => `Highlight ${i + 1}`);
 
-    it("renders all highlights and no toggle when there are six or fewer", async () => {
-      const screen = await render(
-        <ExperienceEducationCard {...defaultProps} description={highlights(6)} />,
+    const renderCard = (count: number) =>
+      render(
+        <ExperienceEducationCard
+          {...defaultProps}
+          description={highlights(count)}
+        />,
       );
+
+    it("renders all highlights and no toggle when there are six or fewer", async () => {
+      const screen = await renderCard(6);
       for (const item of highlights(6)) {
         await expect.element(screen.getByText(item)).toBeInTheDocument();
       }
@@ -110,9 +117,7 @@ describe("ExperienceEducationCard", () => {
     });
 
     it("renders only the first six highlights and a collapsed Show N more toggle when there are more", async () => {
-      const screen = await render(
-        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
-      );
+      const screen = await renderCard(9);
       for (const item of highlights(6)) {
         await expect.element(screen.getByText(item, { exact: true })).toBeInTheDocument();
       }
@@ -125,9 +130,7 @@ describe("ExperienceEducationCard", () => {
     });
 
     it("points the toggle's aria-controls at the highlights list id", async () => {
-      const screen = await render(
-        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
-      );
+      const screen = await renderCard(9);
       const listId = screen.getByRole("list").element().id;
       expect(listId).not.toBe("");
       await expect
@@ -136,9 +139,7 @@ describe("ExperienceEducationCard", () => {
     });
 
     it("keeps the Skills label and tags visible when collapsed and expanded", async () => {
-      const screen = await render(
-        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
-      );
+      const screen = await renderCard(9);
       const expectSkillsVisible = async () => {
         await expect.element(screen.getByText("Skills:")).toBeInTheDocument();
         for (const tag of defaultProps.tags) {
@@ -174,9 +175,7 @@ describe("ExperienceEducationCard", () => {
     });
 
     it("shows every highlight and Show fewer when expanded, and goes back to six when clicked again", async () => {
-      const screen = await render(
-        <ExperienceEducationCard {...defaultProps} description={highlights(9)} />,
-      );
+      const screen = await renderCard(9);
       const toggle = screen.getByRole("button");
 
       await toggle.click();

@@ -396,10 +396,12 @@ describe("About", () => {
   it("renders professional journey paragraphs", async () => {
     const screen = await render(<About />);
     await expect
-      .element(screen.getByText("Backend Software Engineer with 4+"))
+      .element(screen.getByText('Backend Software Engineer with 4+'))
       .toBeInTheDocument();
     await expect
-      .element(screen.getByText("self-host containerized services"))
+      .element(
+        screen.getByText('self-host containerized services'),
+      )
       .toBeInTheDocument();
   });
 });
