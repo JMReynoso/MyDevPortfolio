@@ -199,6 +199,11 @@ import { WarmButton } from "./components";
 - `size`: 'sm' | 'md' | 'lg'
 - `href`: Optional link
 - `onClick`: Optional click handler
+- `aria-expanded`: Optional boolean, forwarded to the rendered `<button>` only
+- `aria-controls`: Optional id of the element the button controls, forwarded to the rendered `<button>` only
+
+Without `href`, it renders a `<button type="button">`. The link and anchor
+variants are unchanged.
 
 #### WarmCard
 
