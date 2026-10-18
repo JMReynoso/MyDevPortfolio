@@ -44,7 +44,7 @@ export function CertificationCard({
           <WarmBadge variant={badgeColor}>{status}</WarmBadge>
         </div>
         <h3 className="text-2xl font-bold text-[#2C2416] mb-2">{title}</h3>
-        <ul className="text-[#8B6F47] leading-relaxed list-disc pl-5 space-y-1">
+        <ul className="text-[var(--warm-brown)] leading-relaxed list-disc pl-5 space-y-1">
           {details.map((detail) => (
             <li key={detail}>{detail}</li>
           ))}

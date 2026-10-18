@@ -165,11 +165,6 @@ export const categories: TechnologyCategory[] = [
         link: "https://expressjs.com/",
       },
       {
-        name: "Prisma",
-        icon: <Triangle className="w-8 h-8" />,
-        link: "https://www.prisma.io/",
-      },
-      {
         name: "Swagger / OpenAPI",
         icon: <Braces className="w-8 h-8" />,
         link: "https://swagger.io/",
@@ -188,6 +183,11 @@ export const categories: TechnologyCategory[] = [
         name: "Entity Framework Core",
         icon: <Layers className="w-8 h-8" />,
         link: "https://learn.microsoft.com/en-us/ef/core/",
+      },
+      {
+        name: "Prisma",
+        icon: <Triangle className="w-8 h-8" />,
+        link: "https://www.prisma.io/",
       },
       {
         name: "PostgreSQL",
@@ -304,7 +304,7 @@ export const categories: TechnologyCategory[] = [
       {
         name: "Claude Code",
         icon: <Brain className="w-8 h-8" />,
-        link: "https://claude.co/code",
+        link: "https://claude.com/product/claude-code",
       },
       {
         name: "Claude API",

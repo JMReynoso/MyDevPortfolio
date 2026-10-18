@@ -37,14 +37,18 @@ describe("CertificationCard", () => {
   it("renders each Detail as a list item, in order", async () => {
     const screen = await render(<CertificationCard {...defaultProps} />);
     const items = screen.getByRole("list").getByRole("listitem");
-    await expect.element(items.nth(0)).toHaveTextContent("Cloud architecture fundamentals");
-    await expect.element(items.nth(1)).toHaveTextContent("Security and compliance basics");
+    await expect
+      .element(items.nth(0))
+      .toHaveTextContent("Cloud architecture fundamentals");
+    await expect
+      .element(items.nth(1))
+      .toHaveTextContent("Security and compliance basics");
     expect(items.elements()).toHaveLength(2);
   });
 
   it("renders a single Detail as a list item", async () => {
     const screen = await render(
-      <CertificationCard {...defaultProps} details={["Only one Detail"]} />,
+      <CertificationCard {...defaultProps} details={["Only one Detail"]} />
     );
     await expect
       .element(screen.getByRole("list").getByRole("listitem"))
