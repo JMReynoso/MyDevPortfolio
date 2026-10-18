@@ -102,6 +102,25 @@ vi.mock("../src/data/experience", () => ({
   ],
 }));
 
+vi.mock("../src/data/education", () => ({
+  education: [
+    {
+      degree: "B.S., Test Science",
+      institution: "State University",
+      date: "2016 - 2020",
+      description: ["Studied algorithms"],
+      tags: ["Algorithms"],
+    },
+    {
+      degree: "Test Arts",
+      institution: "Community College",
+      date: "2015 - 2016",
+      description: ["Transferred out"],
+      tags: ["Python"],
+    },
+  ],
+}));
+
 vi.mock("../src/data/certification", () => ({
   certifications: [
     {
@@ -286,6 +305,42 @@ describe("About", () => {
       .toBeInTheDocument();
   });
 
+  it("renders the education section", async () => {
+    const screen = await render(<About />);
+    await expect
+      .element(screen.getByTestId("section-education"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("section-header-Education"))
+      .toBeInTheDocument();
+  });
+
+  it("renders a card for each School", async () => {
+    const screen = await render(<About />);
+    await expect
+      .element(screen.getByTestId("exp-card-B.S., Test Science"))
+      .toBeInTheDocument();
+    await expect
+      .element(screen.getByTestId("exp-card-Test Arts"))
+      .toBeInTheDocument();
+  });
+
+  it("passes each School's degree as title and institution as company", async () => {
+    const screen = await render(<About />);
+    // The mocked card's test id is built from the title prop, so finding the
+    // card by degree shows the degree reached it as title.
+    const card = screen.getByTestId("exp-card-B.S., Test Science");
+    await expect.element(card).toHaveTextContent("State University");
+    await expect.element(card).toHaveTextContent("2016 - 2020");
+    await expect
+      .element(
+        screen
+          .getByTestId("exp-card-Test Arts")
+          .getByText("Community College"),
+      )
+      .toBeInTheDocument();
+  });
+
   it("does not render the Hidden My Story section", async () => {
     const screen = await render(<About />);
     // Wait for the page to render before asserting the section is absent.
@@ -311,12 +366,15 @@ describe("About", () => {
     await expect
       .element(screen.getByTestId("section-certifications"))
       .toHaveAttribute("data-background", "white");
+    await expect
+      .element(screen.getByTestId("section-education"))
+      .toHaveAttribute("data-background", "cream");
   });
 
-  it("orders the sections Experience, Certifications", async () => {
+  it("orders the sections Experience, Certifications, Education", async () => {
     const screen = await render(<About />);
     await expect
-      .element(screen.getByTestId("section-certifications"))
+      .element(screen.getByTestId("section-education"))
       .toBeInTheDocument();
     const order = Array.from(screen.container.querySelectorAll("section")).map(
       (section) => section.dataset.testid,
@@ -325,6 +383,7 @@ describe("About", () => {
       "section-profession",
       "section-experience",
       "section-certifications",
+      "section-education",
     ]);
   });
 

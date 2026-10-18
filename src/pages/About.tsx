@@ -5,6 +5,7 @@ import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
 import { CertificationCard } from "../components/features/CertificationCard";
 import { ExperienceEducationCard } from "../components/features/ExperienceEducationCard";
+import { education } from "../data/education";
 import { experience } from "../data/experience";
 
 // import { useIsMobile } from "../components/ui/use-mobile"; // My Story (Hidden)
@@ -144,9 +145,26 @@ export default function About() {
         </div>
       </Section>
 
+      <Section id="education" background="cream">
+        <SectionHeader title="Education" />
+
+        <div className="max-w-3xl mx-auto space-y-8">
+          {education.map((item) => (
+            <ExperienceEducationCard
+              key={item.degree}
+              title={item.degree}
+              company={item.institution}
+              date={item.date}
+              description={item.description}
+              tags={item.tags}
+            />
+          ))}
+        </div>
+      </Section>
+
       {/* My Story is Hidden. To restore it, see docs/hidden-content.md. */}
       {/*}
-      <Section id="story" background="cream">
+      <Section id="story" background="white">
         <div className="mx-auto">
           <SectionHeader title="My Story" />
           <Grid cols={{ md: 2 }} gap="xl">
