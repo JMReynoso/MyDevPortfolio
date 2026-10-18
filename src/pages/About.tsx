@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
 import { CertificationCard } from "../components/features/CertificationCard";
-import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
+import { ExperienceEducationCard } from "../components/features/ExperienceEducationCard";
 import { experience } from "../data/experience";
 
 // import { useIsMobile } from "../components/ui/use-mobile"; // My Story (Hidden)

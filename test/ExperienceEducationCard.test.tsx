@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { ExperienceEducationCard } from "../src/components/features/EperienceEducationCard";
+import { ExperienceEducationCard } from "../src/components/features/ExperienceEducationCard";
 
 vi.mock("framer-motion", () => ({
   motion: {
