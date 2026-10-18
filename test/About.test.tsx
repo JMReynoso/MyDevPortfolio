@@ -279,14 +279,18 @@ describe("About", () => {
       .toBeInTheDocument();
   });
 
-  it("renders the story section", async () => {
+  it("does not render the Hidden My Story section", async () => {
     const screen = await render(<About />);
+    // Wait for the page to render before asserting the section is absent.
+    await expect
+      .element(screen.getByTestId("section-experience"))
+      .toBeInTheDocument();
     await expect
       .element(screen.getByTestId("section-story"))
-      .toBeInTheDocument();
+      .not.toBeInTheDocument();
     await expect
       .element(screen.getByTestId("section-header-My Story"))
-      .toBeInTheDocument();
+      .not.toBeInTheDocument();
   });
 
   it("renders sections with correct backgrounds", async () => {
@@ -300,9 +304,6 @@ describe("About", () => {
     await expect
       .element(screen.getByTestId("section-experience"))
       .toHaveAttribute("data-background", "white");
-    await expect
-      .element(screen.getByTestId("section-story"))
-      .toHaveAttribute("data-background", "cream");
   });
 
   it("renders the About Me heading as h1", async () => {
