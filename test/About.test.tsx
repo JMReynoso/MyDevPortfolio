@@ -106,7 +106,10 @@ vi.mock("../src/data/certification", () => ({
   certifications: [
     {
       title: "AWS Cert",
-      details: ["Cloud cert first Detail", "Cloud cert second Detail"],
+      details: [
+        "Cloud Certification first Detail",
+        "Cloud Certification second Detail",
+      ],
       color: "F5E6D3",
       status: "Certified",
       icon: (props: any) => <span {...props} />,
@@ -114,7 +117,7 @@ vi.mock("../src/data/certification", () => ({
     },
     {
       title: "AI Cert",
-      details: ["AI cert only Detail"],
+      details: ["AI Certification only Detail"],
       color: "FFF8E7",
       status: "In Progress",
       icon: (props: any) => <span {...props} />,
@@ -229,11 +232,15 @@ describe("About", () => {
     const awsDetails = screen
       .getByTestId("cert-card-AWS Cert")
       .getByRole("listitem");
-    await expect.element(awsDetails.nth(0)).toHaveTextContent("Cloud cert first Detail");
-    await expect.element(awsDetails.nth(1)).toHaveTextContent("Cloud cert second Detail");
+    await expect
+      .element(awsDetails.nth(0))
+      .toHaveTextContent("Cloud Certification first Detail");
+    await expect
+      .element(awsDetails.nth(1))
+      .toHaveTextContent("Cloud Certification second Detail");
     await expect
       .element(screen.getByTestId("cert-card-AI Cert").getByRole("listitem"))
-      .toHaveTextContent("AI cert only Detail");
+      .toHaveTextContent("AI Certification only Detail");
   });
 
   it("renders certification statuses correctly", async () => {

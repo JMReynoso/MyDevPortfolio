@@ -6,7 +6,7 @@
 
 **What it is:** the `/services` page, which lists the owner's freelance Services (productized Services, Services in batches, retainer plans and custom projects), and its Services item in the desktop and mobile navigation.
 
-**Why it's Hidden:** the owner isn't freelancing yet, so the site shouldn't advertise an offering they can't take on. It stays Hidden until they start a freelance business.
+**Why it's Hidden:** the owner isn't freelancing yet, so the site shouldn't advertise a Service they can't take on. It stays Hidden until they start a freelance business.
 
 **Where it lives:**
 
