@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion"; // My Story (Hidden)
 import { Code2, Coffee, MonitorCog, Rocket, type LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
@@ -7,9 +7,9 @@ import { CertificationCard } from "../components/features/CertificationCard";
 import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
 import { experience } from "../data/experience";
 
-import { useIsMobile } from "../components/ui/use-mobile";
+// import { useIsMobile } from "../components/ui/use-mobile"; // My Story (Hidden)
 import { certifications } from "../data/certification";
-import { storyIcons } from "../data/storyIcons";
+// import { storyIcons } from "../data/storyIcons"; // My Story (Hidden)
 
 type Skill = {
   name: string;
@@ -25,9 +25,9 @@ const skills: Skill[] = [
 ];
 
 export default function About() {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile(); // My Story (Hidden)
   const [isVisible, setIsVisible] = useState(false);
-  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
+  // const [hoveredIcon, setHoveredIcon] = useState<string | null>(null); // My Story (Hidden)
 
   useEffect(() => {
     // Trigger animation after component mounts
@@ -140,6 +140,8 @@ export default function About() {
         </div>
       </Section>
 
+      {/* My Story is Hidden. To restore it, see docs/hidden-content.md. */}
+      {/*}
       <Section id="story" background="cream">
         <div className="mx-auto">
           <SectionHeader title="My Story" />
@@ -259,7 +261,9 @@ export default function About() {
                   : "flex flex-col items-center justify-between h-full px-16"
               }
             >
+      */}
               {/* Off-centered decorative icons */}
+      {/*}
               {storyIcons.map((icon, index) => {
                 const Icon = icon.icon;
                 return (
@@ -312,6 +316,7 @@ export default function About() {
           </Grid>
         </div>
       </Section>
+      */}
 
       <div className="pb-20 md:pb-1" aria-hidden="true" />
     </>
