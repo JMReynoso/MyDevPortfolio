@@ -13,7 +13,7 @@ export const experience: Experience[] = [
     date: "Dec 2022 - Nov 2024",
     description: [
       "Created features and managed bugs across multiple products.",
-      "Developed an internal REST API (Next.js) to enable seamless data transfer between services.",
+      "Developed an internal REST API (NestJS) to enable seamless data transfer between services.",
       "Consolidated and migrated data to a normalized database.",
       "Wrote API documentation (Swagger).",
       "Implemented CI/CD workflows and improved application reliability and performance.",
@@ -55,8 +55,8 @@ export const experience: Experience[] = [
   },
   {
     title: "Junior Software Developer & Support Analyst",
-    company: "System Innovations",
-    date: "Mar 2020 - 2022",
+    company: "System Innovators",
+    date: "Mar 2020 - Mar 2022",
     description: [
       "Built and maintained internal tools.",
       "Provided application support and troubleshooting for internal and customer-facing modules.",
@@ -109,7 +109,7 @@ export const experience: Experience[] = [
   {
     title: "IT Support Technician",
     company: "Chichester School District",
-    date: "2016 - 2016",
+    date: "Aug 2014 - Aug 2016",
     description: [
       "Installed and maintained educational technology and servers.",
       "Provided end-user support, hardware troubleshooting, and assisted with network setup and basic system administration tasks.",
