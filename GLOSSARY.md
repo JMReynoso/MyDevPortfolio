@@ -28,6 +28,22 @@ _Avoid_: cert, certificate card
 One statement of what a Certification covers. A Certification has one or more Details.
 _Avoid_: point, text, description
 
+**Role**:
+A position the owner held with one employer, shown under Experience.
+_Avoid_: job, position, experience entry
+
+**School**:
+An institution the owner studied at, shown under Education.
+_Avoid_: education entry, university
+
+**Highlight**:
+One statement of what the owner did in a Role or studied at a School. A Role or School has one or more Highlights.
+_Avoid_: bullet, point, description
+
+**Skill Tag**:
+A short label on a Role or School naming a Technology or practice it involved.
+_Avoid_: tag, badge, skill
+
 ### Services
 
 **Service**:

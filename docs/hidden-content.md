@@ -57,6 +57,6 @@ The spacer at the bottom of the About page (`<div className="pb-20 md:pb-1" aria
 2. Uncomment the section. Delete the two `{/*}` lines and the two `*/}` lines around it, and the one-line pointer comment above it. Keep the `{/* Off-centered decorative icons */}` comment.
 3. In `test/About.test.tsx`, change the story tests back to expect the section:
    - Rename "does not render the Hidden My Story section" to "renders the story section". Make it assert that `section-story` and `section-header-My Story` are in the document (`.toBeInTheDocument()` instead of `.not.toBeInTheDocument()`).
-   - In "renders sections with correct backgrounds", add `section-story` back with `data-background` set to `cream`.
+   - In "renders sections with correct backgrounds", add `section-story` back with `data-background` set to `white`. My Story now follows the cream Education section, so white keeps the backgrounds alternating. The section's commented-out `<Section id="story" ...>` already uses `background="white"`.
 4. Run `npm run test:coverage` and `npm run build`, then check the section by eye at mobile and desktop widths. Commented-out code isn't compiled, so it may have gone stale while it was Hidden. A component, prop or the story-icon data it uses may have changed since.
 5. Remove this entry from this doc.

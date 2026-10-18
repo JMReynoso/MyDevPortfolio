@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
 import { CertificationCard } from "../components/features/CertificationCard";
-import { ExperienceEducationCard } from "../components/features/EperienceEducationCard";
+import { ExperienceEducationCard } from "../components/features/ExperienceEducationCard";
+import { education } from "../data/education";
 import { experience } from "../data/experience";
 
 // import { useIsMobile } from "../components/ui/use-mobile"; // My Story (Hidden)
@@ -58,34 +59,38 @@ export default function About() {
           <div>
             <SectionHeader title="My Professional Journey" />
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              I'm a Backend Developer with 4+ years of professional
-              experience building and maintaining SaaS products. At Cadmium,
-              I built internal REST APIs, consolidated data into normalized
-              databases, and implemented CI/CD pipelines that improved
-              deployment reliability across multiple products.
+              I'm a Backend Software Engineer with 4+ years of experience
+              designing, building, and running production SaaS systems in .NET
+              Core and Node.js. The part I love most is owning a system from
+              end to end: sketching the design, building it out, shipping it
+              to production, and keeping it healthy once real people depend
+              on it.
             </p>
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              My core stack includes Node.js, NestJS, Java Spring, and .NET,
-              backed by PostgreSQL and MongoDB. I've worked hands-on with
-              Docker, AWS, and GitLab CI/CD to ship production services, and
-              I collaborate closely with Product Managers and design teams to
-              turn requirements into working software.
+              A lot of the work I'm proudest of comes from my time at
+              Cadmium. I built a distributed rate limiter that made a real
+              difference to API performance for our highest-traffic clients,
+              developed REST APIs that let our SaaS products share data with
+              each other, and moved production data into a normalized database
+              without a single minute of downtime.
             </p>
             <p className="text-lg text-[#8B6F47] mb-6 leading-relaxed">
-              Beyond my professional work, I run a homelab where I
-              self-host applications on my own server — including this
-              portfolio. Managing my own infrastructure has deepened my
-              understanding of CI/CD, containerization, networking, and
-              deployment workflows in ways that go beyond what's typical in
-              a day job.
+              My curiosity doesn't stop at the API, either. I'm hands-on with
+              DevOps, from Docker to CI/CD pipelines, and at home I run a
+              homelab where I self-host containerized services and local LLMs
+              with Ollama. I've also spent years on the AI/ML side, preparing
+              and annotating the audio datasets that train AI vocal synthesis
+              models. And when I code, AI is part of my toolkit: I plan each
+              change with Claude Code first, review and refine that plan, and
+              check every generated change before it merges.
             </p>
             <p className="text-lg text-[#8B6F47] leading-relaxed">
-              What sets me apart is my background in customer-facing support
-              — I understand the end-user perspective and build with that in
-              mind. I'm continuously expanding my skill set, currently
-              exploring generative AI and machine learning, and I'm actively
-              seeking new opportunities where I can contribute to a team
-              building meaningful products!
+              I got my start in IT and application support, and I've carried
+              that with me: I always build with the person on the other end of
+              the screen in mind. Now I'm looking for my next backend
+              engineering role, on a team that's building something
+              meaningful. If that sounds like your team, I'd love to hear from
+              you!
             </p>
           </div>
 
@@ -102,7 +107,24 @@ export default function About() {
         </Grid>
       </Section>
 
-      <Section id="certifications" background="cream">
+      <Section id="experience" background="cream">
+        <SectionHeader title="Experience" />
+
+        <div className="max-w-3xl mx-auto space-y-8">
+          {experience.map((item) => (
+            <ExperienceEducationCard
+              key={item.title}
+              title={item.title}
+              company={item.company}
+              date={item.date}
+              description={item.description}
+              tags={item.tags}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section id="certifications" background="white">
         <SectionHeader title="Certifications" />
 
         <div className="max-w-3xl mx-auto">
@@ -123,15 +145,15 @@ export default function About() {
         </div>
       </Section>
 
-      <Section id="experience" background="white">
-        <SectionHeader title="Experience & Education" />
+      <Section id="education" background="cream">
+        <SectionHeader title="Education" />
 
         <div className="max-w-3xl mx-auto space-y-8">
-          {experience.map((item) => (
+          {education.map((item) => (
             <ExperienceEducationCard
-              key={item.title}
-              title={item.title}
-              company={item.company}
+              key={item.degree}
+              title={item.degree}
+              company={item.institution}
               date={item.date}
               description={item.description}
               tags={item.tags}
@@ -142,7 +164,7 @@ export default function About() {
 
       {/* My Story is Hidden. To restore it, see docs/hidden-content.md. */}
       {/*}
-      <Section id="story" background="cream">
+      <Section id="story" background="white">
         <div className="mx-auto">
           <SectionHeader title="My Story" />
           <Grid cols={{ md: 2 }} gap="xl">
