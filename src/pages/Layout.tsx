@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { Navigation, Footer, CursorGlow } from "../components";
 import { strings } from "../constants/strings";
+import { features } from "../constants/features";
 
 const navigationLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
+  ...(features.services ? [{ label: "Services", href: "/services" }] : []),
   { label: "Projects", href: "/?scrollTo=projects" },
   { label: "Contact", href: "/contact" },
 ];
