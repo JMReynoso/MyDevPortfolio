@@ -53,7 +53,7 @@ export function Technologies() {
 
         {/* Right side - Technology grid */}
         <div className="min-h-[250px] md:min-h-[400px]">
-          <div className="flex flex-col gap-2.5 md:gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3">
             {activeData?.technologies.map((tech, index) => (
               <a
                 href={tech.link || "#"}
