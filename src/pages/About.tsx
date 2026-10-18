@@ -5,6 +5,7 @@ import { Grid, Section, SectionHeader, SkillCard } from "../components";
 
 import { CertificationCard } from "../components/features/CertificationCard";
 import { ExperienceEducationCard } from "../components/features/ExperienceEducationCard";
+import { education } from "../data/education";
 import { experience } from "../data/experience";
 
 // import { useIsMobile } from "../components/ui/use-mobile"; // My Story (Hidden)
@@ -106,7 +107,24 @@ export default function About() {
         </Grid>
       </Section>
 
-      <Section id="certifications" background="cream">
+      <Section id="experience" background="cream">
+        <SectionHeader title="Experience" />
+
+        <div className="max-w-3xl mx-auto space-y-8">
+          {experience.map((item) => (
+            <ExperienceEducationCard
+              key={item.title}
+              title={item.title}
+              company={item.company}
+              date={item.date}
+              description={item.description}
+              tags={item.tags}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section id="certifications" background="white">
         <SectionHeader title="Certifications" />
 
         <div className="max-w-3xl mx-auto">
@@ -127,15 +145,15 @@ export default function About() {
         </div>
       </Section>
 
-      <Section id="experience" background="white">
-        <SectionHeader title="Experience & Education" />
+      <Section id="education" background="cream">
+        <SectionHeader title="Education" />
 
         <div className="max-w-3xl mx-auto space-y-8">
-          {experience.map((item) => (
+          {education.map((item) => (
             <ExperienceEducationCard
-              key={item.title}
-              title={item.title}
-              company={item.company}
+              key={item.degree}
+              title={item.degree}
+              company={item.institution}
               date={item.date}
               description={item.description}
               tags={item.tags}
@@ -146,7 +164,7 @@ export default function About() {
 
       {/* My Story is Hidden. To restore it, see docs/hidden-content.md. */}
       {/*}
-      <Section id="story" background="cream">
+      <Section id="story" background="white">
         <div className="mx-auto">
           <SectionHeader title="My Story" />
           <Grid cols={{ md: 2 }} gap="xl">
