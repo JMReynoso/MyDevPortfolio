@@ -1,10 +1,15 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useId, useState } from "react";
 import { WarmBadge } from "../common/WarmBadge";
 import { WarmButton } from "../common/WarmButton";
 
 const COLLAPSED_HIGHLIGHT_COUNT = 6;
+
+// Padding stands in for the list's `space-y-1` so each extra Highlight carries
+// its own gap and the gap grows with the item instead of popping in.
+const collapsedHighlight = { height: 0, opacity: 0, paddingBottom: 0 };
+const expandedHighlight = { height: "auto", opacity: 1, paddingBottom: 4 };
 
 export interface ExperienceEducationCardProps {
   title: string;
@@ -23,10 +28,10 @@ export function ExperienceEducationCard({
 }: ExperienceEducationCardProps) {
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
-  const extraHighlightCount = description.length - COLLAPSED_HIGHLIGHT_COUNT;
-  const visibleDescription = expanded
-    ? description
-    : description.slice(0, COLLAPSED_HIGHLIGHT_COUNT);
+  const reduceMotion = useReducedMotion();
+  const firstHighlights = description.slice(0, COLLAPSED_HIGHLIGHT_COUNT);
+  const extraHighlights = description.slice(COLLAPSED_HIGHLIGHT_COUNT);
+  const extraHighlightCount = extraHighlights.length;
 
   return (
     <motion.div
@@ -40,11 +45,29 @@ export function ExperienceEducationCard({
       </p>
       <ul
         id={listId}
-        className="text-[#8B6F47] leading-relaxed list-disc pl-5 space-y-1 mb-4"
+        className="text-[#8B6F47] leading-relaxed list-disc pl-5 mb-3"
       >
-        {visibleDescription.map((item) => (
-          <li key={item}>{item}</li>
+        {firstHighlights.map((item) => (
+          <li key={item} className="pb-1">
+            {item}
+          </li>
         ))}
+        <AnimatePresence initial={false}>
+          {(expanded ? extraHighlights : []).map((item) => (
+            // clip-path, not overflow-hidden: overflow would clip the outside
+            // list bullet, and the negative inset keeps it visible.
+            <motion.li
+              key={item}
+              className="[clip-path:inset(0_-2rem)]"
+              initial={collapsedHighlight}
+              animate={expandedHighlight}
+              exit={collapsedHighlight}
+              transition={{ duration: reduceMotion ? 0 : 0.3, ease: "easeInOut" }}
+            >
+              {item}
+            </motion.li>
+          ))}
+        </AnimatePresence>
       </ul>
       {extraHighlightCount > 0 && (
         <div className="flex justify-end mb-4">

@@ -3,8 +3,11 @@ import { render } from "vitest-browser-react";
 import { ExperienceEducationCard } from "../src/components/features/ExperienceEducationCard";
 
 vi.mock("framer-motion", () => ({
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+  useReducedMotion: () => false,
   motion: {
-    div: ({ children, whileHover, whileTap, initial, animate, transition, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({ children, whileHover, whileTap, initial, animate, exit, transition, ...props }: any) => <div {...props}>{children}</div>,
+    li: ({ children, initial, animate, exit, transition, ...props }: any) => <li {...props}>{children}</li>,
   },
 }));
 
