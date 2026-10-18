@@ -45,3 +45,5 @@ ehthumbs.db
 # Misc
 *.bak
 *.tmp
+
+/thoughts/
