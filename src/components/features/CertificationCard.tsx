@@ -4,7 +4,7 @@ import { WarmBadge } from "../common/WarmBadge";
 
 export interface CertificationCardProps {
   title: string;
-  text: string;
+  details: string[];
   fromClass: string;
   status: string;
   delay: number;
@@ -14,7 +14,7 @@ export interface CertificationCardProps {
 
 export function CertificationCard({
   title,
-  text,
+  details,
   fromClass,
   status,
   delay,
@@ -44,7 +44,11 @@ export function CertificationCard({
           <WarmBadge variant={badgeColor}>{status}</WarmBadge>
         </div>
         <h3 className="text-2xl font-bold text-[#2C2416] mb-2">{title}</h3>
-        <p className="text-[#8B6F47] leading-relaxed">{text}</p>
+        <ul className="text-[var(--warm-brown)] leading-relaxed list-disc pl-5 space-y-1">
+          {details.map((detail) => (
+            <li key={detail}>{detail}</li>
+          ))}
+        </ul>
       </div>
     </motion.a>
   );

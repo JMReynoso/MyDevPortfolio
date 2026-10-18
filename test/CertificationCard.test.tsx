@@ -19,17 +19,40 @@ const MockIcon = ((props: any) => <span data-testid="cert-icon" {...props} />) a
 describe("CertificationCard", () => {
   const defaultProps = {
     title: "AWS Certification",
-    text: "Cloud practitioner certification",
+    details: [
+      "Cloud architecture fundamentals",
+      "Security and compliance basics",
+    ],
     status: "Certified",
     delay: 0,
     icon: MockIcon,
     link: "https://aws.amazon.com/cert",
   };
 
-  it("renders title and description", async () => {
+  it("renders title", async () => {
     const screen = await render(<CertificationCard {...defaultProps} />);
     await expect.element(screen.getByText("AWS Certification")).toBeInTheDocument();
-    await expect.element(screen.getByText("Cloud practitioner certification")).toBeInTheDocument();
+  });
+
+  it("renders each Detail as a list item, in order", async () => {
+    const screen = await render(<CertificationCard {...defaultProps} />);
+    const items = screen.getByRole("list").getByRole("listitem");
+    await expect
+      .element(items.nth(0))
+      .toHaveTextContent("Cloud architecture fundamentals");
+    await expect
+      .element(items.nth(1))
+      .toHaveTextContent("Security and compliance basics");
+    expect(items.elements()).toHaveLength(2);
+  });
+
+  it("renders a single Detail as a list item", async () => {
+    const screen = await render(
+      <CertificationCard {...defaultProps} details={["Only one Detail"]} />
+    );
+    await expect
+      .element(screen.getByRole("list").getByRole("listitem"))
+      .toHaveTextContent("Only one Detail");
   });
 
   it("renders as a link with correct attributes", async () => {

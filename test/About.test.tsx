@@ -44,10 +44,14 @@ vi.mock("../src/components", () => ({
 }));
 
 vi.mock("../src/components/features/CertificationCard", () => ({
-  CertificationCard: ({ title, text, status }: any) => (
+  CertificationCard: ({ title, details, status }: any) => (
     <div data-testid={`cert-card-${title}`} data-status={status}>
       <span>{title}</span>
-      <span>{text}</span>
+      <ul>
+        {details.map((detail: string) => (
+          <li key={detail}>{detail}</li>
+        ))}
+      </ul>
       <span>{status}</span>
     </div>
   ),
@@ -102,7 +106,10 @@ vi.mock("../src/data/certification", () => ({
   certifications: [
     {
       title: "AWS Cert",
-      text: "Cloud cert description",
+      details: [
+        "Cloud Certification first Detail",
+        "Cloud Certification second Detail",
+      ],
       color: "F5E6D3",
       status: "Certified",
       icon: (props: any) => <span {...props} />,
@@ -110,7 +117,7 @@ vi.mock("../src/data/certification", () => ({
     },
     {
       title: "AI Cert",
-      text: "AI cert description",
+      details: ["AI Certification only Detail"],
       color: "FFF8E7",
       status: "In Progress",
       icon: (props: any) => <span {...props} />,
@@ -220,6 +227,22 @@ describe("About", () => {
       .toBeInTheDocument();
   });
 
+  it("passes each certification's Details to its card", async () => {
+    const screen = await render(<About />);
+    const awsDetails = screen
+      .getByTestId("cert-card-AWS Cert")
+      .getByRole("listitem");
+    await expect
+      .element(awsDetails.nth(0))
+      .toHaveTextContent("Cloud Certification first Detail");
+    await expect
+      .element(awsDetails.nth(1))
+      .toHaveTextContent("Cloud Certification second Detail");
+    await expect
+      .element(screen.getByTestId("cert-card-AI Cert").getByRole("listitem"))
+      .toHaveTextContent("AI Certification only Detail");
+  });
+
   it("renders certification statuses correctly", async () => {
     const screen = await render(<About />);
     await expect
@@ -263,14 +286,18 @@ describe("About", () => {
       .toBeInTheDocument();
   });
 
-  it("renders the story section", async () => {
+  it("does not render the Hidden My Story section", async () => {
     const screen = await render(<About />);
+    // Wait for the page to render before asserting the section is absent.
+    await expect
+      .element(screen.getByTestId("section-experience"))
+      .toBeInTheDocument();
     await expect
       .element(screen.getByTestId("section-story"))
-      .toBeInTheDocument();
+      .not.toBeInTheDocument();
     await expect
       .element(screen.getByTestId("section-header-My Story"))
-      .toBeInTheDocument();
+      .not.toBeInTheDocument();
   });
 
   it("renders sections with correct backgrounds", async () => {
@@ -284,9 +311,6 @@ describe("About", () => {
     await expect
       .element(screen.getByTestId("section-experience"))
       .toHaveAttribute("data-background", "white");
-    await expect
-      .element(screen.getByTestId("section-story"))
-      .toHaveAttribute("data-background", "cream");
   });
 
   it("renders the About Me heading as h1", async () => {
