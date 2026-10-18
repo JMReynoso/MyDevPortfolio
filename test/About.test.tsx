@@ -57,7 +57,7 @@ vi.mock("../src/components/features/CertificationCard", () => ({
   ),
 }));
 
-vi.mock("../src/components/features/EperienceEducationCard", () => ({
+vi.mock("../src/components/features/ExperienceEducationCard", () => ({
   ExperienceEducationCard: ({ title, company, date }: any) => (
     <div data-testid={`exp-card-${title}`}>
       <span>{title}</span>

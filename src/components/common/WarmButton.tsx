@@ -11,6 +11,8 @@ export interface WarmButtonProps {
   href?: string;
   onClick?: () => void;
   className?: string;
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
 }
 
 export function WarmButton({
@@ -20,6 +22,8 @@ export function WarmButton({
   href,
   onClick,
   className = "",
+  "aria-expanded": ariaExpanded,
+  "aria-controls": ariaControls,
 }: WarmButtonProps) {
   const baseStyles =
     "rounded-2xl transition-colors font-semibold inline-flex items-center justify-center";
@@ -73,7 +77,10 @@ export function WarmButton({
 
   return (
     <motion.button
+      type="button"
       onClick={onClick}
+      aria-expanded={ariaExpanded}
+      aria-controls={ariaControls}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className={combinedClassName}

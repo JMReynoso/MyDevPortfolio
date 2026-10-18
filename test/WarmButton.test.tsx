@@ -136,6 +136,23 @@ describe("WarmButton", () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
+  it("renders the button with type=\"button\"", async () => {
+    const screen = await render(<WarmButton>Btn</WarmButton>);
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveAttribute("type", "button");
+  });
+
+  it("forwards aria-expanded and aria-controls to the button", async () => {
+    const screen = await render(
+      <WarmButton aria-expanded={false} aria-controls="list-1">
+        Toggle
+      </WarmButton>,
+    );
+    const button = screen.getByRole("button");
+    await expect.element(button).toHaveAttribute("aria-expanded", "false");
+    await expect.element(button).toHaveAttribute("aria-controls", "list-1");
+  });
+
   it("applies custom className", async () => {
     const screen = await render(
       <WarmButton className="my-class">Btn</WarmButton>,
