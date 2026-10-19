@@ -1,16 +1,16 @@
 import { useCallback, useState } from "react";
-import { categories } from "../../data/technologies";
+import { categories, type TechnologyCategory } from "../../data/technologies";
 import { useMaxTechListHeight } from "../../hooks/useMaxTechListHeight";
 
 export function Technologies() {
     const [activeCategory, setActiveCategory] = useState<
-        "frontend" | "backend" | "tools"
+        TechnologyCategory["id"]
     >("frontend");
 
     const activeData = categories.find((cat) => cat.id === activeCategory);
 
     const handleCategoryChange = useCallback(
-        (id: "frontend" | "backend" | "tools") => setActiveCategory(id),
+        (id: TechnologyCategory["id"]) => setActiveCategory(id),
         []
     );
 
@@ -25,7 +25,7 @@ export function Technologies() {
                     className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch"
                     data-testid="category-bubbles"
                 >
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
                         <button
                             key={category.id}
                             data-testid={`category-bubble-${category.id}`}
@@ -45,7 +45,7 @@ export function Technologies() {
                         ? "bg-gradient-to-br from-[var(--sage-green)] to-[var(--forest-green)] text-white shadow-[0_8px_24px_rgba(74,103,65,0.3),inset_0_2px_8px_rgba(255,255,255,0.2),inset_0_-4px_12px_rgba(0,0,0,0.1)] scale-105"
                         : "bg-gradient-to-br from-[var(--soft-beige)] to-[#E5D4BB] text-[var(--warm-brown)] shadow-[0_4px_16px_rgba(139,111,71,0.15),inset_0_2px_6px_rgba(255,255,255,0.4),inset_0_-3px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(139,111,71,0.2),inset_0_2px_6px_rgba(255,255,255,0.4),inset_0_-3px_8px_rgba(0,0,0,0.08)] hover:scale-102"
                 }
-                ${category.id === "frontend" || category.id === "tools" ? "md:mr-12" : "md:ml-12"}
+                ${index % 2 === 0 ? "md:mr-12" : "md:ml-12"}
               `}
                         >
                             <div
