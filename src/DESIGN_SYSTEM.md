@@ -443,8 +443,11 @@ import { ProjectCard } from "./components";
 - `description`: Project description
 - `image`: Image URL
 - `tags`: Array of technology tags
-- `link`: Project link
+- `link`: Optional project link. Without it the card renders as a plain, non-interactive container (no anchor, no hover lift or hover shadow). The image's hover zoom and gradient overlay deliberately stay on both kinds of card
+- `imageFit`: Optional, `"cover"` (default) or `"contain"`. See below
 - `delay`: Animation delay for staggering
+
+The image area is a fixed 192px (`h-48`). With `imageFit="cover"` the image spans the card's width at its natural aspect ratio and is cropped from the top, so screenshots must keep their important part at the top. With `imageFit="contain"` the whole image is shown, centred on Warm Cream, which suits diagrams such as `public/images/projects/distributed-api-rate-limiter.svg`.
 
 #### SkillCard
 
