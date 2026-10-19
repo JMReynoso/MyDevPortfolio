@@ -351,7 +351,7 @@ describe("Technologies E2E - DevOps bubble", () => {
     }
 });
 
-describe("Technologies E2E - Bubble zig-zag", () => {
+describe("Technologies E2E - Bubble layout", () => {
     // Sub-pixel rounding and the active bubble's scale shouldn't matter, so
     // positions within this many pixels count as the same side.
     const TOLERANCE_PX = 2;
@@ -365,8 +365,9 @@ describe("Technologies E2E - Bubble zig-zag", () => {
         await page.viewport(originalViewport.width, originalViewport.height);
     });
 
-    // Horizontal centre of every bubble, in the order they appear on the page.
-    // The centre is used because the active bubble is scaled up around it.
+    // Horizontal (x) and vertical (y) centre of every Bubble, in the order they
+    // appear on the page. The centre is used because the active Bubble is scaled
+    // up around it.
     const bubbleCentres = (container: Element) =>
         Array.from(
             container.querySelectorAll<HTMLElement>(
@@ -374,29 +375,34 @@ describe("Technologies E2E - Bubble zig-zag", () => {
             )
         ).map((bubble) => {
             const box = bubble.getBoundingClientRect();
-            return box.left + box.width / 2;
+            return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
         });
 
-    it("alternates bubbles left and right on desktop, starting on the left", async () => {
-        await page.viewport(1024, 768);
-        const screen = await render(<Technologies />);
-        await expect
-            .element(screen.getByTestId("category-bubble-frontend"))
-            .toBeInTheDocument();
+    // 768px is where the desktop layout starts, so it is tested as well as a
+    // wider screen.
+    it.each([768, 1024])(
+        "alternates bubbles left and right on desktop at %ipx, starting on the left",
+        async (width) => {
+            await page.viewport(width, 768);
+            const screen = await render(<Technologies />);
+            await expect
+                .element(screen.getByTestId("category-bubble-frontend"))
+                .toBeInTheDocument();
 
-        const centres = bubbleCentres(screen.container);
+            const centres = bubbleCentres(screen.container).map(({ x }) => x);
 
-        expect(centres).toHaveLength(4);
-        centres.slice(0, -1).forEach((centre, index) => {
-            const next = centres[index + 1];
-            // Even positions sit left of their neighbours, odd positions right.
-            if (index % 2 === 0) {
-                expect(centre).toBeLessThan(next - TOLERANCE_PX);
-            } else {
-                expect(centre).toBeGreaterThan(next + TOLERANCE_PX);
-            }
-        });
-    });
+            expect(centres).toHaveLength(4);
+            centres.slice(0, -1).forEach((centre, index) => {
+                const next = centres[index + 1];
+                // Even positions sit left of their neighbours, odd positions right.
+                if (index % 2 === 0) {
+                    expect(centre).toBeLessThan(next - TOLERANCE_PX);
+                } else {
+                    expect(centre).toBeGreaterThan(next + TOLERANCE_PX);
+                }
+            });
+        }
+    );
 
     it("keeps the bubbles in one centred column on phones", async () => {
         await page.viewport(375, 800);
@@ -405,7 +411,7 @@ describe("Technologies E2E - Bubble zig-zag", () => {
             .element(screen.getByTestId("category-bubble-frontend"))
             .toBeInTheDocument();
 
-        const centres = bubbleCentres(screen.container);
+        const centres = bubbleCentres(screen.container).map(({ x }) => x);
 
         expect(centres).toHaveLength(4);
         centres.forEach((centre) =>
