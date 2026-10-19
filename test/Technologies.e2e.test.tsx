@@ -35,7 +35,9 @@ describe("Technologies E2E - Layout Shift Fix", () => {
         const toolsBubble = screen.getByTestId("category-bubble-tools");
         await toolsBubble.click();
         await expect.element(toolsBubble).toBeInTheDocument();
-        await expect.element(screen.getByText("Figma")).toBeInTheDocument();
+        await expect
+            .element(screen.getByText("Figma", { exact: true }))
+            .toBeInTheDocument();
     });
 
     it("displays bubbles in correct order", async () => {
@@ -64,6 +66,168 @@ describe("Technologies E2E - Layout Shift Fix", () => {
         // Should still be on frontend
         const frontendBubble = screen.getByTestId("category-bubble-frontend");
         expect(frontendBubble).not.toBeNull();
+    });
+});
+
+// Master Resume Technologies added by spec #52 (ticket #55), checked through
+// the real category data.
+describe("Technologies E2E - Master Resume Technologies", () => {
+    it("shows React Hook Form under Front-end", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-frontend").click();
+
+        await expect
+            .element(screen.getByTestId("tech-card-React Hook Form"))
+            .toBeInTheDocument();
+    });
+
+    it("shows .NET Core under Back-end, with no plain .NET card left", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-backend").click();
+
+        await expect
+            .element(screen.getByTestId("tech-card-.NET Core"))
+            .toBeInTheDocument();
+        expect(screen.getByTestId("tech-card-.NET").elements()).toHaveLength(
+            0
+        );
+    });
+
+    it("shows Hangfire under Back-end", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-backend").click();
+
+        await expect
+            .element(screen.getByTestId("tech-card-Hangfire"))
+            .toBeInTheDocument();
+    });
+
+    it("shows Selenium under Tools", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-tools").click();
+
+        await expect
+            .element(screen.getByTestId("tech-card-Selenium"))
+            .toBeInTheDocument();
+    });
+
+    // Each new Technology goes right after its closest relative.
+    const placements = [
+        {
+            category: "frontend",
+            pairs: [["React Router", "React Hook Form"]],
+        },
+        {
+            category: "backend",
+            pairs: [
+                ["Express", "Fastify"],
+                [".NET Core", ".NET Framework"],
+                ["Entity Framework Core", "Hangfire"],
+                ["Prisma", "knex.js"],
+                ["Java", "C"],
+            ],
+        },
+        {
+            category: "tools",
+            pairs: [
+                ["Figma", "Figma Make"],
+                ["JIRA", "Confluence"],
+                ["Postman", "SSMS"],
+                ["NUnit", "Moq"],
+                ["Testcontainers", "Selenium"],
+                ["Claude Code", "Claude Design"],
+                ["Claude API", "Perplexity API"],
+            ],
+        },
+    ] as const;
+
+    for (const { category, pairs } of placements) {
+        it(`places each new ${category} Technology right after its closest relative`, async () => {
+            const screen = await render(<Technologies />);
+
+            await screen.getByTestId(`category-bubble-${category}`).click();
+            await expect
+                .element(screen.getByTestId(`tech-card-${pairs[0][1]}`))
+                .toBeInTheDocument();
+
+            const names = Array.from(
+                screen
+                    .getByTestId("technology-grid")
+                    .element()
+                    .querySelectorAll("a")
+            ).map((card) => card.textContent);
+
+            for (const [relative, added] of pairs) {
+                expect(names.indexOf(added)).toBe(names.indexOf(relative) + 1);
+            }
+        });
+    }
+
+    it("puts ComfyUI last under Tools", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-tools").click();
+        await expect
+            .element(screen.getByTestId("tech-card-ComfyUI"))
+            .toBeInTheDocument();
+
+        const cards = screen
+            .getByTestId("technology-grid")
+            .element()
+            .querySelectorAll("a");
+
+        expect(cards[cards.length - 1].textContent).toBe("ComfyUI");
+    });
+
+    const officialSites = [
+        ["frontend", "React Hook Form", "https://react-hook-form.com/"],
+        ["backend", "Fastify", "https://fastify.dev/"],
+        [
+            "backend",
+            ".NET Framework",
+            "https://learn.microsoft.com/en-us/dotnet/framework/",
+        ],
+        ["backend", "Hangfire", "https://www.hangfire.io/"],
+        ["backend", "knex.js", "https://knexjs.org/"],
+        ["backend", "C", "https://www.iso.org/standard/82075.html"],
+        ["tools", "Figma Make", "https://www.figma.com/make/"],
+        [
+            "tools",
+            "Confluence",
+            "https://www.atlassian.com/software/confluence",
+        ],
+        ["tools", "SSMS", "https://learn.microsoft.com/en-us/ssms/"],
+        ["tools", "Moq", "https://github.com/devlooped/moq"],
+        ["tools", "Selenium", "https://www.selenium.dev/"],
+        ["tools", "Claude Design", "https://claude.com/product/design"],
+        ["tools", "Perplexity API", "https://docs.perplexity.ai/"],
+        ["tools", "ComfyUI", "https://www.comfy.org/"],
+    ] as const;
+
+    for (const [category, name, href] of officialSites) {
+        it(`links ${name} to its official site`, async () => {
+            const screen = await render(<Technologies />);
+
+            await screen.getByTestId(`category-bubble-${category}`).click();
+
+            await expect
+                .element(screen.getByTestId(`tech-card-${name}`))
+                .toHaveAttribute("href", href);
+        });
+    }
+
+    it("keeps the .NET Core link unchanged", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-backend").click();
+
+        await expect
+            .element(screen.getByTestId("tech-card-.NET Core"))
+            .toHaveAttribute("href", "https://dotnet.microsoft.com/");
     });
 });
 
