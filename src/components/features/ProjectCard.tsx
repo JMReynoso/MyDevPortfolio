@@ -7,9 +7,13 @@ export interface ProjectCardProps {
   description: string;
   image: string;
   tags: string[];
-  link: string;
+  link?: string;
   delay?: number;
 }
+
+const CARD_CLASSES =
+  "bg-white rounded-3xl overflow-hidden shadow-lg transition-all group flex-col flex";
+const LINK_CARD_CLASSES = `${CARD_CLASSES} hover:shadow-2xl`;
 
 export function ProjectCard({
   title,
@@ -19,18 +23,15 @@ export function ProjectCard({
   link,
   delay = 0,
 }: ProjectCardProps) {
-  return (
-    <motion.a
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay }}
-      whileHover={{ y: -10 }}
-      className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group flex-col flex"
-      target="_blank"
-      rel="noopener noreferrer"
-      href={link}
-    >
+  const reveal = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { delay },
+  };
+
+  const content = (
+    <>
       <div className="relative overflow-hidden h-48">
         <ImageWithFallback
           src={image}
@@ -52,6 +53,27 @@ export function ProjectCard({
           </WarmBadge>
         ))}
       </div>
+    </>
+  );
+
+  if (!link) {
+    return (
+      <motion.div {...reveal} className={CARD_CLASSES}>
+        {content}
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.a
+      {...reveal}
+      whileHover={{ y: -10 }}
+      className={LINK_CARD_CLASSES}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={link}
+    >
+      {content}
     </motion.a>
   );
 }

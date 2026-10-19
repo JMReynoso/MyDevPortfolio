@@ -443,7 +443,7 @@ import { ProjectCard } from "./components";
 - `description`: Project description
 - `image`: Image URL
 - `tags`: Array of technology tags
-- `link`: Project link
+- `link`: Optional project link. Without it the card renders as a plain, non-interactive container (no anchor, no hover lift or hover shadow)
 - `delay`: Animation delay for staggering
 
 #### SkillCard
