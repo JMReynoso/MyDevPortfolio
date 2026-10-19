@@ -42,16 +42,26 @@ describe("Technologies E2E - Layout Shift Fix", () => {
 
     it("displays bubbles in correct order", async () => {
         const screen = await render(<Technologies />);
+        await expect
+            .element(screen.getByTestId("category-bubble-frontend"))
+            .toBeInTheDocument();
 
-        // Get all bubble buttons
-        const frontendBubble = screen.getByTestId("category-bubble-frontend");
-        const backendBubble = screen.getByTestId("category-bubble-backend");
-        const toolsBubble = screen.getByTestId("category-bubble-tools");
+        const labels = Array.from(
+            screen
+                .getByTestId("category-bubbles")
+                .element()
+                .querySelectorAll("button")
+        ).map((bubble) => bubble.textContent);
 
-        // Verify bubbles exist
-        await expect.element(frontendBubble).toBeInTheDocument();
-        await expect.element(backendBubble).toBeInTheDocument();
-        await expect.element(toolsBubble).toBeInTheDocument();
+        expect(labels).toEqual(["Front-end", "Back-end", "DevOps", "Tools"]);
+    });
+
+    it("opens on Front-end", async () => {
+        const screen = await render(<Technologies />);
+
+        await expect
+            .element(screen.getByTestId("category-bubble-frontend"))
+            .toHaveAttribute("aria-pressed", "true");
     });
 
     it("handles rapid category switching without errors", async () => {
@@ -90,9 +100,7 @@ describe("Technologies E2E - Master Resume Technologies", () => {
         await expect
             .element(screen.getByTestId("tech-card-.NET Core"))
             .toBeInTheDocument();
-        expect(screen.getByTestId("tech-card-.NET").elements()).toHaveLength(
-            0
-        );
+        expect(screen.getByTestId("tech-card-.NET").elements()).toHaveLength(0);
     });
 
     it("shows Hangfire under Back-end", async () => {
@@ -231,6 +239,173 @@ describe("Technologies E2E - Master Resume Technologies", () => {
     });
 });
 
+// DevOps bubble added by spec #52 (ticket #54), checked through the real
+// category data. The Technologies are the Master Resume's "Cloud & DevOps"
+// group, in the Master Resume's order.
+describe("Technologies E2E - DevOps bubble", () => {
+    const devOpsTechnologies = [
+        "AWS",
+        "Azure",
+        "Docker",
+        "Docker Compose",
+        "GitLab CI/CD",
+        "GitHub Actions",
+        "Nginx",
+        "Cloudflare Tunnel / Zero Trust",
+        "Swagger / OpenAPI",
+        "Turborepo",
+        "Datadog",
+    ];
+
+    const cardNames = (screen: Awaited<ReturnType<typeof render>>) =>
+        Array.from(
+            screen
+                .getByTestId("technology-grid")
+                .element()
+                .querySelectorAll("a")
+        ).map((card) => card.textContent);
+
+    it("selects DevOps and lists its 11 Technologies on hover", async () => {
+        const screen = await render(<Technologies />);
+        const devOps = screen.getByTestId("category-bubble-devops");
+
+        await devOps.hover();
+
+        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
+        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
+    });
+
+    it("selects DevOps and lists its 11 Technologies on click", async () => {
+        const screen = await render(<Technologies />);
+        const devOps = screen.getByTestId("category-bubble-devops");
+
+        await devOps.click();
+
+        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
+        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
+    });
+
+    it("selects DevOps and lists its 11 Technologies on keyboard focus", async () => {
+        const screen = await render(<Technologies />);
+        const devOps = screen.getByTestId("category-bubble-devops");
+
+        devOps.element().focus();
+
+        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
+        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
+    });
+
+    // Hovers every bubble in turn and returns the card names shown under each.
+    const namesByCategory = async (
+        screen: Awaited<ReturnType<typeof render>>
+    ) => {
+        const result: Record<string, (string | null)[]> = {};
+        for (const id of ["frontend", "backend", "devops", "tools"]) {
+            const bubble = screen.getByTestId(`category-bubble-${id}`);
+            await bubble.hover();
+            await expect
+                .element(bubble)
+                .toHaveAttribute("aria-pressed", "true");
+            result[id] = cardNames(screen);
+        }
+        return result;
+    };
+
+    it("shows no Technology under more than one bubble", async () => {
+        const screen = await render(<Technologies />);
+
+        const names = Object.values(await namesByCategory(screen)).flat();
+
+        expect(names.length).toBeGreaterThan(0);
+        expect(names.filter((name, i) => names.indexOf(name) !== i)).toEqual(
+            []
+        );
+    });
+
+    it("shows 11 Front-end, 22 Back-end, 11 DevOps and 19 Tools Technologies", async () => {
+        const screen = await render(<Technologies />);
+
+        const byCategory = await namesByCategory(screen);
+
+        expect({
+            frontend: byCategory.frontend.length,
+            backend: byCategory.backend.length,
+            devops: byCategory.devops.length,
+            tools: byCategory.tools.length,
+        }).toEqual({ frontend: 11, backend: 22, devops: 11, tools: 19 });
+    });
+
+    it("moves the DevOps Technologies out of Back-end and Tools", async () => {
+        const screen = await render(<Technologies />);
+
+        const byCategory = await namesByCategory(screen);
+
+        // AWS Lambda is not part of the move: the Master Resume keeps it in Back-end.
+        expect(byCategory.backend).toContain("AWS Lambda");
+        for (const name of devOpsTechnologies) {
+            expect(byCategory.devops).toContain(name);
+            expect(byCategory.backend).not.toContain(name);
+            expect(byCategory.tools).not.toContain(name);
+        }
+    });
+
+    it("spot checks: Docker is not under Tools, AWS is not under Back-end", async () => {
+        const screen = await render(<Technologies />);
+
+        const byCategory = await namesByCategory(screen);
+
+        expect(byCategory.tools).not.toContain("Docker");
+        expect(byCategory.backend).not.toContain("AWS");
+        expect(byCategory.devops).toContain("Docker");
+        expect(byCategory.devops).toContain("AWS");
+    });
+
+    it("shows Cloudflare Tunnel / Zero Trust under DevOps, with no Cloudflare Zero Trust card left", async () => {
+        const screen = await render(<Technologies />);
+
+        await screen.getByTestId("category-bubble-devops").click();
+
+        await expect
+            .element(
+                screen.getByTestId("tech-card-Cloudflare Tunnel / Zero Trust")
+            )
+            .toBeInTheDocument();
+        expect(
+            screen.getByTestId("tech-card-Cloudflare Zero Trust").elements()
+        ).toHaveLength(0);
+    });
+
+    // Moved Technologies keep their links; the two new ones get these.
+    const devOpsLinks = [
+        ["AWS", "https://aws.amazon.com/"],
+        ["Azure", "https://azure.microsoft.com/"],
+        ["Docker", "https://www.docker.com/"],
+        ["Docker Compose", "https://docs.docker.com/compose/"],
+        ["GitLab CI/CD", "https://docs.gitlab.com/ci/"],
+        ["GitHub Actions", "https://github.com/features/actions"],
+        ["Nginx", "https://nginx.org/"],
+        [
+            "Cloudflare Tunnel / Zero Trust",
+            "https://www.cloudflare.com/zero-trust/",
+        ],
+        ["Swagger / OpenAPI", "https://swagger.io/"],
+        ["Turborepo", "https://turborepo.dev/"],
+        ["Datadog", "https://www.datadoghq.com/"],
+    ] as const;
+
+    for (const [name, href] of devOpsLinks) {
+        it(`links ${name} to its official site`, async () => {
+            const screen = await render(<Technologies />);
+
+            await screen.getByTestId("category-bubble-devops").click();
+
+            await expect
+                .element(screen.getByTestId(`tech-card-${name}`))
+                .toHaveAttribute("href", href);
+        });
+    }
+});
+
 describe("Technologies E2E - Bubble zig-zag", () => {
     const originalViewport = {
         width: window.innerWidth,
@@ -262,7 +437,7 @@ describe("Technologies E2E - Bubble zig-zag", () => {
 
         const centres = bubbleCentres(screen.container);
 
-        expect(centres.length).toBeGreaterThan(1);
+        expect(centres).toHaveLength(4);
         centres.slice(0, -1).forEach((centre, index) => {
             const next = centres[index + 1];
             // Even positions sit left of their neighbours, odd positions right.
@@ -283,7 +458,7 @@ describe("Technologies E2E - Bubble zig-zag", () => {
 
         const centres = bubbleCentres(screen.container);
 
-        expect(centres.length).toBeGreaterThan(1);
+        expect(centres).toHaveLength(4);
         centres.forEach((centre) => expect(centre).toBeCloseTo(centres[0], 0));
     });
 });

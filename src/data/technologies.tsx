@@ -40,6 +40,7 @@ import {
   Route,
   Search,
   Server,
+  ServerCog,
   ShieldCheck,
   Sparkles,
   SquareDashedBottomCode,
@@ -54,6 +55,7 @@ import {
   Webhook,
   Workflow,
   Worm,
+  Zap,
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -64,7 +66,7 @@ export type Technology = {
 };
 
 export type TechnologyCategory = {
-  id: "frontend" | "backend" | "tools";
+  id: "frontend" | "backend" | "devops" | "tools";
   label: string;
   icon: ReactNode;
   technologies: Technology[];
@@ -154,19 +156,9 @@ export const categories: TechnologyCategory[] = [
         link: "https://spring.io/",
       },
       {
-        name: "AWS",
-        icon: <Server className="w-8 h-8" />,
-        link: "https://aws.amazon.com/",
-      },
-      {
         name: "AWS Lambda",
         icon: <SquareFunction className="w-8 h-8" />,
         link: "https://aws.amazon.com/lambda/",
-      },
-      {
-        name: "Azure",
-        icon: <Cloud className="w-8 h-8" />,
-        link: "https://azure.microsoft.com/",
       },
       {
         name: "MongoDB",
@@ -187,11 +179,6 @@ export const categories: TechnologyCategory[] = [
         name: "Fastify",
         icon: <Gauge className="w-8 h-8" />,
         link: "https://fastify.dev/",
-      },
-      {
-        name: "Swagger / OpenAPI",
-        icon: <Braces className="w-8 h-8" />,
-        link: "https://swagger.io/",
       },
       {
         name: ".NET Core",
@@ -266,6 +253,68 @@ export const categories: TechnologyCategory[] = [
     ],
   },
   {
+    id: "devops",
+    label: "DevOps",
+    icon: <Cloud className="w-8 h-8" />,
+    technologies: [
+      {
+        name: "AWS",
+        icon: <Server className="w-8 h-8" />,
+        link: "https://aws.amazon.com/",
+      },
+      {
+        name: "Azure",
+        icon: <ServerCog className="w-8 h-8" />,
+        link: "https://azure.microsoft.com/",
+      },
+      {
+        name: "Docker",
+        icon: <Container className="w-8 h-8" />,
+        link: "https://www.docker.com/",
+      },
+      {
+        name: "Docker Compose",
+        icon: <Boxes className="w-8 h-8" />,
+        link: "https://docs.docker.com/compose/",
+      },
+      {
+        name: "GitLab CI/CD",
+        icon: <Rocket className="w-8 h-8" />,
+        link: "https://docs.gitlab.com/ci/",
+      },
+      {
+        name: "GitHub Actions",
+        icon: <Workflow className="w-8 h-8" />,
+        link: "https://github.com/features/actions",
+      },
+      {
+        name: "Nginx",
+        icon: <Network className="w-8 h-8" />,
+        link: "https://nginx.org/",
+      },
+      {
+        name: "Cloudflare Tunnel / Zero Trust",
+        icon: <ShieldCheck className="w-8 h-8" />,
+        link: "https://www.cloudflare.com/zero-trust/",
+      },
+      {
+        name: "Swagger / OpenAPI",
+        icon: <Braces className="w-8 h-8" />,
+        link: "https://swagger.io/",
+      },
+      {
+        name: "Turborepo",
+        icon: <Zap className="w-8 h-8" />,
+        link: "https://turborepo.dev/",
+      },
+      {
+        name: "Datadog",
+        icon: <Dog className="w-8 h-8" />,
+        link: "https://www.datadoghq.com/",
+      },
+    ],
+  },
+  {
     id: "tools",
     label: "Tools",
     icon: <Hammer className="w-8 h-8" />,
@@ -294,36 +343,6 @@ export const categories: TechnologyCategory[] = [
         name: "Git",
         icon: <GitBranch className="w-8 h-8" />,
         link: "https://git-scm.com/",
-      },
-      {
-        name: "GitHub Actions",
-        icon: <Workflow className="w-8 h-8" />,
-        link: "https://github.com/features/actions",
-      },
-      {
-        name: "GitLab CI/CD",
-        icon: <Rocket className="w-8 h-8" />,
-        link: "https://docs.gitlab.com/ci/",
-      },
-      {
-        name: "Docker",
-        icon: <Container className="w-8 h-8" />,
-        link: "https://www.docker.com/",
-      },
-      {
-        name: "Nginx",
-        icon: <Network className="w-8 h-8" />,
-        link: "https://nginx.org/",
-      },
-      {
-        name: "Cloudflare Zero Trust",
-        icon: <ShieldCheck className="w-8 h-8" />,
-        link: "https://www.cloudflare.com/zero-trust/",
-      },
-      {
-        name: "Datadog",
-        icon: <Dog className="w-8 h-8" />,
-        link: "https://www.datadoghq.com/",
       },
       {
         name: "Postman",
