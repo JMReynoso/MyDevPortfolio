@@ -17,7 +17,7 @@ A named product (language, framework, platform, database or tool) the owner work
 _Avoid_: tech, stack item
 
 **Technology Category**:
-A grouping that Technologies are shown under, such as Front-end, Back-end or Tools.
+A grouping that Technologies are shown under, such as Front-end, Back-end, DevOps or Tools. Each Technology belongs to exactly one Technology Category.
 _Avoid_: section, group
 
 **Certification**:
