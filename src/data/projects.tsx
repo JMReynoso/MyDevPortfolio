@@ -3,7 +3,7 @@ export type Project = {
   description: string;
   image: string;
   tags: string[];
-  link: string;
+  link?: string;
 };
 
 export const projects: Project[] = [
@@ -27,6 +27,13 @@ export const projects: Project[] = [
       "Handlebars",
     ],
     link: "https://github.com/JMReynoso/job-assistance",
+  },
+  {
+    title: "Distributed API Rate Limiter",
+    description:
+      "A production Redis-backed rate limiter shared across Cadmium's high-traffic SaaS products, increasing API performance under heavy load while preserving response times for lower-volume clients.",
+    image: "/images/projects/distributed-api-rate-limiter.svg",
+    tags: [".NET Core", "ASP.NET Web API", "NUnit", "Redis", "Azure"],
   },
   {
     title: "My Development Portfolio",
