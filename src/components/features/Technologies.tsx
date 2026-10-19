@@ -18,13 +18,14 @@ export function Technologies() {
   const maxHeight = useMaxTechListHeight(categories, activeCategory);
 
   return (
-    <div className="w-full">
+    <div className="w-full" data-testid="technologies-container">
       <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
         {/* Left side - Category bubbles */}
-        <div className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch">
+        <div className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch" data-testid="category-bubbles">
           {categories.map((category) => (
             <button
               key={category.id}
+              data-testid={`category-bubble-${category.id}`}
               onClick={() => handleCategoryChange(category.id)}
               onMouseEnter={() => handleCategoryChange(category.id)}
               onFocus={() => handleCategoryChange(category.id)}
@@ -58,6 +59,7 @@ export function Technologies() {
         {/* Right side - Technology grid */}
         <div
           className="min-h-[250px] md:min-h-[400px]"
+          data-testid="technology-grid"
           style={{ minHeight: `${maxHeight}px` }}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3">
@@ -67,6 +69,7 @@ export function Technologies() {
                 target="_blank"
                 rel="noopener noreferrer"
                 key={`${activeCategory}-${tech.name}`}
+                data-testid={`tech-card-${tech.name}`}
                 className="
                   flex flex-row items-center gap-3 md:gap-4
                   p-3 md:p-4 rounded-xl border-2 border-[var(--border)]
