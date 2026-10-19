@@ -8,6 +8,27 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "Job Assistance",
+    description:
+      "Turns a job posting into a tailored resume, personalized outreach and a ranked contact list in one AI pipeline across the Claude, Perplexity and Hunter.io APIs.",
+    image: "/images/projects/job-assistance.png",
+    tags: [
+      "Claude API",
+      "Perplexity API",
+      "Hunter.io API",
+      "Ollama API",
+      "Node.js",
+      "PostgreSQL",
+      "Fastify",
+      "React",
+      "Next.js",
+      "NestJS",
+      "Puppeteer",
+      "Handlebars",
+    ],
+    link: "https://github.com/JMReynoso/job-assistance",
+  },
+  {
     title: "My Development Portfolio",
     description:
       "A Front-end developer portfolio showcasing my skills, projects, and experience with a clean, modern, and warm design.",
