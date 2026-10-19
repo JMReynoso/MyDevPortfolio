@@ -4,6 +4,7 @@ export type Project = {
   image: string;
   tags: string[];
   link?: string;
+  imageFit?: "cover" | "contain";
 };
 
 export const projects: Project[] = [
@@ -33,6 +34,7 @@ export const projects: Project[] = [
     description:
       "A production Redis-backed rate limiter shared across Cadmium's high-traffic SaaS products, increasing API performance under heavy load while preserving response times for lower-volume clients.",
     image: "/images/projects/distributed-api-rate-limiter.svg",
+    imageFit: "contain",
     tags: [".NET Core", "ASP.NET Web API", "NUnit", "Redis", "Azure"],
   },
   {

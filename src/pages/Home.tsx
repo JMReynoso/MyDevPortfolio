@@ -66,6 +66,7 @@ export default function Home() {
               image={project.image}
               tags={project.tags}
               link={project.link}
+              imageFit={project.imageFit}
               delay={index * 0.1}
             />
           ))}

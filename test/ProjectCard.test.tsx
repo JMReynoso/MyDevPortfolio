@@ -55,6 +55,22 @@ describe("ProjectCard", () => {
     await expect.element(img).toHaveAttribute("alt", "My Project");
   });
 
+  it("crops the image from the top by default", async () => {
+    const screen = await render(<ProjectCard {...defaultProps} />);
+    const img = screen.getByTestId("project-image");
+    await expect.element(img).toHaveClass("object-cover");
+    await expect.element(img).not.toHaveClass("object-contain");
+  });
+
+  it("shows a contained image whole and centred on Warm Cream", async () => {
+    const screen = await render(<ProjectCard {...defaultProps} imageFit="contain" />);
+    const img = screen.getByTestId("project-image");
+    await expect.element(img).toHaveClass("object-contain");
+    await expect.element(img).toHaveClass("h-full");
+    await expect.element(img).not.toHaveClass("object-cover");
+    expect(img.element().parentElement).toHaveClass("bg-[#FFF8F0]");
+  });
+
   it("renders all tags as badges", async () => {
     const screen = await render(<ProjectCard {...defaultProps} />);
     await expect.element(screen.getByTestId("badge-React")).toBeInTheDocument();

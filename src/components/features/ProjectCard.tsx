@@ -8,6 +8,7 @@ export interface ProjectCardProps {
   image: string;
   tags: string[];
   link?: string;
+  imageFit?: "cover" | "contain";
   delay?: number;
 }
 
@@ -15,12 +16,23 @@ const BASE_CARD_CLASSES =
   "bg-white rounded-3xl overflow-hidden shadow-lg transition-all group flex-col flex";
 const LINK_CARD_CLASSES = `${BASE_CARD_CLASSES} hover:shadow-2xl`;
 
+// "cover" crops a screenshot from the top; "contain" shows a diagram whole, centred on Warm Cream.
+const IMAGE_AREA_CLASSES = {
+  cover: "relative overflow-hidden h-48",
+  contain: "relative overflow-hidden h-48 bg-[#FFF8F0]",
+};
+const IMAGE_CLASSES = {
+  cover: "w-full object-cover",
+  contain: "w-full h-full object-contain",
+};
+
 export function ProjectCard({
   title,
   description,
   image,
   tags,
   link,
+  imageFit = "cover",
   delay = 0,
 }: ProjectCardProps) {
   const reveal = {
@@ -32,11 +44,11 @@ export function ProjectCard({
 
   const content = (
     <>
-      <div className="relative overflow-hidden h-48">
+      <div className={IMAGE_AREA_CLASSES[imageFit]}>
         <ImageWithFallback
           src={image}
           alt={title}
-          className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className={`${IMAGE_CLASSES[imageFit]} group-hover:scale-110 transition-transform duration-300`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
