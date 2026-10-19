@@ -36,6 +36,22 @@ export const projects: Project[] = [
     tags: [".NET Core", "ASP.NET Web API", "NUnit", "Redis", "Azure"],
   },
   {
+    title: "Household Task Tracker",
+    description:
+      "A full-stack .NET and Next.js app in clean architecture, with Redis-cached scoring, Hangfire recurring jobs, Testcontainers integration tests and a live demo shipped through CI/CD.",
+    image: "/images/projects/household-task-tracker.png",
+    tags: [
+      ".NET Core",
+      "React",
+      "PostgreSQL",
+      "Redis",
+      "Next.js",
+      "Hangfire",
+      "Docker",
+    ],
+    link: "https://github.com/JMReynoso/todo",
+  },
+  {
     title: "My Development Portfolio",
     description:
       "A Front-end developer portfolio showcasing my skills, projects, and experience with a clean, modern, and warm design.",
