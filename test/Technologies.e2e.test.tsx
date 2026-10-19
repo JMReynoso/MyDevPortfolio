@@ -378,6 +378,25 @@ describe("Technologies E2E - Bubble layout", () => {
             return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
         });
 
+    // Groups Bubbles into rows by vertical centre, so Bubbles on the same line
+    // share a row. The top edge can't be used: the active Bubble's 5% scale moves
+    // it by about 3px, more than the tolerance. Rows come out in the order their
+    // first Bubble appears in the DOM, and each row keeps DOM order.
+    const rowsOf = (centres: ReturnType<typeof bubbleCentres>) => {
+        const rows: ReturnType<typeof bubbleCentres>[] = [];
+        for (const centre of centres) {
+            const row = rows.find(
+                ([first]) => Math.abs(first.y - centre.y) <= TOLERANCE_PX
+            );
+            if (row) {
+                row.push(centre);
+            } else {
+                rows.push([centre]);
+            }
+        }
+        return rows;
+    };
+
     // 768px is where the desktop layout starts, so it is tested as well as a
     // wider screen.
     it.each([768, 1024])(
@@ -404,20 +423,58 @@ describe("Technologies E2E - Bubble layout", () => {
         }
     );
 
-    it("keeps the bubbles in one centred column on phones", async () => {
-        await page.viewport(375, 800);
-        const screen = await render(<Technologies />);
-        await expect
-            .element(screen.getByTestId("category-bubble-frontend"))
-            .toBeInTheDocument();
+    // Phones are everything below 768px, so 767px is the widest one. Two Bubbles
+    // and the gap between them take 240px, which fits even at 320px.
+    it.each([320, 375, 767])(
+        "shows bubbles two per row, each row centred, on phones at %ipx",
+        async (width) => {
+            await page.viewport(width, 800);
+            const screen = await render(<Technologies />);
+            await expect
+                .element(screen.getByTestId("category-bubble-frontend"))
+                .toBeInTheDocument();
 
-        const centres = bubbleCentres(screen.container).map(({ x }) => x);
+            const centres = bubbleCentres(screen.container);
+            const rows = rowsOf(centres);
+            const container = screen
+                .getByTestId("technologies-container")
+                .element()
+                .getBoundingClientRect();
+            const containerCentre = container.left + container.width / 2;
 
-        expect(centres).toHaveLength(4);
-        centres.forEach((centre) =>
-            expect(Math.abs(centre - centres[0])).toBeLessThanOrEqual(
-                TOLERANCE_PX
-            )
-        );
-    });
+            // Guards against passing with no Bubbles to check.
+            expect(centres.length).toBeGreaterThan(0);
+
+            // As many rows as half the Bubbles, rounded up, and none holds more
+            // than two.
+            expect(rows).toHaveLength(Math.ceil(centres.length / 2));
+            rows.forEach((row) => expect(row.length).toBeLessThanOrEqual(2));
+
+            // Bubbles follow the DOM order: left before right within a row, and
+            // each row below the one before.
+            expect(rows.flat()).toEqual(centres);
+            rows.forEach((row) =>
+                row.slice(1).forEach((centre, index) => {
+                    expect(centre.x).toBeGreaterThan(
+                        row[index].x + TOLERANCE_PX
+                    );
+                })
+            );
+            rows.slice(1).forEach((row, index) => {
+                expect(row[0].y).toBeGreaterThan(
+                    rows[index][0].y + TOLERANCE_PX
+                );
+            });
+
+            // Each row's midpoint sits at the centre of the whole section, so the
+            // block is centred there and not just within itself.
+            rows.forEach((row) => {
+                const xs = row.map(({ x }) => x);
+                const midpoint = (Math.min(...xs) + Math.max(...xs)) / 2;
+                expect(
+                    Math.abs(midpoint - containerCentre)
+                ).toBeLessThanOrEqual(TOLERANCE_PX);
+            });
+        }
+    );
 });

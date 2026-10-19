@@ -22,7 +22,7 @@ export function Technologies() {
             <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
                 {/* Left side - Category bubbles */}
                 <div
-                    className="relative flex flex-col gap-4 md:gap-8 justify-center items-center md:items-stretch"
+                    className="relative flex flex-row flex-wrap md:flex-col max-w-[240px] md:max-w-none max-md:mx-auto gap-4 md:gap-8 justify-center items-center md:items-stretch"
                     data-testid="category-bubbles"
                 >
                     {categories.map((category, index) => (
