@@ -11,9 +11,9 @@ export interface ProjectCardProps {
   delay?: number;
 }
 
-const CARD_CLASSES =
+const BASE_CARD_CLASSES =
   "bg-white rounded-3xl overflow-hidden shadow-lg transition-all group flex-col flex";
-const LINK_CARD_CLASSES = `${CARD_CLASSES} hover:shadow-2xl`;
+const LINK_CARD_CLASSES = `${BASE_CARD_CLASSES} hover:shadow-2xl`;
 
 export function ProjectCard({
   title,
@@ -58,7 +58,7 @@ export function ProjectCard({
 
   if (!link) {
     return (
-      <motion.div {...reveal} className={CARD_CLASSES}>
+      <motion.div {...reveal} className={BASE_CARD_CLASSES}>
         {content}
       </motion.div>
     );

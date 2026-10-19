@@ -443,8 +443,10 @@ import { ProjectCard } from "./components";
 - `description`: Project description
 - `image`: Image URL
 - `tags`: Array of technology tags
-- `link`: Optional project link. Without it the card renders as a plain, non-interactive container (no anchor, no hover lift or hover shadow)
+- `link`: Optional project link. Without it the card renders as a plain, non-interactive container (no anchor, no hover lift or hover shadow). The image's hover zoom and gradient overlay deliberately stay on both kinds of card
 - `delay`: Animation delay for staggering
+
+The image area is a fixed 192px (`h-48`) crop from the top at the image's natural aspect ratio. `public/images/projects/distributed-api-rate-limiter.svg` keeps its drawing in a band at the top of its viewBox so that crop never cuts it; if you change the image height or crop, re-check that diagram.
 
 #### SkillCard
 

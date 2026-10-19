@@ -2,12 +2,16 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { ProjectCard } from "../src/components/features/ProjectCard";
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    a: ({ children, whileHover, whileTap, whileInView, initial, animate, transition, viewport, ...props }: any) => <a {...props}>{children}</a>,
-    div: ({ children, whileHover, whileTap, whileInView, initial, animate, transition, viewport, ...props }: any) => <div {...props}>{children}</div>,
-  },
-}));
+vi.mock("framer-motion", () => {
+  const stripMotionProps = ({ whileHover, whileTap, whileInView, initial, animate, transition, viewport, ...props }: any) => props;
+
+  return {
+    motion: {
+      a: (props: any) => <a {...stripMotionProps(props)} />,
+      div: (props: any) => <div {...stripMotionProps(props)} />,
+    },
+  };
+});
 
 vi.mock("../src/components/figma/ImageWithFallback", () => ({
   ImageWithFallback: ({ src, alt, className }: any) => (
