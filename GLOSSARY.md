@@ -20,6 +20,10 @@ _Avoid_: tech, stack item
 A grouping that Technologies are shown under, such as Front-end, Back-end, DevOps or Tools. Each Technology belongs to exactly one Technology Category.
 _Avoid_: section, group
 
+**Bubble**:
+The round control a visitor selects to choose which Technology Category's Technologies are shown. Each Technology Category has one Bubble.
+_Avoid_: category button, circle, pill
+
 **Certification**:
 A professional credential the owner holds or is pursuing. Its status is either Certified or In Progress.
 _Avoid_: cert, certificate card
