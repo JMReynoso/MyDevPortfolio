@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { categories } from "../../data/technologies";
+import { useMaxTechListHeight } from "../../hooks/useMaxTechListHeight";
 
 export function Technologies() {
   const [activeCategory, setActiveCategory] = useState<
@@ -12,6 +13,9 @@ export function Technologies() {
     (id: "frontend" | "backend" | "tools") => setActiveCategory(id),
     [],
   );
+
+  // Calculate max height across all category technology lists
+  const maxHeight = useMaxTechListHeight(categories, activeCategory);
 
   return (
     <div className="w-full">
@@ -52,7 +56,10 @@ export function Technologies() {
         </div>
 
         {/* Right side - Technology grid */}
-        <div className="min-h-[250px] md:min-h-[400px]">
+        <div
+          className="min-h-[250px] md:min-h-[400px]"
+          style={{ minHeight: `${maxHeight}px` }}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3">
             {activeData?.technologies.map((tech, index) => (
               <a
