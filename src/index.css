@@ -1692,11 +1692,8 @@
     }
   }
 
-  @media (width >= 48rem) {
-    .md\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
+  /* No md:grid-cols-2 here: Tailwind generates it above this dump, before lg:grid-cols-*.
+     A copy in the dump would sit after lg:grid-cols-3 and keep Home's Featured Projects at 2 columns on desktop. */
 
   @media (width >= 48rem) {
     .md\:grid-cols-\[320px_1fr\] {
