@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { page, type Locator } from "vitest/browser";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { page, userEvent, type Locator } from "vitest/browser";
 import { render, screen } from "vitest-browser-react";
 import { Technologies } from "../src/components/features/Technologies";
 // Load the site's real stylesheet so the bubbles lay out as they do for visitors.
@@ -12,6 +12,14 @@ const cardNames = (screen: RenderedTechnologies) =>
     Array.from(
         screen.getByTestId("technology-grid").element().querySelectorAll("a")
     ).map((card) => card.textContent);
+
+// The browser keeps its mouse pointer between tests, and hovering a Bubble
+// selects its Technology Category. A pointer left over a Bubble by an earlier
+// click would select that Bubble as soon as the next test renders it, instead
+// of the default Front-end. Parking the pointer on the body first stops that.
+beforeEach(async () => {
+    await userEvent.unhover(document.body);
+});
 
 // E2E tests for the layout shift fix in Technologies component
 // These tests verify the fix works correctly in the browser environment
