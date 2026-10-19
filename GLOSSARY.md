@@ -36,12 +36,16 @@ _Avoid_: job, position, experience entry
 An institution the owner studied at, shown under Education.
 _Avoid_: education entry, university
 
+**Project**:
+Something the owner built, as listed under Projects in the Master Resume. The Home page shows a chosen few under Featured Projects.
+_Avoid_: app, repo, portfolio item
+
 **Highlight**:
 One statement of what the owner did in a Role or studied at a School. A Role or School has one or more Highlights.
 _Avoid_: bullet, point, description
 
 **Skill Tag**:
-A short label on a Role or School naming a Technology or practice it involved.
+A short label on a Role, School or Project naming a Technology or practice it involved.
 _Avoid_: tag, badge, skill
 
 ### Services
