@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="4 4 800 400" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 4 800 400" role="img" aria-labelledby="title desc">
   <title id="title">Distributed API Rate Limiter</title>
-  <desc id="desc">Many clients send requests through an API. The API checks one shared, Redis-backed rate limiter, which either allows each request or rejects it.</desc>
+  <desc id="desc">Many clients send requests to one shared, Redis-backed rate limiter, which either allows each request through to the API or rejects it.</desc>
   <defs>
     <marker id="arrow-sage" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#7BA05B"/>
@@ -15,56 +15,54 @@
 
   <!-- The card shows this image whole (imageFit "contain"), centred on Warm Cream, so the drawing is centred
        in the viewBox with even margins rather than pinned to the top. -->
-  <rect x="4" y="4" width="800" height="400" fill="#FFF8F0"/>
+  <rect x="0" y="4" width="800" height="400" fill="#FFF8F0"/>
 
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="600" text-anchor="middle">
 
     <!-- Clients -->
     <g fill="#7BA05B" fill-opacity="0.22" stroke="#7BA05B" stroke-width="3">
-      <rect x="24" y="80" width="120" height="60" rx="14"/>
-      <rect x="24" y="155" width="120" height="60" rx="14"/>
-      <rect x="24" y="230" width="120" height="60" rx="14"/>
+      <rect x="38" y="80" width="110" height="60" rx="14"/>
+      <rect x="38" y="155" width="110" height="60" rx="14"/>
+      <rect x="38" y="230" width="110" height="60" rx="14"/>
     </g>
     <g fill="#4A6741">
-      <circle cx="84" cy="101" r="8"/><path d="M67 128 a17 14 0 0 1 34 0 z"/>
-      <circle cx="84" cy="176" r="8"/><path d="M67 203 a17 14 0 0 1 34 0 z"/>
-      <circle cx="84" cy="251" r="8"/><path d="M67 278 a17 14 0 0 1 34 0 z"/>
+      <circle cx="93" cy="101" r="8"/><path d="M76 128 a17 14 0 0 1 34 0 z"/>
+      <circle cx="93" cy="176" r="8"/><path d="M76 203 a17 14 0 0 1 34 0 z"/>
+      <circle cx="93" cy="251" r="8"/><path d="M76 278 a17 14 0 0 1 34 0 z"/>
     </g>
-    <text x="84" y="330" fill="#2C2416">Clients</text>
+    <text x="93" y="330" fill="#2C2416">Clients</text>
 
-    <!-- Requests converge on the API -->
+    <!-- Requests converge on the shared limiter -->
     <g fill="none" stroke="#7BA05B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M148 110 L198 166" marker-end="url(#arrow-sage)"/>
-      <path d="M148 185 L198 185" marker-end="url(#arrow-sage)"/>
-      <path d="M148 260 L198 204" marker-end="url(#arrow-sage)"/>
+      <path d="M152 110 L198 166" marker-end="url(#arrow-sage)"/>
+      <path d="M152 185 L198 185" marker-end="url(#arrow-sage)"/>
+      <path d="M152 260 L198 204" marker-end="url(#arrow-sage)"/>
     </g>
-
-    <!-- API -->
-    <rect x="208" y="140" width="116" height="90" rx="18" fill="#4A6741"/>
-    <text x="266" y="199" fill="#FFF8F0" font-size="38" font-weight="700">API</text>
-
-    <!-- API checks the limiter -->
-    <path d="M328 185 H360" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-green)"/>
 
     <!-- Shared limiter -->
-    <rect x="368" y="135" width="210" height="100" rx="18" fill="#7BA05B"/>
-    <text x="473" y="177" fill="#2C2416">Shared</text>
-    <text x="473" y="213" fill="#2C2416">rate limiter</text>
+    <rect x="208" y="135" width="190" height="100" rx="18" fill="#7BA05B"/>
+    <text x="303" y="177" fill="#2C2416">Shared</text>
+    <text x="303" y="213" fill="#2C2416">rate limiter</text>
 
     <!-- Redis behind the limiter -->
-    <path d="M473 239 V259" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round"/>
-    <path d="M435 272 V302 a38 11 0 0 0 76 0 V272 z" fill="#4A6741"/>
-    <ellipse cx="473" cy="272" rx="38" ry="11" fill="#4A6741" stroke="#FFF8F0" stroke-width="3"/>
-    <text x="523" y="302" text-anchor="start" fill="#2C2416">Redis</text>
+    <path d="M303 239 V259" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round"/>
+    <path d="M265 272 V302 a38 11 0 0 0 76 0 V272 z" fill="#4A6741"/>
+    <ellipse cx="303" cy="272" rx="38" ry="11" fill="#4A6741" stroke="#FFF8F0" stroke-width="3"/>
+    <text x="353" y="302" text-anchor="start" fill="#2C2416">Redis</text>
 
-    <!-- Allowed -->
-    <path d="M582 165 H606 V130 H630" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
-    <rect x="640" y="104" width="144" height="52" rx="26" fill="#7BA05B" fill-opacity="0.22" stroke="#4A6741" stroke-width="3"/>
-    <text x="712" y="141" fill="#2C2416">Allowed</text>
+    <!-- Allowed, on to the API -->
+    <path d="M402 165 H418 V130 H436" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow-green)"/>
+    <rect x="446" y="104" width="148" height="52" rx="26" fill="#7BA05B" fill-opacity="0.22" stroke="#4A6741" stroke-width="3"/>
+    <text x="520" y="141" fill="#2C2416">Allowed</text>
+    <path d="M598 130 H636" fill="none" stroke="#4A6741" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow-green)"/>
+
+    <!-- API -->
+    <rect x="646" y="90" width="116" height="80" rx="18" fill="#4A6741"/>
+    <text x="704" y="144" fill="#FFF8F0" font-size="38" font-weight="700">API</text>
 
     <!-- Rejected -->
-    <path d="M582 205 H606 V240 H630" fill="none" stroke="#C77B58" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12 10" marker-end="url(#arrow-maple)"/>
-    <rect x="640" y="214" width="144" height="52" rx="26" fill="#C77B58" fill-opacity="0.18" stroke="#C77B58" stroke-width="3"/>
-    <text x="712" y="251" fill="#2C2416">Rejected</text>
+    <path d="M402 205 H418 V240 H436" fill="none" stroke="#C77B58" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12 10" marker-end="url(#arrow-maple)"/>
+    <rect x="446" y="214" width="148" height="52" rx="26" fill="#C77B58" fill-opacity="0.18" stroke="#C77B58" stroke-width="3"/>
+    <text x="520" y="251" fill="#2C2416">Rejected</text>
   </g>
 </svg>
