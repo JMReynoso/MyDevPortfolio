@@ -21,8 +21,10 @@ export function Technologies() {
         <div className="w-full" data-testid="technologies-container">
             <div className="grid md:grid-cols-[320px_1fr] gap-6 md:gap-8 lg:gap-12">
                 {/* Left side - Category bubbles */}
+                {/* max-w-[240px] is two w-28 Bubbles (2x112px) plus one gap-4
+                    (16px), so phones get two Bubbles per row. */}
                 <div
-                    className="relative flex flex-col sm:flex-row gap-4 md:gap-8 justify-center items-center md:items-stretch"
+                    className="relative flex flex-row flex-wrap md:flex-col max-w-[240px] md:max-w-none max-md:mx-auto gap-4 md:gap-8 justify-center items-center md:items-stretch"
                     data-testid="category-bubbles"
                 >
                     {categories.map((category, index) => (

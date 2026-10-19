@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { page, type Locator } from "vitest/browser";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { page, userEvent, type Locator } from "vitest/browser";
 import { render, screen } from "vitest-browser-react";
 import { Technologies } from "../src/components/features/Technologies";
 // Load the site's real stylesheet so the bubbles lay out as they do for visitors.
@@ -12,6 +12,14 @@ const cardNames = (screen: RenderedTechnologies) =>
     Array.from(
         screen.getByTestId("technology-grid").element().querySelectorAll("a")
     ).map((card) => card.textContent);
+
+// The browser keeps its mouse pointer between tests, and hovering a Bubble
+// selects its Technology Category. A pointer left over a Bubble by an earlier
+// click would select that Bubble as soon as the next test renders it, instead
+// of the default Front-end. Parking the pointer on the body first stops that.
+beforeEach(async () => {
+    await userEvent.unhover(document.body);
+});
 
 // E2E tests for the layout shift fix in Technologies component
 // These tests verify the fix works correctly in the browser environment
@@ -351,9 +359,9 @@ describe("Technologies E2E - DevOps bubble", () => {
     }
 });
 
-describe("Technologies E2E - Bubble zig-zag", () => {
-    // Sub-pixel rounding and the active bubble's scale shouldn't matter, so
-    // positions within this many pixels count as the same side.
+describe("Technologies E2E - Bubble layout", () => {
+    // Sub-pixel rounding and the active Bubble's scale shouldn't matter, so
+    // positions within this many pixels count as the same side or the same row.
     const TOLERANCE_PX = 2;
 
     const originalViewport = {
@@ -365,53 +373,119 @@ describe("Technologies E2E - Bubble zig-zag", () => {
         await page.viewport(originalViewport.width, originalViewport.height);
     });
 
-    // Horizontal centre of every bubble, in the order they appear on the page.
-    // The centre is used because the active bubble is scaled up around it.
-    const bubbleCentres = (container: Element) =>
+    // The centre point of a Bubble.
+    type Centre = { x: number; y: number };
+
+    // Horizontal (x) and vertical (y) centre of every Bubble, in the order they
+    // appear on the page. The centre is used because the active Bubble is scaled
+    // up around it.
+    const bubbleCentres = (container: Element): Centre[] =>
         Array.from(
             container.querySelectorAll<HTMLElement>(
                 '[data-testid^="category-bubble-"]'
             )
         ).map((bubble) => {
             const box = bubble.getBoundingClientRect();
-            return box.left + box.width / 2;
+            return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
         });
 
-    it("alternates bubbles left and right on desktop, starting on the left", async () => {
-        await page.viewport(1024, 768);
-        const screen = await render(<Technologies />);
-        await expect
-            .element(screen.getByTestId("category-bubble-frontend"))
-            .toBeInTheDocument();
-
-        const centres = bubbleCentres(screen.container);
-
-        expect(centres).toHaveLength(4);
-        centres.slice(0, -1).forEach((centre, index) => {
-            const next = centres[index + 1];
-            // Even positions sit left of their neighbours, odd positions right.
-            if (index % 2 === 0) {
-                expect(centre).toBeLessThan(next - TOLERANCE_PX);
+    // Groups Bubbles into rows by vertical centre, so Bubbles on the same line
+    // share a row. The top edge can't be used: the active Bubble's 5% scale moves
+    // it by about 3px, more than the tolerance. Rows come out in the order their
+    // first Bubble appears in the DOM, and each row keeps DOM order.
+    const rowsOf = (centres: Centre[]) => {
+        const rows: Centre[][] = [];
+        for (const centre of centres) {
+            const row = rows.find(
+                ([first]) => Math.abs(first.y - centre.y) <= TOLERANCE_PX
+            );
+            if (row) {
+                row.push(centre);
             } else {
-                expect(centre).toBeGreaterThan(next + TOLERANCE_PX);
+                rows.push([centre]);
             }
-        });
-    });
+        }
+        return rows;
+    };
 
-    it("keeps the bubbles in one centred column on phones", async () => {
-        await page.viewport(375, 800);
-        const screen = await render(<Technologies />);
-        await expect
-            .element(screen.getByTestId("category-bubble-frontend"))
-            .toBeInTheDocument();
+    // 768px is where the desktop layout starts, so it is tested as well as a
+    // wider screen.
+    it.each([768, 1024])(
+        "alternates Bubbles left and right on desktop at %ipx, starting on the left",
+        async (width) => {
+            await page.viewport(width, 768);
+            const screen = await render(<Technologies />);
+            await expect
+                .element(screen.getByTestId("category-bubble-frontend"))
+                .toBeInTheDocument();
 
-        const centres = bubbleCentres(screen.container);
+            const xs = bubbleCentres(screen.container).map(({ x }) => x);
 
-        expect(centres).toHaveLength(4);
-        centres.forEach((centre) =>
-            expect(Math.abs(centre - centres[0])).toBeLessThanOrEqual(
-                TOLERANCE_PX
-            )
-        );
-    });
+            expect(xs).toHaveLength(4);
+            xs.slice(0, -1).forEach((x, index) => {
+                const next = xs[index + 1];
+                // Even positions sit left of their neighbours, odd positions right.
+                if (index % 2 === 0) {
+                    expect(x).toBeLessThan(next - TOLERANCE_PX);
+                } else {
+                    expect(x).toBeGreaterThan(next + TOLERANCE_PX);
+                }
+            });
+        }
+    );
+
+    // Phones are everything below 768px, so 767px is the widest one. Two Bubbles
+    // and the gap between them take 240px, which fits even at 320px.
+    it.each([320, 375, 767])(
+        "shows Bubbles two per row, each row centred, on phones at %ipx",
+        async (width) => {
+            await page.viewport(width, 800);
+            const screen = await render(<Technologies />);
+            await expect
+                .element(screen.getByTestId("category-bubble-frontend"))
+                .toBeInTheDocument();
+
+            const centres = bubbleCentres(screen.container);
+            const rows = rowsOf(centres);
+            const container = screen
+                .getByTestId("technologies-container")
+                .element()
+                .getBoundingClientRect();
+            const containerCentre = container.left + container.width / 2;
+
+            // Guards against passing with no Bubbles to check.
+            expect(centres.length).toBeGreaterThan(0);
+
+            // As many rows as half the Bubbles, rounded up, and none holds more
+            // than two.
+            expect(rows).toHaveLength(Math.ceil(centres.length / 2));
+            rows.forEach((row) => expect(row.length).toBeLessThanOrEqual(2));
+
+            // Bubbles follow the DOM order: left before right within a row, and
+            // each row below the one before.
+            expect(rows.flat()).toEqual(centres);
+            rows.forEach((row) =>
+                row.slice(1).forEach((centre, index) => {
+                    expect(centre.x).toBeGreaterThan(
+                        row[index].x + TOLERANCE_PX
+                    );
+                })
+            );
+            rows.slice(1).forEach((row, index) => {
+                expect(row[0].y).toBeGreaterThan(
+                    rows[index][0].y + TOLERANCE_PX
+                );
+            });
+
+            // Each row's midpoint sits at the centre of the whole section, so the
+            // block is centred there and not just within itself.
+            rows.forEach((row) => {
+                const xs = row.map(({ x }) => x);
+                const midpoint = (Math.min(...xs) + Math.max(...xs)) / 2;
+                expect(
+                    Math.abs(midpoint - containerCentre)
+                ).toBeLessThanOrEqual(TOLERANCE_PX);
+            });
+        }
+    );
 });
