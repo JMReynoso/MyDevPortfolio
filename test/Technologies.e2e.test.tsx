@@ -352,8 +352,8 @@ describe("Technologies E2E - DevOps bubble", () => {
 });
 
 describe("Technologies E2E - Bubble layout", () => {
-    // Sub-pixel rounding and the active bubble's scale shouldn't matter, so
-    // positions within this many pixels count as the same side.
+    // Sub-pixel rounding and the active Bubble's scale shouldn't matter, so
+    // positions within this many pixels count as the same side or the same row.
     const TOLERANCE_PX = 2;
 
     const originalViewport = {
@@ -365,10 +365,13 @@ describe("Technologies E2E - Bubble layout", () => {
         await page.viewport(originalViewport.width, originalViewport.height);
     });
 
+    // The centre point of a Bubble.
+    type Centre = { x: number; y: number };
+
     // Horizontal (x) and vertical (y) centre of every Bubble, in the order they
     // appear on the page. The centre is used because the active Bubble is scaled
     // up around it.
-    const bubbleCentres = (container: Element) =>
+    const bubbleCentres = (container: Element): Centre[] =>
         Array.from(
             container.querySelectorAll<HTMLElement>(
                 '[data-testid^="category-bubble-"]'
@@ -382,8 +385,8 @@ describe("Technologies E2E - Bubble layout", () => {
     // share a row. The top edge can't be used: the active Bubble's 5% scale moves
     // it by about 3px, more than the tolerance. Rows come out in the order their
     // first Bubble appears in the DOM, and each row keeps DOM order.
-    const rowsOf = (centres: ReturnType<typeof bubbleCentres>) => {
-        const rows: ReturnType<typeof bubbleCentres>[] = [];
+    const rowsOf = (centres: Centre[]) => {
+        const rows: Centre[][] = [];
         for (const centre of centres) {
             const row = rows.find(
                 ([first]) => Math.abs(first.y - centre.y) <= TOLERANCE_PX
@@ -400,7 +403,7 @@ describe("Technologies E2E - Bubble layout", () => {
     // 768px is where the desktop layout starts, so it is tested as well as a
     // wider screen.
     it.each([768, 1024])(
-        "alternates bubbles left and right on desktop at %ipx, starting on the left",
+        "alternates Bubbles left and right on desktop at %ipx, starting on the left",
         async (width) => {
             await page.viewport(width, 768);
             const screen = await render(<Technologies />);
@@ -408,16 +411,16 @@ describe("Technologies E2E - Bubble layout", () => {
                 .element(screen.getByTestId("category-bubble-frontend"))
                 .toBeInTheDocument();
 
-            const centres = bubbleCentres(screen.container).map(({ x }) => x);
+            const xs = bubbleCentres(screen.container).map(({ x }) => x);
 
-            expect(centres).toHaveLength(4);
-            centres.slice(0, -1).forEach((centre, index) => {
-                const next = centres[index + 1];
+            expect(xs).toHaveLength(4);
+            xs.slice(0, -1).forEach((x, index) => {
+                const next = xs[index + 1];
                 // Even positions sit left of their neighbours, odd positions right.
                 if (index % 2 === 0) {
-                    expect(centre).toBeLessThan(next - TOLERANCE_PX);
+                    expect(x).toBeLessThan(next - TOLERANCE_PX);
                 } else {
-                    expect(centre).toBeGreaterThan(next + TOLERANCE_PX);
+                    expect(x).toBeGreaterThan(next + TOLERANCE_PX);
                 }
             });
         }
@@ -426,7 +429,7 @@ describe("Technologies E2E - Bubble layout", () => {
     // Phones are everything below 768px, so 767px is the widest one. Two Bubbles
     // and the gap between them take 240px, which fits even at 320px.
     it.each([320, 375, 767])(
-        "shows bubbles two per row, each row centred, on phones at %ipx",
+        "shows Bubbles two per row, each row centred, on phones at %ipx",
         async (width) => {
             await page.viewport(width, 800);
             const screen = await render(<Technologies />);
