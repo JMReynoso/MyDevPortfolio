@@ -1,9 +1,17 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { page } from "vitest/browser";
+import { page, type Locator } from "vitest/browser";
 import { render, screen } from "vitest-browser-react";
 import { Technologies } from "../src/components/features/Technologies";
 // Load the site's real stylesheet so the bubbles lay out as they do for visitors.
 import "../src/index.css";
+
+type RenderedTechnologies = Awaited<ReturnType<typeof render>>;
+
+// Names of the Technology cards currently shown, in display order.
+const cardNames = (screen: RenderedTechnologies) =>
+    Array.from(
+        screen.getByTestId("technology-grid").element().querySelectorAll("a")
+    ).map((card) => card.textContent);
 
 // E2E tests for the layout shift fix in Technologies component
 // These tests verify the fix works correctly in the browser environment
@@ -15,6 +23,7 @@ describe("Technologies E2E - Layout Shift Fix", () => {
             .toBeInTheDocument();
         await expect.element(screen.getByText("Front-end")).toBeInTheDocument();
         await expect.element(screen.getByText("Back-end")).toBeInTheDocument();
+        await expect.element(screen.getByText("DevOps")).toBeInTheDocument();
         await expect.element(screen.getByText("Tools")).toBeInTheDocument();
     });
 
@@ -79,19 +88,9 @@ describe("Technologies E2E - Layout Shift Fix", () => {
     });
 });
 
-// Master Resume Technologies added by spec #52 (ticket #55), checked through
-// the real category data.
+// Master Resume Technologies that joined the section, checked through the real
+// category data.
 describe("Technologies E2E - Master Resume Technologies", () => {
-    it("shows React Hook Form under Front-end", async () => {
-        const screen = await render(<Technologies />);
-
-        await screen.getByTestId("category-bubble-frontend").click();
-
-        await expect
-            .element(screen.getByTestId("tech-card-React Hook Form"))
-            .toBeInTheDocument();
-    });
-
     it("shows .NET Core under Back-end, with no plain .NET card left", async () => {
         const screen = await render(<Technologies />);
 
@@ -101,26 +100,6 @@ describe("Technologies E2E - Master Resume Technologies", () => {
             .element(screen.getByTestId("tech-card-.NET Core"))
             .toBeInTheDocument();
         expect(screen.getByTestId("tech-card-.NET").elements()).toHaveLength(0);
-    });
-
-    it("shows Hangfire under Back-end", async () => {
-        const screen = await render(<Technologies />);
-
-        await screen.getByTestId("category-bubble-backend").click();
-
-        await expect
-            .element(screen.getByTestId("tech-card-Hangfire"))
-            .toBeInTheDocument();
-    });
-
-    it("shows Selenium under Tools", async () => {
-        const screen = await render(<Technologies />);
-
-        await screen.getByTestId("category-bubble-tools").click();
-
-        await expect
-            .element(screen.getByTestId("tech-card-Selenium"))
-            .toBeInTheDocument();
     });
 
     // Each new Technology goes right after its closest relative.
@@ -162,12 +141,7 @@ describe("Technologies E2E - Master Resume Technologies", () => {
                 .element(screen.getByTestId(`tech-card-${pairs[0][1]}`))
                 .toBeInTheDocument();
 
-            const names = Array.from(
-                screen
-                    .getByTestId("technology-grid")
-                    .element()
-                    .querySelectorAll("a")
-            ).map((card) => card.textContent);
+            const names = cardNames(screen);
 
             for (const [relative, added] of pairs) {
                 expect(names.indexOf(added)).toBe(names.indexOf(relative) + 1);
@@ -183,15 +157,12 @@ describe("Technologies E2E - Master Resume Technologies", () => {
             .element(screen.getByTestId("tech-card-ComfyUI"))
             .toBeInTheDocument();
 
-        const cards = screen
-            .getByTestId("technology-grid")
-            .element()
-            .querySelectorAll("a");
+        const names = cardNames(screen);
 
-        expect(cards[cards.length - 1].textContent).toBe("ComfyUI");
+        expect(names[names.length - 1]).toBe("ComfyUI");
     });
 
-    const officialSites = [
+    const newTechnologyLinks = [
         ["frontend", "React Hook Form", "https://react-hook-form.com/"],
         ["backend", "Fastify", "https://fastify.dev/"],
         [
@@ -216,8 +187,8 @@ describe("Technologies E2E - Master Resume Technologies", () => {
         ["tools", "ComfyUI", "https://www.comfy.org/"],
     ] as const;
 
-    for (const [category, name, href] of officialSites) {
-        it(`links ${name} to its official site`, async () => {
+    for (const [category, name, href] of newTechnologyLinks) {
+        it(`links ${name} to the expected URL`, async () => {
             const screen = await render(<Technologies />);
 
             await screen.getByTestId(`category-bubble-${category}`).click();
@@ -239,9 +210,9 @@ describe("Technologies E2E - Master Resume Technologies", () => {
     });
 });
 
-// DevOps bubble added by spec #52 (ticket #54), checked through the real
-// category data. The Technologies are the Master Resume's "Cloud & DevOps"
-// group, in the Master Resume's order.
+// DevOps bubble, checked through the real category data. Its Technologies are
+// the ones under the Master Resume's "Cloud & DevOps" heading, in the Master
+// Resume's order.
 describe("Technologies E2E - DevOps bubble", () => {
     const devOpsTechnologies = [
         "AWS",
@@ -257,48 +228,31 @@ describe("Technologies E2E - DevOps bubble", () => {
         "Datadog",
     ];
 
-    const cardNames = (screen: Awaited<ReturnType<typeof render>>) =>
-        Array.from(
-            screen
-                .getByTestId("technology-grid")
-                .element()
-                .querySelectorAll("a")
-        ).map((card) => card.textContent);
+    const interactions = [
+        ["hover", (bubble: Locator) => bubble.hover()],
+        ["click", (bubble: Locator) => bubble.click()],
+        ["keyboard focus", async (bubble: Locator) => bubble.element().focus()],
+    ] as const;
 
-    it("selects DevOps and lists its 11 Technologies on hover", async () => {
-        const screen = await render(<Technologies />);
-        const devOps = screen.getByTestId("category-bubble-devops");
+    it.each(interactions)(
+        "selects DevOps and lists its 11 Technologies on %s",
+        async (_interaction, interact) => {
+            const screen = await render(<Technologies />);
+            const devOps = screen.getByTestId("category-bubble-devops");
 
-        await devOps.hover();
+            await interact(devOps);
 
-        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
-        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
-    });
-
-    it("selects DevOps and lists its 11 Technologies on click", async () => {
-        const screen = await render(<Technologies />);
-        const devOps = screen.getByTestId("category-bubble-devops");
-
-        await devOps.click();
-
-        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
-        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
-    });
-
-    it("selects DevOps and lists its 11 Technologies on keyboard focus", async () => {
-        const screen = await render(<Technologies />);
-        const devOps = screen.getByTestId("category-bubble-devops");
-
-        devOps.element().focus();
-
-        await expect.element(devOps).toHaveAttribute("aria-pressed", "true");
-        await expect.poll(() => cardNames(screen)).toEqual(devOpsTechnologies);
-    });
+            await expect
+                .element(devOps)
+                .toHaveAttribute("aria-pressed", "true");
+            await expect
+                .poll(() => cardNames(screen))
+                .toEqual(devOpsTechnologies);
+        }
+    );
 
     // Hovers every bubble in turn and returns the card names shown under each.
-    const namesByCategory = async (
-        screen: Awaited<ReturnType<typeof render>>
-    ) => {
+    const namesByCategory = async (screen: RenderedTechnologies) => {
         const result: Record<string, (string | null)[]> = {};
         for (const id of ["frontend", "backend", "devops", "tools"]) {
             const bubble = screen.getByTestId(`category-bubble-${id}`);
@@ -340,24 +294,15 @@ describe("Technologies E2E - DevOps bubble", () => {
 
         const byCategory = await namesByCategory(screen);
 
-        // AWS Lambda is not part of the move: the Master Resume keeps it in Back-end.
+        // Covers the spot checks that Docker isn't under Tools and AWS isn't under
+        // Back-end. AWS Lambda is not part of the move: the Master Resume keeps it
+        // in Back-end.
         expect(byCategory.backend).toContain("AWS Lambda");
         for (const name of devOpsTechnologies) {
             expect(byCategory.devops).toContain(name);
             expect(byCategory.backend).not.toContain(name);
             expect(byCategory.tools).not.toContain(name);
         }
-    });
-
-    it("spot checks: Docker is not under Tools, AWS is not under Back-end", async () => {
-        const screen = await render(<Technologies />);
-
-        const byCategory = await namesByCategory(screen);
-
-        expect(byCategory.tools).not.toContain("Docker");
-        expect(byCategory.backend).not.toContain("AWS");
-        expect(byCategory.devops).toContain("Docker");
-        expect(byCategory.devops).toContain("AWS");
     });
 
     it("shows Cloudflare Tunnel / Zero Trust under DevOps, with no Cloudflare Zero Trust card left", async () => {
@@ -394,7 +339,7 @@ describe("Technologies E2E - DevOps bubble", () => {
     ] as const;
 
     for (const [name, href] of devOpsLinks) {
-        it(`links ${name} to its official site`, async () => {
+        it(`links ${name} to the expected URL`, async () => {
             const screen = await render(<Technologies />);
 
             await screen.getByTestId("category-bubble-devops").click();
@@ -407,6 +352,10 @@ describe("Technologies E2E - DevOps bubble", () => {
 });
 
 describe("Technologies E2E - Bubble zig-zag", () => {
+    // Sub-pixel rounding and the active bubble's scale shouldn't matter, so
+    // positions within this many pixels count as the same side.
+    const TOLERANCE_PX = 2;
+
     const originalViewport = {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -442,9 +391,9 @@ describe("Technologies E2E - Bubble zig-zag", () => {
             const next = centres[index + 1];
             // Even positions sit left of their neighbours, odd positions right.
             if (index % 2 === 0) {
-                expect(centre).toBeLessThan(next);
+                expect(centre).toBeLessThan(next - TOLERANCE_PX);
             } else {
-                expect(centre).toBeGreaterThan(next);
+                expect(centre).toBeGreaterThan(next + TOLERANCE_PX);
             }
         });
     });
@@ -459,6 +408,10 @@ describe("Technologies E2E - Bubble zig-zag", () => {
         const centres = bubbleCentres(screen.container);
 
         expect(centres).toHaveLength(4);
-        centres.forEach((centre) => expect(centre).toBeCloseTo(centres[0], 0));
+        centres.forEach((centre) =>
+            expect(Math.abs(centre - centres[0])).toBeLessThanOrEqual(
+                TOLERANCE_PX
+            )
+        );
     });
 });
